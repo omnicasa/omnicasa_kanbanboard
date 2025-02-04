@@ -7,12 +7,14 @@ import {
 } from "@/components/ui/select";
 import SelectSite from "./SelectSite";
 import SelectPerson from "./SelectPerson";
+import SelectFilter from "./SelectFilter";
 
 const SelectGroups: React.FC = () => {
   return (
     <div className="flex items-center space-x-2">
       <SelectSite />
       <SelectPerson />
+      <SelectFilter />
       <Select>
         <SelectTrigger className="max-w-[200px] px-4 text-primary font-medium text-sm">
           <SelectValue placeholder="Sort by" />
