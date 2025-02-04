@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -18,6 +18,24 @@ export default function SelectSite() {
   const [isCommandVisible, setIsCommandVisible] = useState(false);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const commandRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      commandRef.current &&
+      !commandRef.current.contains(event.target as Node)
+    ) {
+      setIsCommandVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const toggleCommandVisibility = () => {
     setIsCommandVisible(!isCommandVisible);
@@ -46,11 +64,11 @@ export default function SelectSite() {
   const selectedCount = selectedLocations.length;
   const firstSelectedLocation =
     selectedLocations.length === 0
-      ? "Select a location"
+      ? "Select sites"
       : `Greenfield Realty - Oakwood - ${selectedLocations[0]}`;
 
   return (
-    <div className="relative">
+    <div className="relative" ref={commandRef}>
       <Button
         variant="outline"
         className="inline-flex h-9 px-4 py-2 items-center gap-2 flex-shrink-0 rounded-md border text-primary bg-white shadow-sm font-sans"
