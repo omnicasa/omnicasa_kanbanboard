@@ -1,6 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import HeaderSearch from "./HeaderSearch";
-import SelectGroups from "./SelectGroups";
+import SelectSite from "./SelectSite";
+import SelectPerson from "./SelectPerson";
+import SelectFilter from "./SelectFilter";
+import SelectSort from "./SelectSort";
 
 export default function Body() {
   return (
@@ -34,7 +37,12 @@ export default function Body() {
               Warm Leads
             </TabsTrigger>
           </TabsList>
-          <SelectGroups />
+          <div className="flex items-center space-x-2">
+            <SelectSite />
+            <SelectPerson />
+            <SelectFilter />
+            <SelectSort />
+          </div>
         </div>
         <div className="px-5">
           <TabsContent value="cold_owner">Cold Owner part</TabsContent>
