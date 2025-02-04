@@ -1,8 +1,11 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { useDraggable } from "@dnd-kit/core";
-import exp from "constants";
 
-export function Draggable(props) {
+interface DraggableProps {
+  children: ReactNode;
+}
+
+export function Draggable({ children }: DraggableProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: "draggable",
   });
@@ -14,7 +17,7 @@ export function Draggable(props) {
 
   return (
     <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
-      {props.children}
+      {children}
     </button>
   );
 }

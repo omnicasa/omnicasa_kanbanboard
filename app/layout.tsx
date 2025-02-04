@@ -1,19 +1,11 @@
 "use client";
 
-import { Geist, Geist_Mono } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, CSSProperties } from "react";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import AppSidebar from "@/components/AppSidebar";
+import Header from "@/components/Header";
 
 export default function RootLayout({
   children,
@@ -24,11 +16,21 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         <QueryClientProvider client={queryClient}>
-          {children}
+          <SidebarProvider
+            style={
+              {
+                "--sidebar-width": "3rem",
+              } as CSSProperties
+            }
+          >
+            <AppSidebar />
+            <SidebarInset>
+              <Header />
+              {children}
+            </SidebarInset>
+          </SidebarProvider>
         </QueryClientProvider>
       </body>
     </html>
