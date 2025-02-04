@@ -130,7 +130,7 @@ export default function SelectPerson() {
           width={16}
           height={16}
           alt="down-arrow"
-          className="w-4 h-4"
+          className="w-4 h-4 mt-[2px]"
         />
       </Button>
       {isCommandVisible && (
@@ -146,7 +146,7 @@ export default function SelectPerson() {
             ) : (
               filteredPersons.map((person) => (
                 <CommandItem key={person.name.toLowerCase()}>
-                  <div className="flex items-center gap-[10px] self-stretch px-1">
+                  <div className="flex items-center gap-[10px] self-stretch p-1">
                     <Checkbox
                       id={person.name.toLowerCase()}
                       checked={selectedPersons.includes(person.name)}

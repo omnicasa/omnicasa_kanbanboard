@@ -1,13 +1,7 @@
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import SelectSite from "./SelectSite";
 import SelectPerson from "./SelectPerson";
 import SelectFilter from "./SelectFilter";
+import SelectSort from "./SelectSort";
 
 const SelectGroups: React.FC = () => {
   return (
@@ -15,17 +9,7 @@ const SelectGroups: React.FC = () => {
       <SelectSite />
       <SelectPerson />
       <SelectFilter />
-      <Select>
-        <SelectTrigger className="max-w-[200px] px-4 text-primary font-medium text-sm">
-          <SelectValue placeholder="Sort by" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="most_updated">Most recently updated</SelectItem>
-          <SelectItem value="least_updated">Least recently updated</SelectItem>
-          <SelectItem value="most_added">Most recently added</SelectItem>
-          <SelectItem value="least_added">Least recently added</SelectItem>
-        </SelectContent>
-      </Select>
+      <SelectSort />
     </div>
   );
 };

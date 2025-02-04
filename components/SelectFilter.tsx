@@ -120,7 +120,7 @@ export default function SelectFilter() {
           <CommandList>
             {filterTypes.map((item, index) => (
               <CommandItem key={index} onSelect={() => onTypeClick(item)}>
-                <div className="flex items-center gap-[10px] self-stretch px-1">
+                <div className="flex items-center gap-[10px] self-stretch p-1">
                   <Image
                     src={item.iconUrl}
                     width={16}
@@ -153,7 +153,7 @@ export default function SelectFilter() {
             ) : (
               filteredLeadSources.map((item, index) => (
                 <CommandItem key={index}>
-                  <div className="flex items-center gap-[10px] self-stretch px-1">
+                  <div className="flex items-center gap-[10px] self-stretch p-1">
                     <Checkbox
                       id={item}
                       checked={selectedLeadSources.includes(item)}
@@ -190,7 +190,7 @@ export default function SelectFilter() {
             ) : (
               filteredSources.map((item, index) => (
                 <CommandItem key={index}>
-                  <div className="flex items-center gap-[10px] self-stretch px-1">
+                  <div className="flex items-center gap-[10px] self-stretch p-1">
                     <Checkbox
                       id={item}
                       checked={selectedSources.includes(item)}

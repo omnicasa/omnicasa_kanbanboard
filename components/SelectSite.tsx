@@ -83,7 +83,7 @@ export default function SelectSite() {
           width={16}
           height={16}
           alt="down-arrow"
-          className="w-4 h-4"
+          className="w-4 h-4 mt-[2px]"
         />
       </Button>
       {isCommandVisible && (
@@ -99,7 +99,7 @@ export default function SelectSite() {
             ) : (
               filteredLocations.map((location: string) => (
                 <CommandItem key={location.toLowerCase()}>
-                  <div className="flex items-center gap-[10px] self-stretch px-1">
+                  <div className="flex items-center gap-[10px] self-stretch p-1">
                     <Checkbox
                       id={location.toLowerCase()}
                       checked={selectedLocations.includes(location)}
