@@ -4,6 +4,7 @@ import SelectSite from "./SelectSite";
 import SelectPerson from "./SelectPerson";
 import SelectFilter from "./SelectFilter";
 import SelectSort from "./SelectSort";
+import Board from "./Board";
 
 export default function Body() {
   return (
@@ -14,25 +15,25 @@ export default function Body() {
           <TabsList>
             <TabsTrigger
               value="cold_owner"
-              className="text-muted-foreground data-[state=active]:text-primary"
+              className="text-muted-foreground data-[state=active]:text-primary w-[130px]"
             >
               Cold Owner
             </TabsTrigger>
             <TabsTrigger
               value="cold_adoption"
-              className="text-muted-foreground data-[state=active]:text-primary"
+              className="text-muted-foreground data-[state=active]:text-primary w-[130px]"
             >
               Cold Adoption
             </TabsTrigger>
             <TabsTrigger
               value="warm_bought"
-              className="text-muted-foreground data-[state=active]:text-primary"
+              className="text-muted-foreground data-[state=active]:text-primary w-[130px]"
             >
               Warm Bought
             </TabsTrigger>
             <TabsTrigger
               value="warm_leads"
-              className="text-muted-foreground data-[state=active]:text-primary"
+              className="text-muted-foreground data-[state=active]:text-primary w-[130px]"
             >
               Warm Leads
             </TabsTrigger>
@@ -45,7 +46,9 @@ export default function Body() {
           </div>
         </div>
         <div className="px-5">
-          <TabsContent value="cold_owner">Cold Owner part</TabsContent>
+          <TabsContent value="cold_owner">
+            <Board />
+          </TabsContent>
           <TabsContent value="cold_adoption">Cold Adoption part</TabsContent>
           <TabsContent value="warm_bought">Warm Bought part</TabsContent>
           <TabsContent value="warm_leads">Warm Leads part</TabsContent>
