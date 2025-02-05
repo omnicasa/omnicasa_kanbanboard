@@ -1,5 +1,7 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import React from "react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -14,26 +16,60 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import CallInfo from "./CallInfo";
 
-export default function CustomCard() {
-  const images = [
-    "/images/picture1.png",
-    "/images/picture2.png",
-    "/images/picture3.png",
-  ];
+interface CustomCardProps {
+  title: string;
+  subtitle: string;
+  date: string;
+  images: string[];
+  badgeText: string;
+  callInfo: { src: string; count: number; alt: string }[];
+  footerText: string;
+  footerAgent: string;
+  footerImage: string;
+}
+
+export default function CustomCard({
+  title,
+  subtitle,
+  date,
+  images,
+  badgeText,
+  callInfo,
+  footerText,
+  footerAgent,
+  footerImage,
+}: CustomCardProps) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // const images = [
+  //   "/images/picture1.png",
+  //   "/images/picture2.png",
+  //   "/images/picture3.png",
+  // ];
+
+  if (!isClient) {
+    return null; // or a loading spinner, or some placeholder
+  }
+
   return (
     <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm">
       <CardHeader className="p-0">
         <div className="flex items-start justify-between">
           <CardTitle className="text-primary font-sans text-base font-semibold leading-6 tracking-tight">
-            99 Boulevard de I&apos;Innovation, Ghent, Belgium
+            {title}
           </CardTitle>
           <span className="text-right text-gray-500 font-sans text-sm font-normal leading-5">
-            1d
+            {date}
           </span>
         </div>
         <CardDescription className="text-gray-500 font-sans text-sm font-normal leading-5">
-          Talan Curtis
+          {subtitle}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-start gap-4 w-full p-0">
@@ -58,65 +94,29 @@ export default function CustomCard() {
             ))}
           </CarouselContent>
         </Carousel>
-        <Badge variant="destructive">Lower in price</Badge>
+        <Badge variant="destructive">{badgeText}</Badge>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-0.5">
-            <Image
-              src="/images/outgoing-call.svg"
-              width={16}
-              height={16}
-              alt="property"
+          {callInfo.map((info, index) => (
+            <CallInfo
+              key={index}
+              src={info.src}
+              count={info.count}
+              alt={info.alt}
             />
-            <span className="text-sm font-sans font-normal leading-5 text-primary">
-              4
-            </span>
-          </div>
-          <div className="flex items-center gap-0.5">
-            <Image
-              src="/images/missed-call.svg"
-              width={16}
-              height={16}
-              alt="property"
-            />
-            <span className="text-sm font-sans font-normal leading-5 text-primary">
-              1
-            </span>
-          </div>
-          <div className="flex items-center gap-0.5">
-            <Image
-              src="/images/chat-message.svg"
-              width={16}
-              height={16}
-              alt="property"
-            />
-            <span className="text-sm font-sans font-normal leading-5 text-primary">
-              0
-            </span>
-          </div>
-          <div className="flex items-center gap-0.5">
-            <Image
-              src="/images/schedule.svg"
-              width={16}
-              height={16}
-              alt="property"
-            />
-            <span className="text-sm font-sans font-normal leading-5 text-primary">
-              2
-            </span>
-          </div>
+          ))}
         </div>
       </CardContent>
       <CardFooter className="flex items-center justify-between w-full p-0">
         <div>
           <span className="text-center text-muted-foreground font-sans text-sm font-normal leading-5">
-            From
+            {footerText}
           </span>
           <span className="ml-2 overflow-hidden text-ellipsis text-primary font-sans text-sm font-medium leading-5">
-            Other Agent
+            {footerAgent}
           </span>
         </div>
         <Image
-          src="/images/avatar.png"
+          src={footerImage}
           width={20}
           height={20}
           alt="property"

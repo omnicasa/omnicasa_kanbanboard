@@ -1,10 +1,10 @@
 import React from "react";
-import CustomCard from "./CustomCard";
+import CardSection from "./CardSection";
 
 export default function Board() {
   return (
-    <div>
-      <CustomCard />
+    <div className="flex gap-4">
+      <CardSection />
     </div>
   );
 }
