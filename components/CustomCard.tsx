@@ -23,9 +23,8 @@ interface CustomCardProps {
   subtitle: string;
   date: string;
   images: string[];
-  badgeText: string;
+  badge: boolean;
   callInfo: { src: string; count: number; alt: string }[];
-  footerText: string;
   footerAgent: string;
   footerImage: string;
 }
@@ -35,9 +34,8 @@ export default function CustomCard({
   subtitle,
   date,
   images,
-  badgeText,
+  badge,
   callInfo,
-  footerText,
   footerAgent,
   footerImage,
 }: CustomCardProps) {
@@ -46,12 +44,6 @@ export default function CustomCard({
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  // const images = [
-  //   "/images/picture1.png",
-  //   "/images/picture2.png",
-  //   "/images/picture3.png",
-  // ];
 
   if (!isClient) {
     return null; // or a loading spinner, or some placeholder
@@ -73,28 +65,30 @@ export default function CustomCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-start gap-4 w-full p-0">
-        <Carousel className="w-full max-w-xs">
-          <CarouselContent>
-            {images.map((src, index) => (
-              <CarouselItem key={index} className="basis-0.85">
-                <div className="w-[240px] h-[150px]">
-                  <Card className="h-full rounded-md flex items-center justify-center">
-                    <CardContent className="flex items-center justify-center p-0">
-                      <Image
-                        src={src}
-                        width={240}
-                        height={150}
-                        alt="down-arrow"
-                        className="w-full h-full object-cover rounded-md"
-                      />
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-        <Badge variant="destructive">{badgeText}</Badge>
+        {images.length > 1 && (
+          <Carousel className="w-full max-w-xs">
+            <CarouselContent>
+              {images.map((src, index) => (
+                <CarouselItem key={index} className="basis-0.85">
+                  <div className="w-[240px] h-[150px]">
+                    <Card className="h-full rounded-md flex items-center justify-center">
+                      <CardContent className="flex items-center justify-center p-0">
+                        <Image
+                          src={src}
+                          width={240}
+                          height={150}
+                          alt="down-arrow"
+                          className="w-full h-full object-cover rounded-md"
+                        />
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        )}
+        {badge && <Badge variant="destructive">Lower in price</Badge>}
         <div className="flex items-center gap-4">
           {callInfo.map((info, index) => (
             <CallInfo
@@ -109,7 +103,7 @@ export default function CustomCard({
       <CardFooter className="flex items-center justify-between w-full p-0">
         <div>
           <span className="text-center text-muted-foreground font-sans text-sm font-normal leading-5">
-            {footerText}
+            From
           </span>
           <span className="ml-2 overflow-hidden text-ellipsis text-primary font-sans text-sm font-medium leading-5">
             {footerAgent}

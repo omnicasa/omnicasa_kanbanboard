@@ -45,7 +45,7 @@ export default function Body() {
             <SelectSort />
           </div>
         </div>
-        <div className="px-5">
+        <div className="px-5 pb-5">
           <TabsContent value="cold_owner">
             <Board />
           </TabsContent>
