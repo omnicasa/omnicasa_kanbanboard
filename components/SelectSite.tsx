@@ -20,27 +20,27 @@ import {
 
 const locations = [
   {
-    value: "Antwerp",
+    value: "Greenfield Realty - Oakwood - Antwerp",
     label: "Antwerp",
   },
   {
-    value: "Ghent",
+    value: "Greenfield Realty - Oakwood - Ghent",
     label: "Ghent",
   },
   {
-    value: "Bruges",
+    value: "Greenfield Realty - Oakwood - Bruges",
     label: "Bruges",
   },
   {
-    value: "Namur",
+    value: "Greenfield Realty - Oakwood - Namur",
     label: "Namur",
   },
   {
-    value: "Liege",
+    value: "Greenfield Realty - Oakwood - Liege",
     label: "Liege",
   },
   {
-    value: "Leuven",
+    value: "Greenfield Realty - Oakwood - Leuven",
     label: "Leuven",
   },
 ];
@@ -59,15 +59,9 @@ export default function SelectSite() {
     });
   };
 
-  const filteredLocations = locations.filter((location) =>
-    `Greenfield Realty - Oakwood - ${location.value}`.toLowerCase()
-  );
-
   const selectedCount = selectedLocations.length;
   const firstSelectedLocation =
-    selectedLocations.length === 0
-      ? "Select sites"
-      : `Greenfield Realty - Oakwood - ${selectedLocations[0]}`;
+    selectedLocations.length === 0 ? "Select sites" : selectedLocations[0];
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -101,7 +95,7 @@ export default function SelectSite() {
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {filteredLocations.map((location) => (
+              {locations.map((location) => (
                 <CommandItem
                   key={location.value}
                   value={location.value}
@@ -121,7 +115,7 @@ export default function SelectSite() {
                       htmlFor={location.value.toLowerCase()}
                       className="text-sm font-normal leading-[1.42857] text-primary overflow-hidden text-ellipsis"
                     >
-                      Greenfield Realty - Oakwood - {location.value}
+                      {location.value}
                     </label>
                   </div>
                 </CommandItem>
