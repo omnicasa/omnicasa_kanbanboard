@@ -1,5 +1,6 @@
 "use client";
 
+import { ClipLoader } from "react-spinners";
 import React, { useRef, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
@@ -15,6 +16,7 @@ import {
 } from "@dnd-kit/core";
 import CardSection from "./CardSection";
 import Droppable from "./Droppable";
+import { useFetchProperties } from "@/hooks/useFetchData";
 
 const kanbanData = [
   {
@@ -210,6 +212,7 @@ export default function Board() {
   const [boards, setBoards] = useState(kanbanData);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isSwiping, setIsSwiping] = useState(false);
+  const { data, error, isLoading } = useFetchProperties();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -277,6 +280,20 @@ export default function Board() {
     trackMouse: true,
     swipeDuration: 250,
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <ClipLoader size={50} color={"#123abc"} loading={isLoading} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  console.log("API response=>", data);
 
   return (
     <DndContext

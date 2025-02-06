@@ -1,3 +1,5 @@
+"use client";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import HeaderSearch from "./HeaderSearch";
 import SelectSite from "./SelectSite";

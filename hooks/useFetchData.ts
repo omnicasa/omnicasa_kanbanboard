@@ -1,14 +1,60 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
-const fetchData = async () => {
-  const { data } = await axios.get("/api/data");
-  return data;
+const fetchProperties = async () => {
+  const response = await fetch(
+    "https://webapinew.omnicasa.com/13500.1.0/properties/search",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OAUTH_TOKEN}`,
+        "Accept-Language": "English",
+      },
+      body: JSON.stringify({
+        PageIndex: 1,
+        PageSize: 20,
+        OrderBy: "",
+        Condition: {
+          SiteIds: [],
+          PurposeIds: [],
+          StatusIds: [],
+          ConstructionTypes: [],
+          Reference_AdvanceSearch: false,
+          IsUseGeoCity: false,
+          TypeOfPropIds: [],
+          InteriorDecorIds: [],
+          EnviromentIds: [],
+          ExteriorStateIds: [],
+          UsageIds: [],
+          ManagerIds: [],
+          FilterObject: false,
+          DemandUseGps: false,
+          RegionEntries: [],
+          InputEntries: [],
+          IsMediaSelected: false,
+          Ids: [],
+          IsDeleted: false,
+        },
+        Fields: "",
+        ViewMode: 0,
+        Cache: true,
+        FilterCondition: {
+          Fields: [],
+        },
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
 };
 
-export const useFetchData = () => {
+export const useFetchProperties = () => {
   return useQuery({
-    queryKey: ["data"],
-    queryFn: fetchData,
+    queryKey: ["properties"],
+    queryFn: fetchProperties,
   });
 };
