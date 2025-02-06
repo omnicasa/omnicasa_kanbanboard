@@ -50,7 +50,7 @@ export default function CustomCard({
   }
 
   return (
-    <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm">
+    <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm z-10">
       <CardHeader className="p-0">
         <div className="flex items-start justify-between">
           <CardTitle className="text-primary font-sans text-base font-semibold leading-6 tracking-tight">
