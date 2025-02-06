@@ -1,5 +1,16 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
+import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
+import {
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import CardSection from "./CardSection";
+import Droppable from "./Droppable";
 
 const kanbanData = [
   {
@@ -116,15 +127,85 @@ const kanbanData = [
 ];
 
 export default function Board() {
+  const [boards, setBoards] = useState(kanbanData);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor)
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    const activeBoardIndex = boards.findIndex((board) =>
+      board.customCardContents.some((card) => card.title === active.id)
+    );
+    const overBoardIndex = boards.findIndex((board) =>
+      board.customCardContents.some((card) => card.title === over.id)
+    );
+
+    if (activeBoardIndex === -1 || overBoardIndex === -1) return;
+
+    if (activeBoardIndex === overBoardIndex) {
+      const activeCardIndex = boards[
+        activeBoardIndex
+      ].customCardContents.findIndex((card) => card.title === active.id);
+      const overCardIndex = boards[overBoardIndex].customCardContents.findIndex(
+        (card) => card.title === over.id
+      );
+
+      if (activeCardIndex !== overCardIndex) {
+        setBoards((prevBoards) => {
+          const newBoards = [...prevBoards];
+          newBoards[activeBoardIndex].customCardContents = arrayMove(
+            newBoards[activeBoardIndex].customCardContents,
+            activeCardIndex,
+            overCardIndex
+          );
+          return newBoards;
+        });
+      }
+    } else {
+      const activeCardIndex = boards[
+        activeBoardIndex
+      ].customCardContents.findIndex((card) => card.title === active.id);
+      const overCardIndex = boards[overBoardIndex].customCardContents.findIndex(
+        (card) => card.title === over.id
+      );
+
+      setBoards((prevBoards) => {
+        const newBoards = [...prevBoards];
+        const [movedCard] = newBoards[
+          activeBoardIndex
+        ].customCardContents.splice(activeCardIndex, 1);
+        newBoards[overBoardIndex].customCardContents.splice(
+          overCardIndex,
+          0,
+          movedCard
+        );
+        return newBoards;
+      });
+    }
+  };
+
   return (
-    <div className="flex gap-4 overflow-x-auto">
-      {kanbanData.map((data, index) => (
-        <CardSection
-          key={index}
-          headerTitle={data.headerTitle}
-          customCardContents={data.customCardContents}
-        />
-      ))}
-    </div>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="flex gap-4 overflow-x-auto">
+        {boards.map((data) => (
+          <Droppable key={data.headerTitle} id={data.headerTitle}>
+            <CardSection
+              headerTitle={data.headerTitle}
+              customCardContents={data.customCardContents}
+            />
+          </Droppable>
+        ))}
+      </div>
+    </DndContext>
   );
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import CustomCard from "./CustomCard";
 import SectionHeader from "./SectionHeader";
+import Draggable from "./Draggable";
 
 interface CardSectionProps {
   headerTitle: string;
@@ -27,17 +28,19 @@ export default function CardSection({
         badgeCount={customCardContents.length}
       />
       {customCardContents.map((customCardContent, index) => (
-        <CustomCard
-          key={index}
-          title={customCardContent.title}
-          subtitle={customCardContent.subtitle}
-          date={customCardContent.date}
-          images={customCardContent.images}
-          badge={customCardContent.badge}
-          callInfo={customCardContent.callInfo}
-          footerAgent={customCardContent.footerAgent}
-          footerImage={customCardContent.footerImage}
-        />
+        <Draggable key={customCardContent.title} id={customCardContent.title}>
+          <CustomCard
+            key={index}
+            title={customCardContent.title}
+            subtitle={customCardContent.subtitle}
+            date={customCardContent.date}
+            images={customCardContent.images}
+            badge={customCardContent.badge}
+            callInfo={customCardContent.callInfo}
+            footerAgent={customCardContent.footerAgent}
+            footerImage={customCardContent.footerImage}
+          />
+        </Draggable>
       ))}
     </div>
   );
