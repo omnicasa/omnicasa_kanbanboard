@@ -1,15 +1,10 @@
 import React, { ReactNode } from "react";
-
-interface DraggableData {
-  boardId: string;
-  [key: string]: string;
-}
 import { useDraggable } from "@dnd-kit/core";
 
 interface DraggableProps {
   children: ReactNode;
   id: string;
-  data: DraggableData; // Add a data prop to pass the necessary data
+  data: { boardId: string }; // Add a data prop to pass the necessary data
 }
 
 export function Draggable({ children, id, data }: DraggableProps) {
