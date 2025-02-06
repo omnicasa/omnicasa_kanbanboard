@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { useSwipeable } from "react-swipeable";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -88,6 +89,42 @@ const kanbanData = [
         footerAgent: "Other Agent",
         footerImage: "/images/avatar.png",
       },
+      {
+        id: "item-3",
+        title: "11 Place de la Republique, Bruges, Belgium",
+        subtitle: "Emilie Dubois",
+        date: "3w",
+        images: [
+          "/images/picture1.png",
+          "/images/picture2.png",
+          "/images/picture3.png",
+        ],
+        badge: false,
+        callInfo: [
+          {
+            src: "/images/outgoing-call.svg",
+            count: 2,
+            alt: "Outgoing call",
+          },
+          {
+            src: "/images/missed-call.svg",
+            count: 2,
+            alt: "Missed call",
+          },
+          {
+            src: "/images/chat-message.svg",
+            count: 2,
+            alt: "Chat message",
+          },
+          {
+            src: "/images/schedule.svg",
+            count: 2,
+            alt: "Schedule",
+          },
+        ],
+        footerAgent: "Other Agent",
+        footerImage: "/images/avatar.png",
+      },
     ],
   },
   {
@@ -95,7 +132,7 @@ const kanbanData = [
     title: "Contacted but No Communication",
     items: [
       {
-        id: "item-3",
+        id: "item-4",
         title: "200 Avenue des Arts, Leuven, Belgium",
         subtitle: "Sophie Martin",
         date: "2w",
@@ -137,10 +174,42 @@ const kanbanData = [
     title: "Call 1",
     items: [],
   },
+  {
+    id: "board-4",
+    title: "Call 2",
+    items: [],
+  },
+  {
+    id: "board-5",
+    title: "Appointment Set",
+    items: [],
+  },
+  {
+    id: "board-6",
+    title: "Appointment Done",
+    items: [],
+  },
+  {
+    id: "board-7",
+    title: "Follow Up 1 Month",
+    items: [],
+  },
+  {
+    id: "board-8",
+    title: "Follow Up 2 Months",
+    items: [],
+  },
+  {
+    id: "board-9",
+    title: "Follow Up 3 Months",
+    items: [],
+  },
 ];
 
 export default function Board() {
   const [boards, setBoards] = useState(kanbanData);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isSwiping, setIsSwiping] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -187,13 +256,41 @@ export default function Board() {
     setBoards(newBoards);
   };
 
+  const swipeHandlers = useSwipeable({
+    onSwiping: (eventData) => {
+      setIsSwiping(true);
+      eventData.event.preventDefault();
+      if (eventData.dir === "Left") {
+        if (containerRef.current) {
+          containerRef.current.scrollBy({ left: 500, behavior: "smooth" });
+        }
+      } else if (eventData.dir === "Right") {
+        if (containerRef.current) {
+          containerRef.current.scrollBy({ left: -500, behavior: "smooth" });
+        }
+      }
+    },
+    onSwiped: () => {
+      setIsSwiping(false);
+    },
+    preventScrollOnSwipe: true,
+    trackMouse: true,
+    swipeDuration: 250,
+  });
+
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex gap-4 overflow-x-auto">
+      <div
+        {...swipeHandlers}
+        ref={containerRef}
+        className={`flex gap-4 overflow-hidden ${
+          isSwiping ? "select-none cursor-grab" : ""
+        }`}
+      >
         {boards.map((data) => (
           <Droppable key={data.id} id={data.id}>
             <SortableContext

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -39,18 +39,8 @@ export default function CustomCard({
   footerAgent,
   footerImage,
 }: CustomCardProps) {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null; // or a loading spinner, or some placeholder
-  }
-
   return (
-    <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm z-10">
+    <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm">
       <CardHeader className="p-0">
         <div className="flex items-start justify-between">
           <CardTitle className="text-primary font-sans text-base font-semibold leading-6 tracking-tight">
