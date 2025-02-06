@@ -3,22 +3,25 @@ import { useDraggable } from "@dnd-kit/core";
 
 interface DraggableProps {
   children: ReactNode;
+  id: string;
+  data: { boardId: string }; // Add a data prop to pass the necessary data
 }
 
-export function Draggable({ children }: DraggableProps) {
+export function Draggable({ children, id, data }: DraggableProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: "draggable",
+    id,
+    data, // Pass the data prop to the useDraggable hook
   });
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-      }
-    : undefined;
+  const style = {
+    transform: transform
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+      : undefined,
+  };
 
   return (
-    <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
       {children}
-    </button>
+    </div>
   );
 }
 
