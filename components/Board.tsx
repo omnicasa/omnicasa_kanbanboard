@@ -31,7 +31,6 @@ interface RecordItem {
 
 interface BoardProps {
   statusesID: number;
-  initialData: { SubstatusId: number; Stage: string; items: RecordItem[] }[];
 }
 interface Record {
   ConstructionType: number;
@@ -73,7 +72,27 @@ interface Record {
   FirstPictureModifiedDate: string;
 }
 
-export default function Board({ initialData, statusesID }: BoardProps) {
+const initialData = [
+  { SubstatusId: 1, Stage: "New", items: [] as RecordItem[] },
+  {
+    SubstatusId: 37,
+    Stage: "Contacted but No Communication",
+    items: [] as RecordItem[],
+  },
+  { SubstatusId: 38, Stage: "Call 1", items: [] as RecordItem[] },
+  { SubstatusId: 39, Stage: "Call 2", items: [] as RecordItem[] },
+  { SubstatusId: 40, Stage: "Appointment 1 Set", items: [] as RecordItem[] },
+  { SubstatusId: 41, Stage: "Appointment 1 Done", items: [] as RecordItem[] },
+  { SubstatusId: 42, Stage: "Appointment 2 Set", items: [] as RecordItem[] },
+  { SubstatusId: 43, Stage: "Appointment 2 Done", items: [] as RecordItem[] },
+  { SubstatusId: 44, Stage: "Follow Up 1 Month", items: [] as RecordItem[] },
+  { SubstatusId: 45, Stage: "Follow Up 2 Months", items: [] as RecordItem[] },
+  { SubstatusId: 46, Stage: "Follow Up 3 Months", items: [] as RecordItem[] },
+  { SubstatusId: 47, Stage: "Follow Up 6 Months", items: [] as RecordItem[] },
+  { SubstatusId: 48, Stage: "Follow Up 1 Year", items: [] as RecordItem[] },
+];
+
+export default function Board({ statusesID }: BoardProps) {
   const [newData, setNewData] = useState(initialData);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isSwiping, setIsSwiping] = useState(false);
@@ -157,58 +176,48 @@ export default function Board({ initialData, statusesID }: BoardProps) {
   });
 
   useEffect(() => {
-    setNewData(initialData);
-  }, [statusesID]);
+    setNewData(initialData); // Reset newData to initialData whenever statusesID or data changes
+  }, [statusesID, data]);
 
   useEffect(() => {
     if (data && data.Records) {
-      setNewData((prevData) => {
-        const updatedData = [...prevData];
-        data.Records.forEach((record: Record) => {
-          const matchingStage = updatedData.find(
-            (stage) => stage.SubstatusId === record.SubStatusId
-          );
-          if (matchingStage) {
-            const existingItem = matchingStage.items.find(
-              (item) => item.Id === record.Id
-            );
-            if (!existingItem) {
-              matchingStage.items.push({
-                Id: record.Id,
-                Reference: record.Reference,
-                ProprietorReference: record.ProprietorReference,
-                date: record.FirstPictureModifiedDate,
-                images: [record.PictureLargeUrl],
-                badge: false,
-                callInfo: [
-                  {
-                    src: "/images/outgoing-call.svg",
-                    count: 0,
-                    alt: "Outgoing call",
-                  },
-                  {
-                    src: "/images/missed-call.svg",
-                    count: 0,
-                    alt: "Missed call",
-                  },
-                  {
-                    src: "/images/chat-message.svg",
-                    count: 0,
-                    alt: "Chat message",
-                  },
-                  {
-                    src: "/images/schedule.svg",
-                    count: 0,
-                    alt: "Schedule",
-                  },
-                ],
-                ManagerShortName: record.ManagerShortName,
-              });
-            }
-          }
-        });
-        return updatedData;
+      const updatedData = initialData.map((stage) => {
+        const items = data.Records.filter(
+          (record: Record) => record.SubStatusId === stage.SubstatusId
+        ).map((record: Record) => ({
+          Id: record.Id,
+          Reference: record.Reference,
+          ProprietorReference: record.ProprietorReference,
+          date: record.FirstPictureModifiedDate,
+          images: [record.PictureLargeUrl],
+          badge: false,
+          callInfo: [
+            {
+              src: "/images/outgoing-call.svg",
+              count: 0,
+              alt: "Outgoing call",
+            },
+            {
+              src: "/images/missed-call.svg",
+              count: 0,
+              alt: "Missed call",
+            },
+            {
+              src: "/images/chat-message.svg",
+              count: 0,
+              alt: "Chat message",
+            },
+            {
+              src: "/images/schedule.svg",
+              count: 0,
+              alt: "Schedule",
+            },
+          ],
+          ManagerShortName: record.ManagerShortName,
+        }));
+        return { ...stage, items };
       });
+      setNewData(updatedData);
     }
   }, [data]);
 
