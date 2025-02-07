@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-const fetchProperties = async () => {
+const fetchProperties = async (statusesID: number) => {
   const response = await fetch(
     "https://webapinew.omnicasa.com/13500.1.0/properties/search",
     {
@@ -17,7 +17,7 @@ const fetchProperties = async () => {
         Condition: {
           SiteIds: [],
           PurposeIds: [],
-          StatusIds: [],
+          StatusIds: [statusesID],
           ConstructionTypes: [],
           Reference_AdvanceSearch: false,
           IsUseGeoCity: false,
@@ -52,9 +52,9 @@ const fetchProperties = async () => {
   return response.json();
 };
 
-export const useFetchProperties = () => {
+export const useFetchProperties = (statusesID: number) => {
   return useQuery({
     queryKey: ["properties"],
-    queryFn: fetchProperties,
+    queryFn: () => fetchProperties(statusesID),
   });
 };

@@ -49,11 +49,17 @@ export default function Body() {
         </div>
         <div className="px-5 pb-5 w-[calc(100vw-65px)]">
           <TabsContent value="cold_owner">
-            <Board />
+            <Board statusesID={6} />
           </TabsContent>
-          <TabsContent value="cold_adoption">Cold Adoption part</TabsContent>
-          <TabsContent value="warm_bought">Warm Bought part</TabsContent>
-          <TabsContent value="warm_leads">Warm Leads part</TabsContent>
+          <TabsContent value="cold_adoption">
+            <Board statusesID={7} />
+          </TabsContent>
+          <TabsContent value="warm_bought">
+            <Board statusesID={8} />
+          </TabsContent>
+          <TabsContent value="warm_leads">
+            <Board statusesID={9} />
+          </TabsContent>
         </div>
       </Tabs>
     </main>

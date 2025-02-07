@@ -20,61 +20,24 @@ import { useFetchProperties } from "@/hooks/useFetchData";
 
 const kanbanData = [
   {
-    id: "board-1",
-    title: "New",
+    Stage: "New",
     items: [
       {
-        id: "item-1",
-        title: "45 Rue de la Paix, Antwerp, Belgium",
-        subtitle: "Lucie Moreau",
-        date: "5d",
-        images: [],
-        badge: true,
-        callInfo: [
-          {
-            src: "/images/outgoing-call.svg",
-            count: 1,
-            alt: "Outgoing call",
-          },
-          {
-            src: "/images/missed-call.svg",
-            count: 1,
-            alt: "Missed call",
-          },
-          {
-            src: "/images/chat-message.svg",
-            count: 0,
-            alt: "Chat message",
-          },
-          {
-            src: "/images/schedule.svg",
-            count: 2,
-            alt: "Schedule",
-          },
-        ],
-        footerAgent: "FSBO (For Sale by Owner)",
-        footerImage: "/images/avatar.png",
-      },
-      {
-        id: "item-2",
-        title: "99 Boulevard de I'Innovation, Ghent, Belgium",
-        subtitle: "Talan Curtis",
+        Id: "item-2",
+        Reference: "99 Boulevard de I'Innovation, Ghent, Belgium",
+        ProprietorReference: "Talan Curtis",
         date: "1d",
-        images: [
-          "/images/picture1.png",
-          "/images/picture2.png",
-          "/images/picture3.png",
-        ],
+        images: [],
         badge: false,
         callInfo: [
           {
             src: "/images/outgoing-call.svg",
-            count: 4,
+            count: 0,
             alt: "Outgoing call",
           },
           {
             src: "/images/missed-call.svg",
-            count: 1,
+            count: 0,
             alt: "Missed call",
           },
           {
@@ -84,135 +47,106 @@ const kanbanData = [
           },
           {
             src: "/images/schedule.svg",
-            count: 2,
+            count: 0,
             alt: "Schedule",
           },
         ],
-        footerAgent: "Other Agent",
-        footerImage: "/images/avatar.png",
-      },
-      {
-        id: "item-3",
-        title: "11 Place de la Republique, Bruges, Belgium",
-        subtitle: "Emilie Dubois",
-        date: "3w",
-        images: [
-          "/images/picture1.png",
-          "/images/picture2.png",
-          "/images/picture3.png",
-        ],
-        badge: false,
-        callInfo: [
-          {
-            src: "/images/outgoing-call.svg",
-            count: 2,
-            alt: "Outgoing call",
-          },
-          {
-            src: "/images/missed-call.svg",
-            count: 2,
-            alt: "Missed call",
-          },
-          {
-            src: "/images/chat-message.svg",
-            count: 2,
-            alt: "Chat message",
-          },
-          {
-            src: "/images/schedule.svg",
-            count: 2,
-            alt: "Schedule",
-          },
-        ],
-        footerAgent: "Other Agent",
+        ManagerShortName: "Other Agent",
         footerImage: "/images/avatar.png",
       },
     ],
   },
   {
-    id: "board-2",
-    title: "Contacted but No Communication",
-    items: [
-      {
-        id: "item-4",
-        title: "200 Avenue des Arts, Leuven, Belgium",
-        subtitle: "Sophie Martin",
-        date: "2w",
-        images: [
-          "/images/picture1.png",
-          "/images/picture2.png",
-          "/images/picture3.png",
-        ],
-        badge: true,
-        callInfo: [
-          {
-            src: "/images/outgoing-call.svg",
-            count: 1,
-            alt: "Outgoing call",
-          },
-          {
-            src: "/images/missed-call.svg",
-            count: 3,
-            alt: "Missed call",
-          },
-          {
-            src: "/images/chat-message.svg",
-            count: 2,
-            alt: "Chat message",
-          },
-          {
-            src: "/images/schedule.svg",
-            count: 2,
-            alt: "Schedule",
-          },
-        ],
-        footerAgent: "Notary",
-        footerImage: "/images/avatar.png",
-      },
-    ],
-  },
-  {
-    id: "board-3",
-    title: "Call 1",
+    Stage: "Contacted but No Communication",
     items: [],
   },
   {
-    id: "board-4",
-    title: "Call 2",
+    Stage: "Call 1",
     items: [],
   },
   {
-    id: "board-5",
-    title: "Appointment Set",
+    Stage: "Call 2",
     items: [],
   },
   {
-    id: "board-6",
-    title: "Appointment Done",
+    Stage: "Appointment 1 Set",
     items: [],
   },
   {
-    id: "board-7",
-    title: "Follow Up 1 Month",
+    Stage: "Appointment 1 Done",
     items: [],
   },
   {
-    id: "board-8",
-    title: "Follow Up 2 Months",
+    Stage: "Appointment 2 Set",
     items: [],
   },
   {
-    id: "board-9",
-    title: "Follow Up 3 Months",
+    Stage: "Appointment 2 Done",
+    items: [],
+  },
+  {
+    Stage: "Follow Up 1 Month",
+    items: [],
+  },
+  {
+    Stage: "Follow Up 2 Months",
+    items: [],
+  },
+  {
+    Stage: "Follow Up 3 Months",
+    items: [],
+  },
+  {
+    Stage: "Follow Up 6 Months",
+    items: [],
+  },
+  {
+    Stage: "Follow Up 7 Months",
     items: [],
   },
 ];
 
-export default function Board() {
+interface RecordItem {
+  Id: string;
+  Reference: string;
+  ProprietorReference: string;
+  date: string;
+  images: string[];
+  badge: boolean;
+  callInfo: { src: string; count: number; alt: string }[];
+  ManagerShortName: string;
+}
+
+const initialData = [
+  { SubstatusId: 1, Stage: "New", items: [] as RecordItem[] },
+  {
+    SubstatusId: 37,
+    Stage: "Contacted but No Communication",
+    items: [] as RecordItem[],
+  },
+  { SubstatusId: 38, Stage: "Call 1", items: [] as RecordItem[] },
+  { SubstatusId: 39, Stage: "Call 2", items: [] as RecordItem[] },
+  { SubstatusId: 40, Stage: "Appointment 1 Set", items: [] as RecordItem[] },
+  { SubstatusId: 41, Stage: "Appointment 1 Done", items: [] as RecordItem[] },
+  { SubstatusId: 42, Stage: "Appointment 2 Set", items: [] as RecordItem[] },
+  { SubstatusId: 43, Stage: "Appointment 2 Done", items: [] as RecordItem[] },
+  { SubstatusId: 44, Stage: "Follow Up 1 Month", items: [] as RecordItem[] },
+  { SubstatusId: 45, Stage: "Follow Up 2 Months", items: [] as RecordItem[] },
+  { SubstatusId: 46, Stage: "Follow Up 3 Months", items: [] as RecordItem[] },
+  { SubstatusId: 47, Stage: "Follow Up 6 Months", items: [] as RecordItem[] },
+  { SubstatusId: 48, Stage: "Follow Up 1 Year", items: [] as RecordItem[] },
+];
+
+interface BoardProps {
+  statusesID: number;
+}
+
+export default function Board({ statusesID }: BoardProps) {
+  console.log("statusesID=>", statusesID);
   const [boards, setBoards] = useState(kanbanData);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isSwiping, setIsSwiping] = useState(false);
-  const { data, error, isLoading } = useFetchProperties();
+  const { data, error, isLoading } = useFetchProperties(statusesID);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -294,6 +228,18 @@ export default function Board() {
   }
 
   console.log("API response=>", data);
+  const { Pagination, Records } = data;
+
+  Records.forEach((record: any) => {
+    const matchingStage = initialData.find(
+      (stage) => stage.SubstatusId === record.SubStatusId
+    );
+    if (matchingStage) {
+      matchingStage.items.push(record);
+    }
+  });
+
+  console.log("Updated kanbanData=>", initialData);
 
   return (
     <DndContext
@@ -308,7 +254,7 @@ export default function Board() {
           isSwiping ? "select-none cursor-grab" : ""
         }`}
       >
-        {boards.map((data) => (
+        {/* {boards.map((data) => (
           <Droppable key={data.id} id={data.id}>
             <SortableContext
               items={data.items.filter((item) => item).map((item) => item.id)}
@@ -320,7 +266,7 @@ export default function Board() {
               />
             </SortableContext>
           </Droppable>
-        ))}
+        ))} */}
       </div>
     </DndContext>
   );
