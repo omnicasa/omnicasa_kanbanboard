@@ -2,7 +2,10 @@ import type { NextConfig } from "next";
 require("dotenv").config();
 
 module.exports = {
-  // Your existing Next.js configuration
+  reactStrictMode: true,
+  images: {
+    domains: ["cdn.omnicasaassets.com"],
+  },
   env: {
     OAUTH_TOKEN: process.env.OAUTH_TOKEN,
   },

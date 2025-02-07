@@ -17,6 +17,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import CallInfo from "./CallInfo";
+import { formatDistanceToNow, parseISO } from "date-fns";
 
 interface CustomCardProps {
   title: string;
@@ -26,7 +27,6 @@ interface CustomCardProps {
   badge: boolean;
   callInfo: { src: string; count: number; alt: string }[];
   footerAgent: string;
-  footerImage: string;
 }
 
 export default function CustomCard({
@@ -37,8 +37,10 @@ export default function CustomCard({
   badge,
   callInfo,
   footerAgent,
-  footerImage,
 }: CustomCardProps) {
+  const dateDifference = formatDistanceToNow(parseISO(date), {
+    addSuffix: true,
+  });
   return (
     <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm">
       <CardHeader className="p-0">
@@ -47,7 +49,7 @@ export default function CustomCard({
             {title}
           </CardTitle>
           <span className="text-right text-gray-500 font-sans text-sm font-normal leading-5">
-            {date}
+            {dateDifference}
           </span>
         </div>
         <CardDescription className="text-gray-500 font-sans text-sm font-normal leading-5">
@@ -55,7 +57,7 @@ export default function CustomCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-start gap-4 w-full p-0">
-        {images.length > 1 && (
+        {images.length > 0 && (
           <Carousel className="w-full max-w-xs">
             <CarouselContent>
               {images.map((src, index) => (
@@ -100,7 +102,7 @@ export default function CustomCard({
           </span>
         </div>
         <Image
-          src={footerImage}
+          src="/images/avatar.png"
           width={20}
           height={20}
           alt="property"

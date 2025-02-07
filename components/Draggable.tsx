@@ -3,7 +3,7 @@ import { useDraggable } from "@dnd-kit/core";
 
 interface DraggableProps {
   children: ReactNode;
-  id: string;
+  id: number;
   data: { boardId: string }; // Add a data prop to pass the necessary data
 }
 
