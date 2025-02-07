@@ -17,7 +17,6 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import CallInfo from "./CallInfo";
-import { formatDistanceToNow, parseISO } from "date-fns";
 
 interface CustomCardProps {
   title: string;
@@ -38,27 +37,46 @@ export default function CustomCard({
   callInfo,
   footerAgent,
 }: CustomCardProps) {
-  const dateDifference = formatDistanceToNow(parseISO(date), {
-    addSuffix: true,
-  });
+  const formatDateDifference = (start: Date, end: string) => {
+    const diffInMs = Math.abs(
+      new Date(end).getTime() - new Date(start).getTime()
+    );
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (diffInDays < 7) {
+      return `${diffInDays + 1}d`;
+    } else if (diffInDays < 30) {
+      const weeks = Math.floor(diffInDays / 7);
+      return `${weeks}w`;
+    } else {
+      const months = Math.floor(diffInDays / 30);
+      return `${months}m`;
+    }
+  };
+  const startDate = new Date();
+  const dateDifference = formatDateDifference(startDate, date);
   return (
     <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm">
-      <CardHeader className="p-0">
-        <div className="flex items-start justify-between">
+      <CardHeader className="p-0 w-full">
+        <div className="flex items-start justify-between gap-4">
           <CardTitle className="text-primary font-sans text-base font-semibold leading-6 tracking-tight">
             {title}
           </CardTitle>
-          <span className="text-right text-gray-500 font-sans text-sm font-normal leading-5">
+          <span className="text-right text-[#606266] font-sans text-sm font-normal leading-5">
             {dateDifference}
           </span>
         </div>
-        <CardDescription className="text-gray-500 font-sans text-sm font-normal leading-5">
+        <CardDescription className="text-muted-foreground font-sans text-sm font-normal leading-5">
           {subtitle}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-start gap-4 w-full p-0">
         {images.length > 0 && (
-          <Carousel className="w-full max-w-xs">
+          <Carousel
+            className={`w-full max-w-xs ${
+              images.length === 1 && "flex justify-center"
+            }`}
+          >
             <CarouselContent>
               {images.map((src, index) => (
                 <CarouselItem key={index} className="basis-0.85">
