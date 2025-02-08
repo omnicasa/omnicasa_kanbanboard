@@ -16,6 +16,7 @@ import {
 import CardSection from "./CardSection";
 import Droppable from "./Droppable";
 import { useFetchProperties } from "@/hooks/useFetchData";
+import { useSiteStore } from "@/store/useStore";
 import Loading from "./Loading";
 
 interface RecordItem {
@@ -28,7 +29,6 @@ interface RecordItem {
   callInfo: { src: string; count: number; alt: string }[];
   ManagerShortName: string;
 }
-
 interface BoardProps {
   statusesID: number;
 }
@@ -97,7 +97,13 @@ export default function Board({ statusesID }: BoardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isSwiping, setIsSwiping] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const { data, error, isLoading } = useFetchProperties(statusesID);
+  const selectedSiteIds = useSiteStore((state) => state.selectedSiteIds);
+  console.log("board selected site ids", selectedSiteIds);
+  const { data, error, isLoading } = useFetchProperties(
+    statusesID,
+    selectedSiteIds
+  );
+  console.log("board data", data);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -219,7 +225,7 @@ export default function Board({ statusesID }: BoardProps) {
       });
       setNewData(updatedData);
     }
-  }, [data]);
+  }, [data, selectedSiteIds]);
 
   return (
     <DndContext

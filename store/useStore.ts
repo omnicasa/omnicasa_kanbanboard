@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface StoreState {
-  parent: string | null;
-  setParent: (parent: string | null) => void;
+interface SiteStore {
+  selectedSiteIds: number[];
+  setSelectedSiteIds: (ids: number[]) => void;
 }
 
-export const useStore = create<StoreState>((set) => ({
-  parent: null,
-  setParent: (parent) => set({ parent }),
+export const useSiteStore = create<SiteStore>((set) => ({
+  selectedSiteIds: [],
+  setSelectedSiteIds: (ids) => set({ selectedSiteIds: ids }),
 }));

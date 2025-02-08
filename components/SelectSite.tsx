@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useFetchSites } from "@/hooks/useFetchData";
+import { useSiteStore } from "@/store/useStore";
 import Loading from "./Loading";
 
 interface Site {
@@ -28,7 +29,10 @@ interface Site {
 export default function SelectSite() {
   const [open, setOpen] = React.useState(false);
   const [selectedSites, setSelectedSites] = useState<string[]>([]);
+  // const [selectedSiteIds, setSelectedSiteIds] = useState<number[]>([]);
   const { data: sites, isLoading, error } = useFetchSites();
+  const selectedSiteIds = useSiteStore((state) => state.selectedSiteIds);
+  const setSelectedSiteIds = useSiteStore((state) => state.setSelectedSiteIds);
 
   const handleSelectItem = (currentValue: string) => {
     setSelectedSites((prevSelectedSites) => {
@@ -39,6 +43,14 @@ export default function SelectSite() {
       return newSelectedSites.length === 0 ? [] : newSelectedSites;
     });
   };
+  useEffect(() => {
+    if (sites?.Site) {
+      const updatedSelectedSiteIds = sites.Site.filter((site: any) =>
+        selectedSites.includes(site.NameNL)
+      ).map((site: any) => site.Id);
+      setSelectedSiteIds(updatedSelectedSiteIds);
+    }
+  }, [selectedSites, sites, setSelectedSiteIds]);
 
   const selectedCount = selectedSites.length;
   const firstSelectedSite =
