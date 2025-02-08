@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
 const BASE_URL = process.env.BASE_URL;
+const OAUTH_TOKEN = process.env.OAUTH_TOKEN;
 
 const fetchProperties = async (statusesID: number) => {
   const response = await fetch(`${BASE_URL}/properties/search`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OAUTH_TOKEN}`,
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
       "Accept-Language": "English",
     },
     body: JSON.stringify({
@@ -56,7 +57,24 @@ const fetchSites = async () => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OAUTH_TOKEN}`,
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
+      "Accept-Language": "English",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
+const fetchManagers = async () => {
+  const response = await fetch(`${BASE_URL}/common/lookup-data/Manager`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
       "Accept-Language": "English",
     },
   });
@@ -79,5 +97,12 @@ export const useFetchSites = () => {
   return useQuery({
     queryKey: ["sites"],
     queryFn: fetchSites,
+  });
+};
+
+export const useFetchManagers = () => {
+  return useQuery({
+    queryKey: ["managers"],
+    queryFn: fetchManagers,
   });
 };

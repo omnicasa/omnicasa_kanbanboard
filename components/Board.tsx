@@ -1,6 +1,5 @@
 "use client";
 
-import { ClipLoader } from "react-spinners";
 import React, { useEffect, useRef, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";

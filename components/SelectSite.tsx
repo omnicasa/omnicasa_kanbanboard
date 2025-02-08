@@ -20,10 +20,10 @@ import {
 import { useFetchSites } from "@/hooks/useFetchData";
 import Loading from "./Loading";
 
-type Site = {
+interface Site {
   Id: number;
   NameNL: string;
-};
+}
 
 export default function SelectSite() {
   const [open, setOpen] = React.useState(false);
