@@ -29,10 +29,8 @@ interface Site {
 export default function SelectSite() {
   const [open, setOpen] = React.useState(false);
   const [selectedSites, setSelectedSites] = useState<string[]>([]);
-  // const [selectedSiteIds, setSelectedSiteIds] = useState<number[]>([]);
   const { data: sites, isLoading, error } = useFetchSites();
-  const selectedSiteIds = useSiteStore((state) => state.selectedSiteIds);
-  const setSelectedSiteIds = useSiteStore((state) => state.setSelectedSiteIds);
+  const siteStore = useSiteStore();
 
   const handleSelectItem = (currentValue: string) => {
     setSelectedSites((prevSelectedSites) => {
@@ -45,12 +43,12 @@ export default function SelectSite() {
   };
   useEffect(() => {
     if (sites?.Site) {
-      const updatedSelectedSiteIds = sites.Site.filter((site: any) =>
+      const updatedSelectedSiteIds = sites.Site.filter((site: Site) =>
         selectedSites.includes(site.NameNL)
-      ).map((site: any) => site.Id);
-      setSelectedSiteIds(updatedSelectedSiteIds);
+      ).map((site: Site) => site.Id);
+      siteStore.setSelectedSiteIds(updatedSelectedSiteIds);
     }
-  }, [selectedSites, sites, setSelectedSiteIds]);
+  }, [selectedSites, sites]);
 
   const selectedCount = selectedSites.length;
   const firstSelectedSite =

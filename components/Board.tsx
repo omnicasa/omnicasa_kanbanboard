@@ -98,12 +98,10 @@ export default function Board({ statusesID }: BoardProps) {
   const [isSwiping, setIsSwiping] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const selectedSiteIds = useSiteStore((state) => state.selectedSiteIds);
-  console.log("board selected site ids", selectedSiteIds);
-  const { data, error, isLoading } = useFetchProperties(
+  const { data, error, isLoading, refetch } = useFetchProperties(
     statusesID,
     selectedSiteIds
   );
-  console.log("board data", data);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -182,8 +180,9 @@ export default function Board({ statusesID }: BoardProps) {
   });
 
   useEffect(() => {
-    setNewData(initialData); // Reset newData to initialData whenever statusesID or data changes
-  }, [statusesID, data]);
+    // Fetch updated data whenever selectedSiteIds changes
+    refetch();
+  }, [selectedSiteIds, refetch]);
 
   useEffect(() => {
     if (data && data.Records) {
@@ -225,7 +224,7 @@ export default function Board({ statusesID }: BoardProps) {
       });
       setNewData(updatedData);
     }
-  }, [data, selectedSiteIds]);
+  }, [data]);
 
   return (
     <DndContext
