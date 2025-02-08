@@ -17,6 +17,7 @@ import {
 import CardSection from "./CardSection";
 import Droppable from "./Droppable";
 import { useFetchProperties } from "@/hooks/useFetchData";
+import Loading from "./Loading";
 
 interface RecordItem {
   Id: number;
@@ -221,18 +222,6 @@ export default function Board({ statusesID }: BoardProps) {
     }
   }, [data]);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <ClipLoader size={50} color={"#123abc"} loading={isLoading} />
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
   return (
     <DndContext
       sensors={sensors}
@@ -240,6 +229,8 @@ export default function Board({ statusesID }: BoardProps) {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
+      {isLoading && <Loading size={50} color="#123abc" />}
+      {error && <div>Error: {error.message}</div>}
       <div
         {...swipeHandlers}
         ref={containerRef}
