@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useFetchManagers } from "@/hooks/useFetchData";
+import { useManagerStore } from "@/store/useStore";
 import Loading from "./Loading";
 
 interface Manager {
@@ -35,6 +36,7 @@ export default function SelectPerson() {
     (Manager & { avatar: string; color: string })[]
   >([]);
   const { data: managers, isLoading, error } = useFetchManagers();
+  const managerStore = useManagerStore();
 
   const handleSelectItem = (currentValue: string) => {
     setSelectedPersons((prevSelectedPersons) => {
@@ -68,6 +70,10 @@ export default function SelectPerson() {
         color: getRandomColor(),
       }));
       setSelectedPersonsFull(updatedSelectedPersonsFull);
+      const updatedSelectedManagerIds = managers.Manager.filter(
+        (person: Manager) => selectedPersons.includes(person.Name)
+      ).map((person: Manager) => person.Id);
+      managerStore.setSelectedManagerIds(updatedSelectedManagerIds);
     }
   }, [selectedPersons, managers]);
 

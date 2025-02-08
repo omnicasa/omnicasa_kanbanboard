@@ -3,7 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 const BASE_URL = process.env.BASE_URL;
 const OAUTH_TOKEN = process.env.OAUTH_TOKEN;
 
-const fetchProperties = async (statusesID: number, siteIds: number[]) => {
+const fetchProperties = async (
+  statusesID: number,
+  siteIds: number[],
+  managerIds: number[]
+) => {
   const response = await fetch(`${BASE_URL}/properties/search`, {
     method: "POST",
     headers: {
@@ -27,7 +31,7 @@ const fetchProperties = async (statusesID: number, siteIds: number[]) => {
         EnviromentIds: [],
         ExteriorStateIds: [],
         UsageIds: [],
-        ManagerIds: [],
+        ManagerIds: managerIds,
         FilterObject: false,
         DemandUseGps: false,
         RegionEntries: [],
@@ -86,10 +90,14 @@ const fetchManagers = async () => {
   return response.json();
 };
 
-export const useFetchProperties = (statusesID: number, siteIds: number[]) => {
+export const useFetchProperties = (
+  statusesID: number,
+  siteIds: number[],
+  managerIds: number[]
+) => {
   return useQuery({
     queryKey: ["properties"],
-    queryFn: () => fetchProperties(statusesID, siteIds),
+    queryFn: () => fetchProperties(statusesID, siteIds, managerIds),
   });
 };
 

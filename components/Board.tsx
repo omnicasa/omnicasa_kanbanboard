@@ -16,7 +16,7 @@ import {
 import CardSection from "./CardSection";
 import Droppable from "./Droppable";
 import { useFetchProperties } from "@/hooks/useFetchData";
-import { useSiteStore } from "@/store/useStore";
+import { useSiteStore, useManagerStore } from "@/store/useStore";
 import Loading from "./Loading";
 
 interface RecordItem {
@@ -98,9 +98,13 @@ export default function Board({ statusesID }: BoardProps) {
   const [isSwiping, setIsSwiping] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const selectedSiteIds = useSiteStore((state) => state.selectedSiteIds);
+  const selectedManagerIds = useManagerStore(
+    (state) => state.selectedManagerIds
+  );
   const { data, error, isLoading, refetch } = useFetchProperties(
     statusesID,
-    selectedSiteIds
+    selectedSiteIds,
+    selectedManagerIds
   );
 
   const sensors = useSensors(
@@ -180,9 +184,8 @@ export default function Board({ statusesID }: BoardProps) {
   });
 
   useEffect(() => {
-    // Fetch updated data whenever selectedSiteIds changes
     refetch();
-  }, [selectedSiteIds, refetch]);
+  }, [selectedSiteIds, selectedManagerIds, refetch]);
 
   useEffect(() => {
     if (data && data.Records) {
