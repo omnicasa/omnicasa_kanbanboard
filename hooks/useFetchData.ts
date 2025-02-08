@@ -6,7 +6,8 @@ const OAUTH_TOKEN = process.env.OAUTH_TOKEN;
 const fetchProperties = async (
   statusesID: number,
   siteIds: number[],
-  managerIds: number[]
+  managerIds: number[],
+  sortValue: string
 ) => {
   const response = await fetch(`${BASE_URL}/properties/search`, {
     method: "POST",
@@ -18,7 +19,7 @@ const fetchProperties = async (
     body: JSON.stringify({
       PageIndex: 1,
       PageSize: 20,
-      OrderBy: "",
+      OrderBy: sortValue,
       Condition: {
         SiteIds: siteIds,
         PurposeIds: [],
@@ -93,11 +94,12 @@ const fetchManagers = async () => {
 export const useFetchProperties = (
   statusesID: number,
   siteIds: number[],
-  managerIds: number[]
+  managerIds: number[],
+  sortValue: string
 ) => {
   return useQuery({
     queryKey: ["properties"],
-    queryFn: () => fetchProperties(statusesID, siteIds, managerIds),
+    queryFn: () => fetchProperties(statusesID, siteIds, managerIds, sortValue),
   });
 };
 

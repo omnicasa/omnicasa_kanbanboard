@@ -14,6 +14,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useSortStore } from "@/store/useStore";
+
 const sorts = [
   {
     value: "-SubStatusDate",
@@ -44,6 +46,11 @@ export default function SelectSort() {
     value: "",
     label: "",
   });
+  const sortStore = useSortStore();
+  const handleSelectSort = (sort: SortProps) => {
+    setSelectedSort(sort);
+    sortStore.setSelectedSort(sort.value);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -75,7 +82,7 @@ export default function SelectSort() {
               {sorts.map((item: SortProps) => (
                 <CommandItem
                   key={item.label}
-                  onSelect={() => setSelectedSort(item)}
+                  onSelect={() => handleSelectSort(item)}
                 >
                   <div className="flex flex-1 items-center justify-between gap-[10px] self-stretch p-1">
                     <label
