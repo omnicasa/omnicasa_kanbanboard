@@ -7,7 +7,7 @@ const HeaderSearch = () => {
   return (
     <div className="flex justify-between items-center p-5 h-20 border-b">
       <h1 className="text-3xl font-bold text-primary">Kanban Board</h1>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2">
         <div className="relative">
           <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input
