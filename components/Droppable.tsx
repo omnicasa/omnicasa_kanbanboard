@@ -3,7 +3,7 @@ import { useDroppable } from "@dnd-kit/core";
 
 interface DroppableProps {
   children: React.ReactNode;
-  id: string;
+  id: number;
 }
 
 export function Droppable({ children, id }: DroppableProps) {

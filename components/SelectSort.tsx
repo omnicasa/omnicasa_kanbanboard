@@ -14,16 +14,43 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useSortStore } from "@/store/useStore";
+
 const sorts = [
-  "Most recently updated",
-  "Least recently updated",
-  "Most recently added",
-  "Least recently added",
+  {
+    value: "-SubStatusDate",
+    label: "Most recently updated",
+  },
+  {
+    value: "SubStatusDate",
+    label: "Least recently updated",
+  },
+  {
+    value: "-CreatedDate",
+    label: "Most recently added",
+  },
+  {
+    value: "CreatedDate",
+    label: "Least recently added",
+  },
 ];
+
+interface SortProps {
+  value: string;
+  label: string;
+}
 
 export default function SelectSort() {
   const [open, setOpen] = React.useState(false);
-  const [selectedSort, setSelectedSort] = useState<string>("");
+  const [selectedSort, setSelectedSort] = useState<SortProps>({
+    value: "",
+    label: "",
+  });
+  const sortStore = useSortStore();
+  const handleSelectSort = (sort: SortProps) => {
+    setSelectedSort(sort);
+    sortStore.setSelectedSort(sort.value);
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -34,7 +61,7 @@ export default function SelectSort() {
           aria-expanded={open}
           className="inline-flex h-9 px-4 py-2 items-center gap-2 flex-shrink-0 rounded-md border text-primary bg-white shadow-sm font-sans"
         >
-          {selectedSort ? selectedSort : "Sort by"}
+          {selectedSort.label ? selectedSort.label : "Sort by"}
           <Image
             src="/images/down_arrow.svg"
             width={16}
@@ -52,16 +79,19 @@ export default function SelectSort() {
         <Command>
           <CommandList>
             <CommandGroup>
-              {sorts.map((item: string) => (
-                <CommandItem key={item} onSelect={() => setSelectedSort(item)}>
+              {sorts.map((item: SortProps) => (
+                <CommandItem
+                  key={item.label}
+                  onSelect={() => handleSelectSort(item)}
+                >
                   <div className="flex flex-1 items-center justify-between gap-[10px] self-stretch p-1">
                     <label
-                      htmlFor={item}
+                      htmlFor={item.label}
                       className="text-sm font-normal leading-[1.42857] text-primary overflow-hidden text-ellipsis"
                     >
-                      {item}
+                      {item.label}
                     </label>
-                    {selectedSort === item && (
+                    {selectedSort.label === item.label && (
                       <Image
                         src="/images/check.svg"
                         width={16}

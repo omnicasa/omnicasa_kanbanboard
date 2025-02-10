@@ -10,15 +10,14 @@ import Draggable from "./Draggable";
 interface CardSectionProps {
   headerTitle: string;
   customCardContents: Array<{
-    id: string;
-    title: string;
-    subtitle: string;
+    Id: number;
+    Reference: string;
+    ProprietorReference: string;
     date: string;
     images: string[];
     badge: boolean;
     callInfo: { src: string; count: number; alt: string }[];
-    footerAgent: string;
-    footerImage: string;
+    ManagerShortName: string;
   }>;
 }
 
@@ -34,27 +33,26 @@ export default function CardSection({
       />
       <SortableContext
         items={customCardContents
-          .filter((card) => card && card.id)
-          .map((card) => card.id)}
+          .filter((card) => card && card.Id)
+          .map((card) => card.Id)}
         strategy={verticalListSortingStrategy}
       >
         {customCardContents
-          .filter((card) => card && card.id)
+          .filter((card) => card && card.Id)
           .map((customCardContent) => (
             <Draggable
-              key={customCardContent.id}
-              id={customCardContent.id}
+              key={customCardContent.Id}
+              id={customCardContent.Id}
               data={{ boardId: headerTitle }}
             >
               <CustomCard
-                title={customCardContent.title}
-                subtitle={customCardContent.subtitle}
+                title={customCardContent.Reference}
+                subtitle={customCardContent.ProprietorReference}
                 date={customCardContent.date}
                 images={customCardContent.images}
                 badge={customCardContent.badge}
                 callInfo={customCardContent.callInfo}
-                footerAgent={customCardContent.footerAgent}
-                footerImage={customCardContent.footerImage}
+                footerAgent={customCardContent.ManagerShortName}
               />
             </Draggable>
           ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -17,51 +17,42 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useFetchSites } from "@/hooks/useFetchData";
+import { useSiteStore } from "@/store/useStore";
+import Loading from "./Loading";
 
-const locations = [
-  {
-    value: "Greenfield Realty - Oakwood - Antwerp",
-    label: "Antwerp",
-  },
-  {
-    value: "Greenfield Realty - Oakwood - Ghent",
-    label: "Ghent",
-  },
-  {
-    value: "Greenfield Realty - Oakwood - Bruges",
-    label: "Bruges",
-  },
-  {
-    value: "Greenfield Realty - Oakwood - Namur",
-    label: "Namur",
-  },
-  {
-    value: "Greenfield Realty - Oakwood - Liege",
-    label: "Liege",
-  },
-  {
-    value: "Greenfield Realty - Oakwood - Leuven",
-    label: "Leuven",
-  },
-];
+interface Site {
+  Id: number;
+  NameNL: string;
+}
 
 export default function SelectSite() {
   const [open, setOpen] = React.useState(false);
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [selectedSites, setSelectedSites] = useState<string[]>([]);
+  const { data: sites, isLoading, error } = useFetchSites();
+  const siteStore = useSiteStore();
 
   const handleSelectItem = (currentValue: string) => {
-    setSelectedLocations((prevSelectedLocations) => {
-      const newSelectedLocations = prevSelectedLocations.includes(currentValue)
-        ? prevSelectedLocations.filter((val) => val !== currentValue)
-        : [...prevSelectedLocations, currentValue];
+    setSelectedSites((prevSelectedSites) => {
+      const newSelectedSites = prevSelectedSites.includes(currentValue)
+        ? prevSelectedSites.filter((val) => val !== currentValue)
+        : [...prevSelectedSites, currentValue];
 
-      return newSelectedLocations.length === 0 ? [] : newSelectedLocations;
+      return newSelectedSites.length === 0 ? [] : newSelectedSites;
     });
   };
+  useEffect(() => {
+    if (sites?.Site) {
+      const updatedSelectedSiteIds = sites.Site.filter((site: Site) =>
+        selectedSites.includes(site.NameNL)
+      ).map((site: Site) => site.Id);
+      siteStore.setSelectedSiteIds(updatedSelectedSiteIds);
+    }
+  }, [selectedSites, sites]);
 
-  const selectedCount = selectedLocations.length;
-  const firstSelectedLocation =
-    selectedLocations.length === 0 ? "Select sites" : selectedLocations[0];
+  const selectedCount = selectedSites.length;
+  const firstSelectedSite =
+    selectedSites.length === 0 ? "Select sites" : selectedSites[0];
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -73,7 +64,7 @@ export default function SelectSite() {
           className="inline-flex h-9 px-4 py-2 items-center gap-2 flex-shrink-0 rounded-md border text-primary bg-white shadow-sm font-sans"
         >
           <div className="flex items-center gap-1 max-w-[150px]">
-            <span className="truncate">{firstSelectedLocation}</span>
+            <span className="truncate">{firstSelectedSite}</span>
             {selectedCount > 1 && <span>+{selectedCount - 1}</span>}
           </div>
           <Image
@@ -91,31 +82,35 @@ export default function SelectSite() {
         className="p-0 rounded-lg border shadow-md w-[334px] h-auto"
       >
         <Command>
+          {isLoading && <Loading size={10} color="#123abc" />}
+          {error && <div>Error: {error.message}</div>}
           <CommandInput placeholder="Site" />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {locations.map((location) => (
+              {sites?.Site?.map((item: Site) => (
                 <CommandItem
-                  key={location.value}
-                  value={location.value}
-                  onSelect={(currentValue) => handleSelectItem(currentValue)}
+                  key={item.Id}
+                  value={item.NameNL}
+                  onSelect={(currentValue: string) =>
+                    handleSelectItem(currentValue)
+                  }
                 >
                   <div className="flex items-center gap-[10px] self-stretch p-1">
                     <Checkbox
-                      id={location.value}
-                      checked={selectedLocations.includes(location.value)}
+                      id={item.Id.toString()}
+                      checked={selectedSites.includes(item.NameNL)}
                       className={`flex w-4 items-start gap-2 ${
-                        selectedLocations.includes(location.value)
+                        selectedSites.includes(item.NameNL)
                           ? "!bg-[#0786fd] border-transparent"
                           : "border-[#E4E4E7]"
                       }`}
                     />
                     <label
-                      htmlFor={location.value.toLowerCase()}
+                      htmlFor={item.NameNL.toLowerCase()}
                       className="text-sm font-normal leading-[1.42857] text-primary overflow-hidden text-ellipsis"
                     >
-                      {location.value}
+                      {item.NameNL}
                     </label>
                   </div>
                 </CommandItem>

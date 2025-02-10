@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import {
@@ -15,258 +15,165 @@ import {
 } from "@dnd-kit/core";
 import CardSection from "./CardSection";
 import Droppable from "./Droppable";
+import { useFetchProperties } from "@/hooks/useFetchData";
+import { useSiteStore, useManagerStore, useSortStore } from "@/store/useStore";
+import Loading from "./Loading";
 
-const kanbanData = [
+interface RecordItem {
+  Id: number;
+  Reference: string;
+  ProprietorReference: string;
+  date: string;
+  images: string[];
+  badge: boolean;
+  callInfo: { src: string; count: number; alt: string }[];
+  ManagerShortName: string;
+}
+interface BoardProps {
+  statusesID: number;
+}
+interface Record {
+  ConstructionType: number;
+  Id: number;
+  IconName: string;
+  PurposeDescNL: string;
+  Reference: string;
+  CityName: string;
+  PriceAndUnitNL: string;
+  StatusDescNL: string;
+  TypeDescNL: string;
+  Bedrooms: number;
+  Floor: number;
+  SurfaceArea: number;
+  TotalArea: number;
+  HasBoard: boolean;
+  ManagerShortName: string;
+  ListingAgent: string;
+  ProprietorReference: string;
+  ProprietorPhones: string;
+  ProprietorEmails: string;
+  EPCLabelDescNL: string;
+  Elevel: number;
+  CO2Emission: number;
+  Street: string;
+  StreetNumber: string;
+  IsAnnex: boolean;
+  ProjectId: number;
+  BuildingId: number;
+  IsDeleted: boolean;
+  EPCLabelId: number;
+  Price: number;
+  PriceUnitId: number;
+  SubStatusId: number;
+  ContractTypeId: number;
+  PictureLargeUrl: string;
+  PictureXLargeUrl: string;
+  CountPictures: number;
+  FirstPictureModifiedDate: string;
+}
+
+const initialData = [
+  { SubstatusId: 1, Stage: "New", items: [] as RecordItem[] },
   {
-    id: "board-1",
-    title: "New",
-    items: [
-      {
-        id: "item-1",
-        title: "45 Rue de la Paix, Antwerp, Belgium",
-        subtitle: "Lucie Moreau",
-        date: "5d",
-        images: [],
-        badge: true,
-        callInfo: [
-          {
-            src: "/images/outgoing-call.svg",
-            count: 1,
-            alt: "Outgoing call",
-          },
-          {
-            src: "/images/missed-call.svg",
-            count: 1,
-            alt: "Missed call",
-          },
-          {
-            src: "/images/chat-message.svg",
-            count: 0,
-            alt: "Chat message",
-          },
-          {
-            src: "/images/schedule.svg",
-            count: 2,
-            alt: "Schedule",
-          },
-        ],
-        footerAgent: "FSBO (For Sale by Owner)",
-        footerImage: "/images/avatar.png",
-      },
-      {
-        id: "item-2",
-        title: "99 Boulevard de I'Innovation, Ghent, Belgium",
-        subtitle: "Talan Curtis",
-        date: "1d",
-        images: [
-          "/images/picture1.png",
-          "/images/picture2.png",
-          "/images/picture3.png",
-        ],
-        badge: false,
-        callInfo: [
-          {
-            src: "/images/outgoing-call.svg",
-            count: 4,
-            alt: "Outgoing call",
-          },
-          {
-            src: "/images/missed-call.svg",
-            count: 1,
-            alt: "Missed call",
-          },
-          {
-            src: "/images/chat-message.svg",
-            count: 0,
-            alt: "Chat message",
-          },
-          {
-            src: "/images/schedule.svg",
-            count: 2,
-            alt: "Schedule",
-          },
-        ],
-        footerAgent: "Other Agent",
-        footerImage: "/images/avatar.png",
-      },
-      {
-        id: "item-3",
-        title: "11 Place de la Republique, Bruges, Belgium",
-        subtitle: "Emilie Dubois",
-        date: "3w",
-        images: [
-          "/images/picture1.png",
-          "/images/picture2.png",
-          "/images/picture3.png",
-        ],
-        badge: false,
-        callInfo: [
-          {
-            src: "/images/outgoing-call.svg",
-            count: 2,
-            alt: "Outgoing call",
-          },
-          {
-            src: "/images/missed-call.svg",
-            count: 2,
-            alt: "Missed call",
-          },
-          {
-            src: "/images/chat-message.svg",
-            count: 2,
-            alt: "Chat message",
-          },
-          {
-            src: "/images/schedule.svg",
-            count: 2,
-            alt: "Schedule",
-          },
-        ],
-        footerAgent: "Other Agent",
-        footerImage: "/images/avatar.png",
-      },
-    ],
+    SubstatusId: 37,
+    Stage: "Contacted but No Communication",
+    items: [] as RecordItem[],
   },
-  {
-    id: "board-2",
-    title: "Contacted but No Communication",
-    items: [
-      {
-        id: "item-4",
-        title: "200 Avenue des Arts, Leuven, Belgium",
-        subtitle: "Sophie Martin",
-        date: "2w",
-        images: [
-          "/images/picture1.png",
-          "/images/picture2.png",
-          "/images/picture3.png",
-        ],
-        badge: true,
-        callInfo: [
-          {
-            src: "/images/outgoing-call.svg",
-            count: 1,
-            alt: "Outgoing call",
-          },
-          {
-            src: "/images/missed-call.svg",
-            count: 3,
-            alt: "Missed call",
-          },
-          {
-            src: "/images/chat-message.svg",
-            count: 2,
-            alt: "Chat message",
-          },
-          {
-            src: "/images/schedule.svg",
-            count: 2,
-            alt: "Schedule",
-          },
-        ],
-        footerAgent: "Notary",
-        footerImage: "/images/avatar.png",
-      },
-    ],
-  },
-  {
-    id: "board-3",
-    title: "Call 1",
-    items: [],
-  },
-  {
-    id: "board-4",
-    title: "Call 2",
-    items: [],
-  },
-  {
-    id: "board-5",
-    title: "Appointment Set",
-    items: [],
-  },
-  {
-    id: "board-6",
-    title: "Appointment Done",
-    items: [],
-  },
-  {
-    id: "board-7",
-    title: "Follow Up 1 Month",
-    items: [],
-  },
-  {
-    id: "board-8",
-    title: "Follow Up 2 Months",
-    items: [],
-  },
-  {
-    id: "board-9",
-    title: "Follow Up 3 Months",
-    items: [],
-  },
+  { SubstatusId: 38, Stage: "Call 1", items: [] as RecordItem[] },
+  { SubstatusId: 39, Stage: "Call 2", items: [] as RecordItem[] },
+  { SubstatusId: 40, Stage: "Appointment 1 Set", items: [] as RecordItem[] },
+  { SubstatusId: 41, Stage: "Appointment 1 Done", items: [] as RecordItem[] },
+  { SubstatusId: 42, Stage: "Appointment 2 Set", items: [] as RecordItem[] },
+  { SubstatusId: 43, Stage: "Appointment 2 Done", items: [] as RecordItem[] },
+  { SubstatusId: 44, Stage: "Follow Up 1 Month", items: [] as RecordItem[] },
+  { SubstatusId: 45, Stage: "Follow Up 2 Months", items: [] as RecordItem[] },
+  { SubstatusId: 46, Stage: "Follow Up 3 Months", items: [] as RecordItem[] },
+  { SubstatusId: 47, Stage: "Follow Up 6 Months", items: [] as RecordItem[] },
+  { SubstatusId: 48, Stage: "Follow Up 1 Year", items: [] as RecordItem[] },
 ];
 
-export default function Board() {
-  const [boards, setBoards] = useState(kanbanData);
+export default function Board({ statusesID }: BoardProps) {
+  const [newData, setNewData] = useState(initialData);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isSwiping, setIsSwiping] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const selectedSiteIds = useSiteStore((state) => state.selectedSiteIds);
+  const selectedManagerIds = useManagerStore(
+    (state) => state.selectedManagerIds
+  );
+  const selectedSort = useSortStore((state) => state.selectedSort);
+  const { data, error, isLoading, refetch } = useFetchProperties(
+    statusesID,
+    selectedSiteIds,
+    selectedManagerIds,
+    selectedSort
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor)
   );
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
+    setIsDragging(false);
     const { active, over } = event;
 
     if (!over) return;
 
-    const activeBoardIndex = boards.findIndex((board) =>
-      board.items.some((item) => item.id === active.id)
+    const activeBoardIndex = newData.findIndex((board) =>
+      board.items.some((item) => item.Id === active.id)
     );
-    let overBoardIndex = boards.findIndex((board) =>
-      board.items.some((item) => item.id === over.id)
+    let overBoardIndex = newData.findIndex((board) =>
+      board.items.some((item) => item.Id === over.id)
     );
     // If overBoardIndex is -1, it means the over ID is a CardSection ID
     if (overBoardIndex === -1) {
-      overBoardIndex = boards.findIndex((board) => board.id === over.id);
+      overBoardIndex = newData.findIndex(
+        (board) => board.SubstatusId === over.id
+      );
     }
 
     if (activeBoardIndex === -1 || overBoardIndex === -1) return;
-    const activeCardIndex = boards[activeBoardIndex].items.findIndex(
-      (item) => item.id === active.id
+    const activeCardIndex = newData[activeBoardIndex].items.findIndex(
+      (item) => item.Id === active.id
     );
-    const overCardIndex = boards[overBoardIndex].items.findIndex(
-      (item) => item.id === over.id
+    const overCardIndex = newData[overBoardIndex].items.findIndex(
+      (item) => item.Id === over.id
     );
 
-    const newBoards = [...boards];
-    const [movedCard] = newBoards[activeBoardIndex].items.splice(
+    const originData = [...newData];
+    const [movedCard] = originData[activeBoardIndex].items.splice(
       activeCardIndex,
       1
     );
     if (movedCard) {
       // Ensure movedCard is not undefined
       if (overCardIndex === -1) {
-        newBoards[overBoardIndex].items.push(movedCard);
+        originData[overBoardIndex].items.push(movedCard);
       } else {
-        newBoards[overBoardIndex].items.splice(overCardIndex, 0, movedCard);
+        originData[overBoardIndex].items.splice(overCardIndex, 0, movedCard);
       }
     }
-    setBoards(newBoards);
+    setNewData(originData);
   };
 
   const swipeHandlers = useSwipeable({
     onSwiping: (eventData) => {
-      setIsSwiping(true);
-      eventData.event.preventDefault();
-      if (eventData.dir === "Left") {
-        if (containerRef.current) {
-          containerRef.current.scrollBy({ left: 500, behavior: "smooth" });
-        }
-      } else if (eventData.dir === "Right") {
-        if (containerRef.current) {
-          containerRef.current.scrollBy({ left: -500, behavior: "smooth" });
+      if (!isDragging) {
+        setIsSwiping(true);
+        eventData.event.preventDefault();
+        if (eventData.dir === "Left") {
+          if (containerRef.current) {
+            containerRef.current.scrollBy({ left: 500, behavior: "smooth" });
+          }
+        } else if (eventData.dir === "Right") {
+          if (containerRef.current) {
+            containerRef.current.scrollBy({ left: -500, behavior: "smooth" });
+          }
         }
       }
     },
@@ -278,12 +185,61 @@ export default function Board() {
     swipeDuration: 250,
   });
 
+  useEffect(() => {
+    refetch();
+  }, [selectedSiteIds, selectedManagerIds, selectedSort, refetch]);
+
+  useEffect(() => {
+    if (data && data.Records) {
+      const updatedData = initialData.map((stage) => {
+        const items = data.Records.filter(
+          (record: Record) => record.SubStatusId === stage.SubstatusId
+        ).map((record: Record) => ({
+          Id: record.Id,
+          Reference: record.Reference,
+          ProprietorReference: record.ProprietorReference,
+          date: record.FirstPictureModifiedDate,
+          images: [record.PictureLargeUrl],
+          badge: false,
+          callInfo: [
+            {
+              src: "/images/outgoing-call.svg",
+              count: 0,
+              alt: "Outgoing call",
+            },
+            {
+              src: "/images/missed-call.svg",
+              count: 0,
+              alt: "Missed call",
+            },
+            {
+              src: "/images/chat-message.svg",
+              count: 0,
+              alt: "Chat message",
+            },
+            {
+              src: "/images/schedule.svg",
+              count: 0,
+              alt: "Schedule",
+            },
+          ],
+          ManagerShortName: record.ManagerShortName,
+        }));
+        return { ...stage, items };
+      });
+      setNewData(updatedData);
+    }
+  }, [data]);
+
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
+      {isLoading && <Loading size={50} color="#123abc" />}
+      {error && <div>Error: {error.message}</div>}
       <div
         {...swipeHandlers}
         ref={containerRef}
@@ -291,14 +247,14 @@ export default function Board() {
           isSwiping ? "select-none cursor-grab" : ""
         }`}
       >
-        {boards.map((data) => (
-          <Droppable key={data.id} id={data.id}>
+        {newData.map((data) => (
+          <Droppable key={data.SubstatusId} id={data.SubstatusId}>
             <SortableContext
-              items={data.items.filter((item) => item).map((item) => item.id)}
+              items={data.items.filter((item) => item).map((item) => item.Id)}
               strategy={verticalListSortingStrategy}
             >
               <CardSection
-                headerTitle={data.title}
+                headerTitle={data.Stage}
                 customCardContents={data.items}
               />
             </SortableContext>
