@@ -17,8 +17,10 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import CallInfo from "./CallInfo";
+import Link from "next/link";
 
 interface CustomCardProps {
+  id: number;
   title: string;
   subtitle: string;
   date: string;
@@ -29,6 +31,7 @@ interface CustomCardProps {
 }
 
 export default function CustomCard({
+  id,
   title,
   subtitle,
   date,
@@ -56,77 +59,79 @@ export default function CustomCard({
   const startDate = new Date();
   const dateDifference = formatDateDifference(startDate, date);
   return (
-    <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm">
-      <CardHeader className="p-0 w-full">
-        <div className="flex items-start justify-between gap-4">
-          <CardTitle className="text-primary font-sans text-base font-semibold leading-6 tracking-tight">
-            {title}
-          </CardTitle>
-          <span className="text-right text-[#606266] font-sans text-sm font-normal leading-5">
-            {dateDifference}
-          </span>
-        </div>
-        <CardDescription className="text-muted-foreground font-sans text-sm font-normal leading-5">
-          {subtitle}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col items-start gap-4 w-full p-0">
-        {images.length > 0 && (
-          <Carousel
-            className={`w-full max-w-xs ${
-              images.length === 1 && "flex justify-center"
-            }`}
-          >
-            <CarouselContent>
-              {images.map((src, index) => (
-                <CarouselItem key={index} className="basis-0.85">
-                  <div className="w-[240px] h-[150px]">
-                    <Card className="h-full rounded-md flex items-center justify-center">
-                      <CardContent className="flex items-center justify-center p-0">
-                        <Image
-                          src={src}
-                          width={240}
-                          height={150}
-                          alt="down-arrow"
-                          className="w-full h-full object-cover rounded-md"
-                        />
-                      </CardContent>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        )}
-        {badge && <Badge variant="destructive">Lower in price</Badge>}
-        <div className="flex items-center gap-4">
-          {callInfo.map((info, index) => (
-            <CallInfo
-              key={index}
-              src={info.src}
-              count={info.count}
-              alt={info.alt}
-            />
-          ))}
-        </div>
-      </CardContent>
-      <CardFooter className="flex items-center justify-between w-full p-0">
-        <div>
-          <span className="text-center text-muted-foreground font-sans text-sm font-normal leading-5">
-            From
-          </span>
-          <span className="ml-2 overflow-hidden text-ellipsis text-primary font-sans text-sm font-medium leading-5">
-            {footerAgent}
-          </span>
-        </div>
-        <Image
-          src="/images/avatar.png"
-          width={20}
-          height={20}
-          alt="property"
-          className="rounded-full"
-        />
-      </CardFooter>
-    </Card>
+    <Link href={`/lead-details?id=${id}`}>
+      <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm">
+        <CardHeader className="p-0 w-full">
+          <div className="flex items-start justify-between gap-4">
+            <CardTitle className="text-primary font-sans text-base font-semibold leading-6 tracking-tight">
+              {title}
+            </CardTitle>
+            <span className="text-right text-[#606266] font-sans text-sm font-normal leading-5">
+              {dateDifference}
+            </span>
+          </div>
+          <CardDescription className="text-muted-foreground font-sans text-sm font-normal leading-5">
+            {subtitle}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-start gap-4 w-full p-0">
+          {images.length > 0 && (
+            <Carousel
+              className={`w-full max-w-xs ${
+                images.length === 1 && "flex justify-center"
+              }`}
+            >
+              <CarouselContent>
+                {images.map((src, index) => (
+                  <CarouselItem key={index} className="basis-0.85">
+                    <div className="w-[240px] h-[150px]">
+                      <Card className="h-full rounded-md flex items-center justify-center">
+                        <CardContent className="flex items-center justify-center p-0">
+                          <Image
+                            src={src}
+                            width={240}
+                            height={150}
+                            alt="down-arrow"
+                            className="w-full h-full object-cover rounded-md"
+                          />
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          )}
+          {badge && <Badge variant="destructive">Lower in price</Badge>}
+          <div className="flex items-center gap-4">
+            {callInfo.map((info, index) => (
+              <CallInfo
+                key={index}
+                src={info.src}
+                count={info.count}
+                alt={info.alt}
+              />
+            ))}
+          </div>
+        </CardContent>
+        <CardFooter className="flex items-center justify-between w-full p-0">
+          <div>
+            <span className="text-center text-muted-foreground font-sans text-sm font-normal leading-5">
+              From
+            </span>
+            <span className="ml-2 overflow-hidden text-ellipsis text-primary font-sans text-sm font-medium leading-5">
+              {footerAgent}
+            </span>
+          </div>
+          <Image
+            src="/images/avatar.png"
+            width={20}
+            height={20}
+            alt="property"
+            className="rounded-full"
+          />
+        </CardFooter>
+      </Card>
+    </Link>
   );
 }
