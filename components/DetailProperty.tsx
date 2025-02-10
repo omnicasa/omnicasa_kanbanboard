@@ -6,6 +6,69 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Bath, BedDouble, CarFront, Map } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "./ui/button";
+import DetailStatus from "./DetailStatus";
+
+const pipe_status = [
+  {
+    value: "New",
+    label: "New",
+  },
+  {
+    value: "Contacted but No Communication",
+    label: "Contacted but No Communication",
+  },
+  {
+    value: "Call 1",
+    label: "Call 1",
+  },
+  {
+    value: "Call 2",
+    label: "Call 2",
+  },
+  {
+    value: "Appointment Set",
+    label: "Appointment Set",
+  },
+  {
+    value: "Appointment Done",
+    label: "Appointment Done",
+  },
+  {
+    value: "Follow Up 1 Month",
+    label: "Follow Up 1 Month",
+  },
+  {
+    value: "Follow Up 2 Months",
+    label: "Follow Up 2 Months",
+  },
+  {
+    value: "Follow Up 3 Months",
+    label: "Follow Up 3 Months",
+  },
+  {
+    value: "Follow Up 6 Months",
+    label: "Follow Up 6 Months",
+  },
+];
+
+const pipeline = [
+  {
+    value: "Cold Owner",
+    label: "Cold Owner",
+  },
+  {
+    value: "Cold Adoption",
+    label: "Cold Adoption",
+  },
+  {
+    value: "Warm Bought",
+    label: "Warm Bought",
+  },
+  {
+    value: "Warm Leads",
+    label: "Warm Leads",
+  },
+];
 
 const DetailProperty: React.FC = () => {
   return (
@@ -117,17 +180,13 @@ const DetailProperty: React.FC = () => {
               <h2 className="text-muted-foreground font-sans text-sm font-normal leading-5 flex-1">
                 Pipeline
               </h2>
-              <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                Cold Owner
-              </h3>
+              <DetailStatus statuss={pipeline} title="pipeline" />
             </div>
             <div className="flex items-center justify-between gap-2 w-full">
               <h2 className="text-muted-foreground font-sans text-sm font-normal leading-5 flex-1">
                 Pipe status
               </h2>
-              <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                New
-              </h3>
+              <DetailStatus statuss={pipe_status} title="status" />
             </div>
             <div className="flex items-center justify-between gap-2 w-full">
               <h2 className="text-muted-foreground font-sans text-sm font-normal leading-5 flex-1">
