@@ -2,7 +2,13 @@
 
 import React from "react";
 import Image from "next/image";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import { Bath, BedDouble, CarFront, FileText, Map } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "./ui/button";
@@ -70,19 +76,62 @@ const pipeline = [
   },
 ];
 
+const images = [
+  "/images/picture1.png",
+  "/images/picture2.png",
+  "/images/picture3.png",
+];
+
 const DetailProperty: React.FC = () => {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col items-start self-stretch w-[324px] bg-white border rounded-lg shadow-md">
-        <AspectRatio ratio={1.618 / 1}>
-          <Image
-            src="/images/picture1.png"
-            alt="Image"
-            width={324}
-            height={200}
-            className="rounded-t-sm object-cover"
-          />
-        </AspectRatio>
+        <div className="relative">
+          {images.length === 1 ? (
+            <Image
+              src="/images/picture1.png"
+              alt="Image"
+              width={324}
+              height={200}
+              className="rounded-t-sm object-cover"
+            />
+          ) : (
+            images.length > 1 && (
+              <Carousel
+                className={`w-full max-w-xs ${
+                  images.length === 1 && "flex justify-center"
+                }`}
+              >
+                <CarouselContent>
+                  {images.map((src, index) => (
+                    <CarouselItem key={index}>
+                      <div className="w-[324px] h-[200px]">
+                        <Card className="h-full rounded-md flex items-center justify-center">
+                          <CardContent className="flex items-center justify-center p-0 flex-1">
+                            <Image
+                              src={src}
+                              width={324}
+                              height={200}
+                              alt="down-arrow"
+                              className="w-full h-full object-cover rounded-md"
+                            />
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            )
+          )}
+
+          <Badge
+            variant="outline"
+            className="absolute w-[70px] px-2.5 py-1 left-3 top-3 rounded-md border border-transparent text-primary-foreground font-xs bg-[#0786FD] shadow-md"
+          >
+            For Sale
+          </Badge>
+        </div>
         <div className="flex flex-col p-5 gap-5">
           <div>
             <h1 className="text-card-foreground font-sans text-base font-semibold leading-6 capitalize">

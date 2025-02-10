@@ -18,7 +18,7 @@ const LeadDetails = () => {
   return (
     <main>
       <DetailHeader />
-      <div className="flex p-5 gap-5 align-start flex-shrink-0 bg-secondary justify-between">
+      <div className="flex p-5 gap-5 align-start bg-secondary justify-between">
         <DetailProperty />
         <DetailBody />
         <DetailInformation />
