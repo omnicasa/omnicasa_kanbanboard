@@ -6,6 +6,7 @@ import CustomCombobox from "./CustomCombobox";
 import { Bold, Italic, Underline } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 
 const sendUsers = [
   {
@@ -130,7 +131,7 @@ const DetailTabMessage: React.FC = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col">
-        <div className="flex items-center px-3 py-2">
+        <div className="flex items-center px-3 py-2 h-[52px]">
           <h2 className="text-sm font-normal text-muted-foreground">From</h2>
           <CustomCombobox
             data={sendUsers}
@@ -140,17 +141,33 @@ const DetailTabMessage: React.FC = () => {
           />
         </div>
         <Separator />
-        <div className="flex items-center px-3 py-2">
-          <h2 className="text-sm font-normal text-muted-foreground">To</h2>
-          <CustomCombobox
-            data={receiveUsers}
-            title="user"
-            avatar={false}
-            onItemSelect={handleReceiveUserSelect}
-          />
+        <div className="flex items-center justify-between px-3 py-2 h-[52px]">
+          <div className="flex items-center flex-1">
+            <h2 className="text-sm font-normal text-muted-foreground">To</h2>
+            <CustomCombobox
+              data={receiveUsers}
+              title="user"
+              avatar={false}
+              onItemSelect={handleReceiveUserSelect}
+            />
+          </div>
+          <div className="flex items-center justify-end gap-4 flex-1">
+            <Button
+              variant="outline"
+              className="text-muted-foreground text-sm font-normal leading-small border-none shadow-none p-0 h-5"
+            >
+              Cc
+            </Button>
+            <Button
+              variant="outline"
+              className="text-muted-foreground text-sm font-normal leading-small border-none shadow-none p-0 h-5"
+            >
+              Bcc
+            </Button>
+          </div>
         </div>
         <Separator />
-        <div className="flex items-center py-2">
+        <div className="flex items-center py-2 h-[52px]">
           <CustomCombobox
             data={templates}
             title="Template"
@@ -159,7 +176,7 @@ const DetailTabMessage: React.FC = () => {
           />
         </div>
         <Separator />
-        <div className="flex items-center px-3 py-2">
+        <div className="flex items-center px-3 py-2 h-[52px]">
           <h2 className="text-base font-sans font-normal leading-normal text-muted-foreground py-2">
             {subject}
           </h2>
