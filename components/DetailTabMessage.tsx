@@ -3,6 +3,9 @@
 import { Separator } from "./ui/separator";
 import React from "react";
 import CustomCombobox from "./CustomCombobox";
+import { Bold, Italic, Underline } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Textarea } from "./ui/textarea";
 
 const sendUsers = [
   {
@@ -89,7 +92,26 @@ const DetailTabMessage: React.FC = () => {
         </div>
         <Separator />
       </div>
-      <div className=""></div>
+      <div className="">
+        <ToggleGroup type="multiple" className="justify-start">
+          <ToggleGroupItem value="bold" aria-label="Toggle bold">
+            <Bold className="h-4 w-4" />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="italic" aria-label="Toggle italic">
+            <Italic className="h-4 w-4" />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="strikethrough"
+            aria-label="Toggle strikethrough"
+          >
+            <Underline className="h-4 w-4" />
+          </ToggleGroupItem>
+        </ToggleGroup>
+        <Textarea
+          placeholder="Your message"
+          className="h-[278px] min-h-[60px] px-3 py-2 overflow-hidden text-muted-foreground text-ellipse whitespace-nowrap text-sm leading-normal font-sans font-normal bg-white border-none shadow-none"
+        />
+      </div>
     </div>
   );
 };

@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import DetailTabMessage from "./DetailTabMessage";
+import { Paperclip } from "lucide-react";
 
 const DetailBody: React.FC = () => {
+  const [activeTab, setActiveTab] = useState("note");
   return (
     <div className="flex flex-col itesm-start flex-1 gap-5">
       <Card className="flex flex-col w-full items-start gap-4 p-5 pt-2.5 rounded-xl border bg-card shadow">
         <CardContent className="p-0 w-full">
-          <Tabs defaultValue="note" className="w-full">
+          <Tabs
+            defaultValue="note"
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
             <TabsList className="flex items-center justify-start bg-white border-b rounded-none">
               <TabsTrigger
                 value="note"
@@ -48,16 +55,23 @@ const DetailBody: React.FC = () => {
             </TabsContent>
           </Tabs>
         </CardContent>
-        <CardFooter className="flex justify-end gap-2 p-0 w-full">
-          <Button
-            variant="outline"
-            className="px-4 py-2 border rounded-md shadow text-primary text-sm"
-          >
-            Cancel
-          </Button>
-          <Button className="px-4 py-2 border rounded-md shadow text-primary-foreground text-sm bg-[#0786FD]">
-            Save
-          </Button>
+        <CardFooter className="flex justify-between p-0 w-full">
+          <div className="w-full">
+            {activeTab === "message" && (
+              <Paperclip className="h-5 w-5 text-primary" />
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="px-4 py-2 border rounded-md shadow text-primary text-sm"
+            >
+              Cancel
+            </Button>
+            <Button className="px-4 py-2 border rounded-md shadow text-primary-foreground text-sm bg-[#0786FD]">
+              Save
+            </Button>
+          </div>
         </CardFooter>
       </Card>
     </div>

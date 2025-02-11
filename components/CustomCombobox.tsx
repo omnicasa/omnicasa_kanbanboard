@@ -32,6 +32,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
 }) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
   const getRandomColor = () => {
     const letters = "CDEF";
     let color = "#";
@@ -39,6 +40,9 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
       color += letters[Math.floor(Math.random() * letters.length)];
     }
     return color;
+  };
+  const handlePopoverToggle = () => {
+    setIsPopoverOpen(!isPopoverOpen);
   };
   return (
     <div className="flex items-center gap-[6px] px-3 py-1 self-stretch">
@@ -57,11 +61,16 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
             role="combobox"
             aria-expanded={open}
             className="p-0 border-none shadow-none justify-between"
+            onClick={handlePopoverToggle}
           >
             {value
               ? data.find((item) => item.value === value)?.label
               : "Choose " + title}
-            <ChevronDown className="opacity-50" />
+            {!isPopoverOpen ? (
+              <ChevronDown className="opacity-50" />
+            ) : (
+              <ChevronUp className="opacity-50" />
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0" align="start">
