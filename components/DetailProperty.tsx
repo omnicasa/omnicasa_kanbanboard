@@ -97,11 +97,7 @@ const DetailProperty: React.FC = () => {
             />
           ) : (
             images.length > 1 && (
-              <Carousel
-                className={`w-full max-w-xs ${
-                  images.length === 1 && "flex justify-center"
-                }`}
-              >
+              <Carousel className={"w-full max-w-xs"}>
                 <CarouselContent>
                   {images.map((src, index) => (
                     <CarouselItem key={index}>

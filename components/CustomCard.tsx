@@ -75,32 +75,38 @@ export default function CustomCard({
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-start gap-4 w-full p-0">
-          {images.length > 0 && (
-            <Carousel
-              className={`w-full max-w-xs ${
-                images.length === 1 && "flex justify-center"
-              }`}
-            >
-              <CarouselContent>
-                {images.map((src, index) => (
-                  <CarouselItem key={index} className="basis-0.85">
-                    <div className="w-[240px] h-[150px]">
-                      <Card className="h-full rounded-md flex items-center justify-center">
-                        <CardContent className="flex items-center justify-center p-0">
-                          <Image
-                            src={src}
-                            width={240}
-                            height={150}
-                            alt="down-arrow"
-                            className="w-full h-full object-cover rounded-md"
-                          />
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
+          {images.length === 1 ? (
+            <Image
+              src={images[0]}
+              alt="Image"
+              width={310}
+              height={150}
+              className="rounded-sm object-cover"
+            />
+          ) : (
+            images.length > 1 && (
+              <Carousel className={"w-full max-w-xs"}>
+                <CarouselContent>
+                  {images.map((src, index) => (
+                    <CarouselItem key={index} className="basis-0.85">
+                      <div className="w-[240px] h-[150px]">
+                        <Card className="h-full rounded-md flex items-center justify-center">
+                          <CardContent className="flex items-center justify-center p-0">
+                            <Image
+                              src={src}
+                              width={240}
+                              height={150}
+                              alt="down-arrow"
+                              className="w-full h-full object-cover rounded-md"
+                            />
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            )
           )}
           {badge && <Badge variant="destructive">Lower in price</Badge>}
           <div className="flex items-center gap-4">
