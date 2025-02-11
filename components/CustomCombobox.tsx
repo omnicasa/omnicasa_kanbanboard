@@ -23,16 +23,19 @@ interface CustomComboboxProps {
   data: { value: string; label: string }[];
   title: string;
   avatar?: boolean;
+  onItemSelect: (item: { value: string; label: string }) => void;
 }
 
 const CustomCombobox: React.FC<CustomComboboxProps> = ({
   data,
   title,
   avatar,
+  onItemSelect,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+
   const getRandomColor = () => {
     const letters = "CDEF";
     let color = "#";
@@ -43,6 +46,12 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
   };
   const handlePopoverToggle = () => {
     setIsPopoverOpen(!isPopoverOpen);
+  };
+  const handleItemClick = (item: { value: string; label: string }) => {
+    onItemSelect(item);
+    setIsPopoverOpen(false);
+    setValue(item.value);
+    setOpen(false);
   };
   return (
     <div className="flex items-center gap-[6px] px-3 py-1 self-stretch">
@@ -83,10 +92,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
                   <CommandItem
                     key={item.value}
                     value={item.value}
-                    onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue);
-                      setOpen(false);
-                    }}
+                    onSelect={() => handleItemClick(item)}
                   >
                     {item.label}
                     <Check
