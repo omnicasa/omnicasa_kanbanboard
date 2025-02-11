@@ -34,6 +34,7 @@ interface User {
 
 const DetailBody: React.FC = () => {
   const [activeTab, setActiveTab] = useState("note");
+  const [activeBottomTab, setActiveBottomTab] = useState("all");
 
   const handleReceiveUserSelect = (user: User) => {
     console.log(user);
@@ -132,6 +133,73 @@ const DetailBody: React.FC = () => {
             </Button>
           </div>
         </CardFooter>
+      </Card>
+      <Card className="w-full p-5 pt-2.5 rounded-xl border bg-card shadow">
+        <CardContent className="flex flex-col w-full items-start p-0 gap-5 w-full">
+          <Tabs
+            defaultValue="all"
+            value={activeBottomTab}
+            onValueChange={setActiveBottomTab}
+            className="w-full"
+          >
+            <TabsList className="flex items-center justify-start bg-white border-b rounded-none h-12 p-0">
+              <TabsTrigger
+                value="all"
+                className="h-full p-1.5 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+              >
+                All
+              </TabsTrigger>
+              <TabsTrigger
+                value="outgoing"
+                className="h-full p-1.5 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+              >
+                Outgoing calls
+              </TabsTrigger>
+              <TabsTrigger
+                value="sms"
+                className="h-full p-1.5 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+              >
+                SMS sent
+              </TabsTrigger>
+              <TabsTrigger
+                value="call"
+                className="h-full p-1.5 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+              >
+                Call attempts
+              </TabsTrigger>
+              <TabsTrigger
+                value="emailout"
+                className="h-full p-1.5 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+              >
+                Email out
+              </TabsTrigger>
+              <TabsTrigger
+                value="notes"
+                className="h-full p-1.5 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+              >
+                Notes
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="all" className="rounded-md mt-5">
+              All
+            </TabsContent>
+            <TabsContent value="outgoing" className="rounded-md mt-5">
+              Outgoing calls
+            </TabsContent>
+            <TabsContent value="sms" className="rounded-md mt-5">
+              SMS sent
+            </TabsContent>
+            <TabsContent value="call" className="rounded-md mt-5">
+              Call attempts
+            </TabsContent>
+            <TabsContent value="emailout" className="rounded-md mt-5">
+              Email out
+            </TabsContent>
+            <TabsContent value="notes" className="rounded-md mt-5">
+              Notes
+            </TabsContent>
+          </Tabs>
+        </CardContent>
       </Card>
     </div>
   );

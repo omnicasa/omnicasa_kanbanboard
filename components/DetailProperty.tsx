@@ -108,7 +108,7 @@ const DetailProperty: React.FC = () => {
                               src={src}
                               width={324}
                               height={200}
-                              alt="down-arrow"
+                              alt={`Image ${index}`}
                               className="w-full h-full object-cover rounded-md"
                             />
                           </CardContent>

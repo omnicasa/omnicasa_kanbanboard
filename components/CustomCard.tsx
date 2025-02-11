@@ -96,7 +96,7 @@ export default function CustomCard({
                               src={src}
                               width={240}
                               height={150}
-                              alt="down-arrow"
+                              alt={`image-${index}`}
                               className="w-full h-full object-cover rounded-md"
                             />
                           </CardContent>
