@@ -72,8 +72,8 @@ const DetailHistory: React.FC = () => {
           <div className="flex items-center justify-between w-full p-2 gap-4 border rounded-md shadow-sm">
             <p className="text-sm text-muted-foreground font-sans font-normal leading-small overflow-ellipsis">
               Hello! I have some exciting updates about your property that I
-              think you'll want to know. When you have a moment, please reach
-              out to me. Looking forward to hearing from you!
+              think you&apos;ll want to know. When you have a moment, please
+              reach out to me. Looking forward to hearing from you!
             </p>
           </div>
         </div>
