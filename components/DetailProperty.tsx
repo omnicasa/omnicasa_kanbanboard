@@ -13,7 +13,11 @@ import { Bath, BedDouble, CarFront, FileText, Map } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "./ui/button";
 import DetailStatus from "./DetailStatus";
-import { useFetchSourceContact } from "@/hooks/useFetchData";
+import {
+  useFetchSourceContact,
+  useFetchSites,
+  useFetchManagers,
+} from "@/hooks/useFetchData";
 
 const pipe_status = [
   {
@@ -124,6 +128,7 @@ interface DetailPropertyProps {
     NumberOfBathRoom: number;
     NumberOfGarage: number;
     GroundArea: number;
+    EPCELevel: number;
     Prospection: ProspectionProps;
     SiteId: number;
     StartCommercialisation: string;
@@ -136,6 +141,19 @@ interface DetailPropertyProps {
 interface SourceContact {
   Id: number;
   NameNL: string;
+}
+
+interface Site {
+  Id: number;
+  NameNL: string;
+}
+
+interface Manager {
+  Id: number;
+  Name: string;
+  ShortName: string;
+  Email: string;
+  SiteName: string;
 }
 
 const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
@@ -163,15 +181,23 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
   const images = Pictures
     ? Pictures.map((picture) => picture.OriginalPublishUrl)
     : [];
-  const { data: sourceContacts } = useFetchSourceContact();
-  console.log("==>", sourceContacts);
-  const propertyId = Prospection.PropertyId;
 
+  const { data: sourceContacts } = useFetchSourceContact();
+  const propertyId = Prospection.PropertyId;
   const sourceContact = sourceContacts?.SourceContact?.find(
     (contact: SourceContact) => contact.Id === propertyId
   );
-  console.log("property id", propertyId, sourceContact);
-  const nameNL = sourceContact ? sourceContact.NameNL : "";
+  const propertyNameNL = sourceContact ? sourceContact.NameNL : "";
+
+  const { data: sites } = useFetchSites();
+  const site = sites?.Site?.find((site: Site) => site.Id === SiteId);
+  const siteNameNL = site ? site.NameNL : "";
+
+  const { data: managers } = useFetchManagers();
+  const manager = managers?.Manager?.find(
+    (manager: Manager) => manager.Id === ManagerId
+  );
+  const managerName = manager ? manager.Name : "";
 
   useEffect(() => {
     setIsClient(true);
@@ -295,7 +321,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                   Lead Source
                 </h2>
                 <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                  {nameNL}
+                  {propertyNameNL}
                 </h3>
               </div>
               <div className="flex items-center justify-between gap-2 w-full">
@@ -311,7 +337,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                   Site
                 </h2>
                 <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                  {SiteId}
+                  {siteNameNL}
                 </h3>
               </div>
               {StartCommercialisation && (
@@ -349,7 +375,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                   Manager
                 </h2>
                 <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                  {ManagerId}
+                  {managerName}
                 </h3>
               </div>
             </div>
