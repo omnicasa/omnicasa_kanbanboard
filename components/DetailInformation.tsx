@@ -14,7 +14,20 @@ import {
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 
-const DetailInformation: React.FC = () => {
+interface Relation {
+  PersonName: string;
+  RelationTypeNameEN: string;
+  PersonEmail: string;
+  PhoneNumber1: string;
+}
+
+interface DetailInformationProps {
+  data: {
+    Relations: Relation[];
+  };
+}
+
+const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   const [proprietor, setProprietor] = useState(false);
   const [seller, setSeller] = useState(false);
   const [corporate, setCorporate] = useState(false);

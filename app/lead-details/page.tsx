@@ -33,6 +33,7 @@ const LeadDetails = () => {
     ManagerId,
     Comment,
     Documents,
+    Relations,
   } = data || {};
 
   const detailPropertyData = {
@@ -57,13 +58,17 @@ const LeadDetails = () => {
     Documents,
   };
 
+  const detailInformationData = {
+    Relations,
+  };
+
   return (
     <main>
       <DetailHeader />
       <div className="flex p-5 gap-5 align-start bg-secondary justify-between">
         <DetailProperty data={detailPropertyData} />
         <DetailBody />
-        <DetailInformation />
+        <DetailInformation data={detailInformationData} />
       </div>
     </main>
   );
