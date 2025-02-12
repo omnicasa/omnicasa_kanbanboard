@@ -11,15 +11,55 @@ const LeadDetails = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
-  const { data, isLoading, error } = useFetchLeadDetails(Number(id));
+  const { data } = useFetchLeadDetails(Number(id));
 
-  console.log(data, isLoading, error);
+  const {
+    Pictures,
+    PurposeId,
+    Reference,
+    Address,
+    HouseNumber,
+    CityName,
+    NumberOfBedRoom,
+    NumberOfBathRoom,
+    NumberOfGarage,
+    GroundArea,
+    CityPostcode,
+    EPCELevel,
+    Prospection,
+    SiteId,
+    StartCommercialisation,
+    Record,
+    ManagerId,
+    Comment,
+  } = data || {};
+
+  const detailPropertyData = {
+    Pictures,
+    PurposeId,
+    Reference,
+    Address,
+    HouseNumber,
+    CityName,
+    NumberOfBedRoom,
+    NumberOfBathRoom,
+    NumberOfGarage,
+    GroundArea,
+    CityPostcode,
+    EPCELevel,
+    Prospection,
+    SiteId,
+    StartCommercialisation,
+    Record,
+    ManagerId,
+    Comment,
+  };
 
   return (
     <main>
       <DetailHeader />
       <div className="flex p-5 gap-5 align-start bg-secondary justify-between">
-        <DetailProperty />
+        <DetailProperty data={detailPropertyData} />
         <DetailBody />
         <DetailInformation />
       </div>

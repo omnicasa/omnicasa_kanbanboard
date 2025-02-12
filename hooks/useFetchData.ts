@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-const BASE_URL = process.env.BASE_URL;
-const OAUTH_TOKEN = process.env.OAUTH_TOKEN;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const OAUTH_TOKEN = process.env.NEXT_PUBLIC_OAUTH_TOKEN;
 
 const fetchProperties = async (
   statusesID: number,
@@ -111,6 +111,23 @@ const fetchLeadDetails = async (leadId: number) => {
   return response.json();
 };
 
+const fetchSourceContact = async () => {
+  const response = await fetch(`${BASE_URL}/common/lookup-data/SourceContact`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
+      "Accept-Language": "English",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 export const useFetchProperties = (
   statusesID: number,
   siteIds: number[],
@@ -141,5 +158,12 @@ export const useFetchLeadDetails = (leadId: number) => {
   return useQuery({
     queryKey: ["leadDetails", leadId],
     queryFn: () => fetchLeadDetails(leadId),
+  });
+};
+
+export const useFetchSourceContact = () => {
+  return useQuery({
+    queryKey: ["sourceContact"],
+    queryFn: fetchSourceContact,
   });
 };
