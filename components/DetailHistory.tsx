@@ -37,7 +37,7 @@ const DetailHistory: React.FC = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center justify-between w-full gap-4 w-[124px]">
+        <div className="flex items-center justify-between gap-4 w-[125px]">
           <div className="rounded-full bg-secondary">
             <ArrowDownToLine className="w-9 h-9 p-2 text-primary" />
           </div>

@@ -16,6 +16,12 @@ module.exports = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "cloud-storage.omnicasa.com",
+        port: "",
+        pathname: "/**",
+      },
       // Add more patterns as needed
     ],
   },

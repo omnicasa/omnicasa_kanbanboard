@@ -12,7 +12,7 @@ const LeadDetails = () => {
   const id = searchParams.get("id");
 
   const { data } = useFetchLeadDetails(Number(id));
-
+  console.log("data=>", data);
   const {
     Pictures,
     PurposeId,
@@ -32,6 +32,7 @@ const LeadDetails = () => {
     Record,
     ManagerId,
     Comment,
+    Documents,
   } = data || {};
 
   const detailPropertyData = {
@@ -53,6 +54,7 @@ const LeadDetails = () => {
     Record,
     ManagerId,
     Comment,
+    Documents,
   };
 
   return (
