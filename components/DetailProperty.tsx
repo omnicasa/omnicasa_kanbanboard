@@ -9,7 +9,14 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { Bath, BedDouble, CarFront, FileText, Map } from "lucide-react";
+import {
+  ArrowDownToLine,
+  Bath,
+  BedDouble,
+  CarFront,
+  Eye,
+  Map,
+} from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "./ui/button";
 import DetailStatus from "./DetailStatus";
@@ -374,6 +381,21 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
     setIsShowMore(!isShowMore);
   };
 
+  const handleDownload = (item: Document) => {
+    console.log("==>", item);
+    const link = document.createElement("a");
+    link.href = item.FilePath;
+    link.download = item.Filename;
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleView = (item: Document) => {
+    console.log("===>", item);
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col items-start self-stretch w-[324px] bg-white border rounded-lg shadow-md">
@@ -577,7 +599,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                 (document: Document, index) => (
                   <div
                     key={index}
-                    className="flex items-start justify-between p-2 gap-2.5 w-full"
+                    className="relative flex items-start justify-between p-2 gap-2.5 w-full group"
                   >
                     <Image
                       src={document.IconURL}
@@ -599,6 +621,16 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                           "en-CA"
                         )}
                       </h3>
+                    </div>
+                    <div className="absolute right-2 top-6 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowDownToLine
+                        onClick={() => handleDownload(document)}
+                        className="h-5 w-5 text-muted-foreground cursor-pointer"
+                      />
+                      <Eye
+                        onClick={() => handleView(document)}
+                        className="h-5 w-5 text-muted-foreground cursor-pointer"
+                      />
                     </div>
                   </div>
                 )
