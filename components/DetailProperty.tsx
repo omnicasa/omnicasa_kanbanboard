@@ -81,12 +81,6 @@ const pipeline = [
   },
 ];
 
-// const images = [
-//   "/images/picture1.png",
-//   "/images/picture2.png",
-//   "/images/picture3.png",
-// ];
-
 interface Picture {
   DescriptionOfCA: string;
   DescriptionOfDE: string;

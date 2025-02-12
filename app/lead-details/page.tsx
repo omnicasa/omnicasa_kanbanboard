@@ -11,9 +11,8 @@ const LeadDetails = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
-  const { data, isLoading, error } = useFetchLeadDetails(Number(id));
+  const { data } = useFetchLeadDetails(Number(id));
 
-  console.log("detail=>", data, isLoading, error);
   const {
     Pictures,
     PurposeId,
