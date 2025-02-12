@@ -120,6 +120,7 @@ interface ProspectionProps {
 interface DetailPropertyProps {
   data: {
     Pictures: Picture[];
+    PurposeId: number;
     Reference: string;
     Address: string;
     HouseNumber: string;
@@ -128,6 +129,7 @@ interface DetailPropertyProps {
     NumberOfBathRoom: number;
     NumberOfGarage: number;
     GroundArea: number;
+    CityPostcode: number;
     EPCELevel: number;
     Prospection: ProspectionProps;
     SiteId: number;
@@ -159,6 +161,7 @@ interface Manager {
 const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
   const {
     Pictures,
+    PurposeId,
     Reference,
     Address,
     HouseNumber,
@@ -167,6 +170,8 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
     NumberOfBathRoom,
     NumberOfGarage,
     GroundArea,
+    CityPostcode,
+    EPCELevel,
     Prospection,
     SiteId,
     StartCommercialisation,
@@ -183,7 +188,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
     : [];
 
   const { data: sourceContacts } = useFetchSourceContact();
-  const propertyId = Prospection.PropertyId;
+  const propertyId = Prospection ? Prospection.PropertyId : null;
   const sourceContact = sourceContacts?.SourceContact?.find(
     (contact: SourceContact) => contact.Id === propertyId
   );
@@ -199,6 +204,131 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
   );
   const managerName = manager ? manager.Name : "";
 
+  const getRegionByPostCode = (postCode: number) => {
+    if (postCode >= 1000 && postCode <= 1299) {
+      return "Brussels";
+    } else if (postCode >= 1300 && postCode <= 1499) {
+      return "Wallonia";
+    } else if (postCode >= 1500 && postCode <= 3999) {
+      return "Flanders";
+    } else if (postCode >= 4000 && postCode <= 7999) {
+      return "Wallonia";
+    } else if (postCode >= 8000 && postCode <= 9999) {
+      return "Flanders";
+    } else {
+      return "None";
+    }
+  };
+
+  const getBrusselsEPCLabelURL = (epcLevel: number): string => {
+    if (epcLevel <= -1) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1000.png";
+    } else if (epcLevel >= 0 && epcLevel <= 15) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1001.png";
+    } else if (epcLevel >= 16 && epcLevel <= 30) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1002.png";
+    } else if (epcLevel >= 31 && epcLevel <= 45) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1003.png";
+    } else if (epcLevel >= 46 && epcLevel <= 62) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1004.png";
+    } else if (epcLevel >= 63 && epcLevel <= 78) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1005.png";
+    } else if (epcLevel >= 79 && epcLevel <= 95) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1006.png";
+    } else if (epcLevel >= 96 && epcLevel <= 113) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1007.png";
+    } else if (epcLevel >= 114 && epcLevel <= 132) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1008.png";
+    } else if (epcLevel >= 133 && epcLevel <= 150) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1009.png";
+    } else if (epcLevel >= 151 && epcLevel <= 170) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1010.png";
+    } else if (epcLevel >= 171 && epcLevel <= 190) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1011.png";
+    } else if (epcLevel >= 191 && epcLevel <= 210) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1012.png";
+    } else if (epcLevel >= 211 && epcLevel <= 232) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1013.png";
+    } else if (epcLevel >= 233 && epcLevel <= 253) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1014.png";
+    } else if (epcLevel >= 254 && epcLevel <= 275) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1015.png";
+    } else if (epcLevel >= 276 && epcLevel <= 345) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1017.png";
+    } else {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1019.png";
+    }
+  };
+
+  const getWalloniaEPCLabelURL = (epcLevel: number): string => {
+    if (epcLevel <= 0) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_1.png";
+    } else if (epcLevel >= 1 && epcLevel <= 45) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_2.png";
+    } else if (epcLevel >= 46 && epcLevel <= 85) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_3.png";
+    } else if (epcLevel >= 86 && epcLevel <= 170) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_4.png";
+    } else if (epcLevel >= 171 && epcLevel <= 255) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_5.png";
+    } else if (epcLevel >= 256 && epcLevel <= 340) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_6.png";
+    } else if (epcLevel >= 341 && epcLevel <= 425) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_7.png";
+    } else if (epcLevel >= 426 && epcLevel <= 510) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_8.png";
+    } else {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_9.png";
+    }
+  };
+
+  const getFlandersEPCLabelURL = (epcLevel: number): string => {
+    if (epcLevel <= 0) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_10001.png";
+    } else if (epcLevel >= 1 && epcLevel <= 100) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_10002.png";
+    } else if (epcLevel >= 101 && epcLevel <= 200) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_10003.png";
+    } else if (epcLevel >= 201 && epcLevel <= 300) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_10004.png";
+    } else if (epcLevel >= 301 && epcLevel <= 400) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_10005.png";
+    } else if (epcLevel >= 401 && epcLevel <= 500) {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_10006.png";
+    } else {
+      return "https://epclabel.omnicasa.com/images/EPClabel/peb_10007.png";
+    }
+  };
+
+  const calculateEPCLabel = (
+    cityPostCode: number,
+    epcLevel: number
+  ): string => {
+    const region = getRegionByPostCode(cityPostCode);
+    if (region === "Brussels") {
+      return getBrusselsEPCLabelURL(epcLevel);
+    } else if (region === "Wallonia") {
+      return getWalloniaEPCLabelURL(epcLevel);
+    } else if (region === "Flanders") {
+      return getFlandersEPCLabelURL(epcLevel);
+    } else {
+      return ""; // default URL
+    }
+  };
+
+  const defineBadgeName = (purposeId: number) => {
+    switch (purposeId) {
+      case 0:
+        return "For Sale";
+      case 1:
+        return "For Rent";
+      case 2:
+        return "For Takeover";
+      default:
+        return "";
+    }
+  };
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -211,16 +341,16 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
     <div className="flex flex-col gap-5">
       <div className="flex flex-col items-start self-stretch w-[324px] bg-white border rounded-lg shadow-md">
         <div className="relative">
-          {images.length === 1 ? (
+          {images.length === 0 ? (
             <Image
-              src="/images/picture1.png"
+              src="/images/empty.png"
               alt="Image"
               width={324}
               height={200}
               className="rounded-t-sm object-cover"
             />
           ) : (
-            images.length > 1 && (
+            images.length > 0 && (
               <Carousel className={"w-full max-w-xs"}>
                 <CarouselContent>
                   {images.map((src, index) => (
@@ -249,9 +379,9 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
 
           <Badge
             variant="outline"
-            className="absolute w-[70px] px-2.5 py-1 left-3 top-3 rounded-md border border-transparent text-primary-foreground font-xs bg-[#0786FD] shadow-md"
+            className="absolute w-auto min-h-[25px] min-w-[71px] px-2.5 py-1 left-3 top-3 rounded-md border border-transparent text-primary-foreground font-xs bg-[#0786FD] shadow-md"
           >
-            For Sale
+            {defineBadgeName(PurposeId)}
           </Badge>
         </div>
         <div className="flex flex-col p-5 gap-5">
@@ -260,7 +390,9 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
               {Reference}
             </h1>
             <p className="text-muted-foreground font-sans text-sm font-normal leading-5 mt-1.5">
-              {`${Address} ${HouseNumber}, ${CityName}`}
+              {`${Address}${
+                HouseNumber ? ", " + HouseNumber : ""
+              }, ${CityName}`}
             </p>
           </div>
           <div className="flex items-center justify-start space-x-4">
@@ -300,20 +432,15 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                   EPC
                 </h2>
                 <div className="flex items-center flex-1 relative">
-                  <Image
-                    src="/images/epc.svg"
-                    alt="epc"
-                    width={61}
-                    height={20}
-                    className="absolute right-0"
-                  />
-                  <Image
-                    src="/images/d.svg"
-                    alt="d"
-                    width={30}
-                    height={17}
-                    className="absolute right-0"
-                  />
+                  {calculateEPCLabel(CityPostcode, EPCELevel) && (
+                    <Image
+                      src={calculateEPCLabel(CityPostcode, EPCELevel)}
+                      alt="epc"
+                      width={61}
+                      height={20}
+                      className="absolute right-0"
+                    />
+                  )}
                 </div>
               </div>
               <div className="flex items-center justify-between gap-2 w-full">

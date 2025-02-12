@@ -16,6 +16,7 @@ const LeadDetails = () => {
   console.log("detail=>", data, isLoading, error);
   const {
     Pictures,
+    PurposeId,
     Reference,
     Address,
     HouseNumber,
@@ -24,6 +25,7 @@ const LeadDetails = () => {
     NumberOfBathRoom,
     NumberOfGarage,
     GroundArea,
+    CityPostcode,
     EPCELevel,
     Prospection,
     SiteId,
@@ -35,6 +37,7 @@ const LeadDetails = () => {
 
   const detailPropertyData = {
     Pictures,
+    PurposeId,
     Reference,
     Address,
     HouseNumber,
@@ -43,6 +46,7 @@ const LeadDetails = () => {
     NumberOfBathRoom,
     NumberOfGarage,
     GroundArea,
+    CityPostcode,
     EPCELevel,
     Prospection,
     SiteId,

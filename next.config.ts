@@ -10,6 +10,12 @@ module.exports = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "epclabel.omnicasa.com",
+        port: "",
+        pathname: "/**",
+      },
       // Add more patterns as needed
     ],
   },
