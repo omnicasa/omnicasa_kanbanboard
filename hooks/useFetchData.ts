@@ -120,6 +120,9 @@ export const useFetchProperties = (
   return useQuery({
     queryKey: ["properties"],
     queryFn: () => fetchProperties(statusesID, siteIds, managerIds, sortValue),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
+    initialData: [],
   });
 };
 
@@ -127,6 +130,9 @@ export const useFetchSites = () => {
   return useQuery({
     queryKey: ["sites"],
     queryFn: fetchSites,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
+    initialData: [],
   });
 };
 
@@ -134,6 +140,9 @@ export const useFetchManagers = () => {
   return useQuery({
     queryKey: ["managers"],
     queryFn: fetchManagers,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
+    initialData: [],
   });
 };
 
@@ -141,5 +150,8 @@ export const useFetchLeadDetails = (leadId: number) => {
   return useQuery({
     queryKey: ["leadDetails", leadId],
     queryFn: () => fetchLeadDetails(leadId),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 60,
+    initialData: [],
   });
 };
