@@ -109,6 +109,8 @@ export default function Board({ statusesID }: BoardProps) {
     selectedSort
   );
 
+  console.log("data=>", isLoading, data);
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor)

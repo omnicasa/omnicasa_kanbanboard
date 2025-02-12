@@ -15,6 +15,7 @@ const LeadDetails = () => {
 
   console.log("detail=>", data, isLoading, error);
   const {
+    Pictures,
     Reference,
     Address,
     HouseNumber,
@@ -28,9 +29,11 @@ const LeadDetails = () => {
     StartCommercialisation,
     Record,
     ManagerId,
+    Comment,
   } = data || {};
 
   const detailPropertyData = {
+    Pictures,
     Reference,
     Address,
     HouseNumber,
@@ -44,6 +47,7 @@ const LeadDetails = () => {
     StartCommercialisation,
     Record,
     ManagerId,
+    Comment,
   };
 
   return (

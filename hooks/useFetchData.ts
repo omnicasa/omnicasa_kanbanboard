@@ -111,6 +111,23 @@ const fetchLeadDetails = async (leadId: number) => {
   return response.json();
 };
 
+const fetchSourceContact = async () => {
+  const response = await fetch(`${BASE_URL}/common/lookup-data/SourceContact`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
+      "Accept-Language": "English",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 export const useFetchProperties = (
   statusesID: number,
   siteIds: number[],
@@ -120,9 +137,6 @@ export const useFetchProperties = (
   return useQuery({
     queryKey: ["properties"],
     queryFn: () => fetchProperties(statusesID, siteIds, managerIds, sortValue),
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 60,
-    initialData: [],
   });
 };
 
@@ -130,8 +144,6 @@ export const useFetchSites = () => {
   return useQuery({
     queryKey: ["sites"],
     queryFn: fetchSites,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 60,
   });
 };
 
@@ -139,8 +151,6 @@ export const useFetchManagers = () => {
   return useQuery({
     queryKey: ["managers"],
     queryFn: fetchManagers,
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 60,
   });
 };
 
@@ -148,7 +158,12 @@ export const useFetchLeadDetails = (leadId: number) => {
   return useQuery({
     queryKey: ["leadDetails", leadId],
     queryFn: () => fetchLeadDetails(leadId),
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 60,
+  });
+};
+
+export const useFetchSourceContact = () => {
+  return useQuery({
+    queryKey: ["sourceContact"],
+    queryFn: fetchSourceContact,
   });
 };

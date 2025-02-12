@@ -13,6 +13,7 @@ import { Bath, BedDouble, CarFront, FileText, Map } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "./ui/button";
 import DetailStatus from "./DetailStatus";
+import { useFetchSourceContact } from "@/hooks/useFetchData";
 
 const pipe_status = [
   {
@@ -76,11 +77,36 @@ const pipeline = [
   },
 ];
 
-const images = [
-  "/images/picture1.png",
-  "/images/picture2.png",
-  "/images/picture3.png",
-];
+// const images = [
+//   "/images/picture1.png",
+//   "/images/picture2.png",
+//   "/images/picture3.png",
+// ];
+
+interface Picture {
+  DescriptionOfCA: string;
+  DescriptionOfDE: string;
+  DescriptionOfEN: string;
+  DescriptionOfFR: string;
+  DescriptionOfNL: string;
+  DescriptionOfSP: string;
+  HeightOfImage: number;
+  Id: number;
+  IsExternalImage: boolean;
+  IsMissingOnCloud: boolean;
+  ItemState: number;
+  OriginalPublishUrl: string;
+  OriginalUrl: string;
+  PictureNumber: number;
+  PictureRoomIds: number[];
+  PictureTypeIds: number[];
+  PropertyId: number;
+  PublishOnInternet: boolean;
+  SmallPublishUrl: string;
+  SmallUrl: string;
+  WidthOfImage: number;
+  XLargeUrl: string;
+}
 
 interface ProspectionProps {
   PropertyId: number;
@@ -89,6 +115,7 @@ interface ProspectionProps {
 
 interface DetailPropertyProps {
   data: {
+    Pictures: Picture[];
     Reference: string;
     Address: string;
     HouseNumber: string;
@@ -102,11 +129,18 @@ interface DetailPropertyProps {
     StartCommercialisation: string;
     Record: string;
     ManagerId: number;
+    Comment: string;
   };
+}
+
+interface SourceContact {
+  Id: number;
+  NameNL: string;
 }
 
 const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
   const {
+    Pictures,
     Reference,
     Address,
     HouseNumber,
@@ -120,13 +154,33 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
     StartCommercialisation,
     Record,
     ManagerId,
+    Comment,
   } = data || {};
 
   const [isClient, setIsClient] = useState(false);
+  const [isShowMore, setIsShowMore] = useState(false);
+
+  const images = Pictures
+    ? Pictures.map((picture) => picture.OriginalPublishUrl)
+    : [];
+  const { data: sourceContacts } = useFetchSourceContact();
+  console.log("==>", sourceContacts);
+  const propertyId = Prospection.PropertyId;
+
+  const sourceContact = sourceContacts?.SourceContact?.find(
+    (contact: SourceContact) => contact.Id === propertyId
+  );
+  console.log("property id", propertyId, sourceContact);
+  const nameNL = sourceContact ? sourceContact.NameNL : "";
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const handleShowMore = () => {
+    setIsShowMore(!isShowMore);
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col items-start self-stretch w-[324px] bg-white border rounded-lg shadow-md">
@@ -241,7 +295,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                   Lead Source
                 </h2>
                 <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                  {Prospection?.PropertyId}
+                  {nameNL}
                 </h3>
               </div>
               <div className="flex items-center justify-between gap-2 w-full">
@@ -299,12 +353,26 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                 </h3>
               </div>
             </div>
+            {isShowMore && (
+              <>
+                <Separator className="border w-full my-4" />
+                <div className="flex flex-col items-start w-full gap-3">
+                  <h2 className="text-muted-foreground font-sans text-sm font-normal leading-5 flex-1">
+                    Notes
+                  </h2>
+                  <h3 className="text-primary font-sans text-sm font-normal leading-5 flex-1">
+                    {Comment}
+                  </h3>
+                </div>
+              </>
+            )}
           </div>
           <Button
             variant="outline"
             className="flex h-9 px-4 py-2 justify-center items-center gap-2 self-stretch rounded-md border bg-white shadow-sm"
+            onClick={handleShowMore}
           >
-            Shore more
+            {isShowMore ? "Show less" : "Show more"}
           </Button>
         </div>
       </div>
