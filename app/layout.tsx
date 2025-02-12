@@ -1,7 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState, CSSProperties } from "react";
+import { useState, CSSProperties, Suspense } from "react";
 import "./globals.css";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar";
@@ -25,11 +25,13 @@ export default function RootLayout({
               } as CSSProperties
             }
           >
-            <AppSidebar />
-            <SidebarInset>
-              <Header />
-              {children}
-            </SidebarInset>
+            <Suspense fallback={<div>Loading ...</div>}>
+              <AppSidebar />
+              <SidebarInset>
+                <Header />
+                {children}
+              </SidebarInset>
+            </Suspense>
           </SidebarProvider>
         </QueryClientProvider>
       </body>

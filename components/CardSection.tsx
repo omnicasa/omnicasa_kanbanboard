@@ -6,6 +6,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import Draggable from "./Draggable";
+import Droppable from "./Droppable";
 
 interface CardSectionProps {
   headerTitle: string;
@@ -40,21 +41,24 @@ export default function CardSection({
         {customCardContents
           .filter((card) => card && card.Id)
           .map((customCardContent) => (
-            <Draggable
-              key={customCardContent.Id}
-              id={customCardContent.Id}
-              data={{ boardId: headerTitle }}
-            >
-              <CustomCard
-                title={customCardContent.Reference}
-                subtitle={customCardContent.ProprietorReference}
-                date={customCardContent.date}
-                images={customCardContent.images}
-                badge={customCardContent.badge}
-                callInfo={customCardContent.callInfo}
-                footerAgent={customCardContent.ManagerShortName}
-              />
-            </Draggable>
+            <Droppable key={customCardContent.Id} id={customCardContent.Id}>
+              <Draggable
+                key={customCardContent.Id}
+                id={customCardContent.Id}
+                data={{ boardId: headerTitle }}
+              >
+                <CustomCard
+                  id={customCardContent.Id}
+                  title={customCardContent.Reference}
+                  subtitle={customCardContent.ProprietorReference}
+                  date={customCardContent.date}
+                  images={customCardContent.images}
+                  badge={customCardContent.badge}
+                  callInfo={customCardContent.callInfo}
+                  footerAgent={customCardContent.ManagerShortName}
+                />
+              </Draggable>
+            </Droppable>
           ))}
       </SortableContext>
     </div>

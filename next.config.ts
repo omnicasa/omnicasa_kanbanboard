@@ -5,7 +5,15 @@ dotenv.config();
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["cdn.omnicasaassets.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.omnicasaassets.com",
+        port: "",
+        pathname: "/**",
+      },
+      // Add more patterns as needed
+    ],
   },
   env: {
     OAUTH_TOKEN: process.env.OAUTH_TOKEN,

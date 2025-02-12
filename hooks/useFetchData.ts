@@ -91,6 +91,26 @@ const fetchManagers = async () => {
   return response.json();
 };
 
+const fetchLeadDetails = async (leadId: number) => {
+  const response = await fetch(
+    `${BASE_URL}/properties/${leadId}/preview?tabs=*`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OAUTH_TOKEN}`,
+        "Accept-Language": "English",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 export const useFetchProperties = (
   statusesID: number,
   siteIds: number[],
@@ -114,5 +134,12 @@ export const useFetchManagers = () => {
   return useQuery({
     queryKey: ["managers"],
     queryFn: fetchManagers,
+  });
+};
+
+export const useFetchLeadDetails = (leadId: number) => {
+  return useQuery({
+    queryKey: ["leadDetails", leadId],
+    queryFn: () => fetchLeadDetails(leadId),
   });
 };
