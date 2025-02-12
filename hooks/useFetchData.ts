@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-const BASE_URL = process.env.BASE_URL;
-const OAUTH_TOKEN = process.env.OAUTH_TOKEN;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const OAUTH_TOKEN = process.env.NEXT_PUBLIC_OAUTH_TOKEN;
 
 const fetchProperties = async (
   statusesID: number,
