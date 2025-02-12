@@ -10,9 +10,10 @@ import React from "react";
 
 const DetailHistory: React.FC = () => {
   return (
-    <div className="flex flex-col itesm-start flex-1 gap-8">
+    <div className="flex flex-col itesm-start flex-1 gap-8 relative">
+      <div className="absolute left-[16px] h-full w-[1px] bg-border" />
       <div className="flex items-center justify-start w-full gap-3">
-        <div className="rounded-full border p-2 bg-[#F4F9FF]">
+        <div className="rounded-full border p-2 bg-white z-10">
           <CalendarDays className="w-4 h-4 text-muted-foreground" />
         </div>
         <h3 className="text-base font-sans font-medium text-primary leading-5">
@@ -20,7 +21,7 @@ const DetailHistory: React.FC = () => {
         </h3>
       </div>
       <div className="flex items-start justify-between w-full gap-3">
-        <div className="rounded-full border p-2 bg-[#F4F9FF]">
+        <div className="rounded-full border p-2 bg-[#F4F9FF] z-10">
           <PhoneForwarded className="w-4 h-4 text-muted-foreground" />
         </div>
         <div className="flex items-center justify-between w-full gap-1">
@@ -37,17 +38,17 @@ const DetailHistory: React.FC = () => {
           </div>
         </div>
         <div className="flex items-center justify-between w-full gap-4 w-[124px]">
-          <div className="rounded-full border bg-secondary">
+          <div className="rounded-full bg-secondary">
             <ArrowDownToLine className="w-9 h-9 p-2 text-primary" />
           </div>
-          <div className="rounded-full border bg-secondary">
+          <div className="rounded-full bg-secondary">
             <Play className="w-9 h-9 p-2 text-primary" />
           </div>
           <Ellipsis className="w-5 h-5 text-muted-foreground" />
         </div>
       </div>
       <div className="flex items-start justify-between w-full gap-3">
-        <div className="rounded-full border p-2 bg-[#F4F9FF]">
+        <div className="rounded-full border p-2 bg-[#F4F9FF] z-10">
           <MessageCircleMore className="w-4 h-4 text-muted-foreground" />
         </div>
         <div className="flex flex-col w-full">

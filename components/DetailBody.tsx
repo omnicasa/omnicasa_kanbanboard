@@ -185,19 +185,19 @@ const DetailBody: React.FC = () => {
               <DetailHistory />
             </TabsContent>
             <TabsContent value="outgoing" className="rounded-md mt-5">
-              Outgoing calls
+              <DetailHistory />
             </TabsContent>
             <TabsContent value="sms" className="rounded-md mt-5">
-              SMS sent
+              <DetailHistory />
             </TabsContent>
             <TabsContent value="call" className="rounded-md mt-5">
-              Call attempts
+              <DetailHistory />
             </TabsContent>
             <TabsContent value="emailout" className="rounded-md mt-5">
-              Email out
+              <DetailHistory />
             </TabsContent>
             <TabsContent value="notes" className="rounded-md mt-5">
-              Notes
+              <DetailHistory />
             </TabsContent>
           </Tabs>
         </CardContent>
