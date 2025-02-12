@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -82,7 +82,51 @@ const images = [
   "/images/picture3.png",
 ];
 
-const DetailProperty: React.FC = () => {
+interface ProspectionProps {
+  PropertyId: number;
+  Reduction: number;
+}
+
+interface DetailPropertyProps {
+  data: {
+    Reference: string;
+    Address: string;
+    HouseNumber: string;
+    CityName: string;
+    NumberOfBedRoom: number;
+    NumberOfBathRoom: number;
+    NumberOfGarage: number;
+    GroundArea: number;
+    Prospection: ProspectionProps;
+    SiteId: number;
+    StartCommercialisation: string;
+    Record: string;
+    ManagerId: number;
+  };
+}
+
+const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
+  const {
+    Reference,
+    Address,
+    HouseNumber,
+    CityName,
+    NumberOfBedRoom,
+    NumberOfBathRoom,
+    NumberOfGarage,
+    GroundArea,
+    Prospection,
+    SiteId,
+    StartCommercialisation,
+    Record,
+    ManagerId,
+  } = data || {};
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col items-start self-stretch w-[324px] bg-white border rounded-lg shadow-md">
@@ -104,13 +148,15 @@ const DetailProperty: React.FC = () => {
                       <div className="w-[324px] h-[200px]">
                         <Card className="h-full rounded-md flex items-center justify-center">
                           <CardContent className="flex items-center justify-center p-0 flex-1">
-                            <Image
-                              src={src}
-                              width={324}
-                              height={200}
-                              alt={`Image ${index}`}
-                              className="w-full h-full object-cover rounded-md"
-                            />
+                            {isClient && (
+                              <Image
+                                src={src}
+                                width={324}
+                                height={200}
+                                alt={`Image ${index}`}
+                                className="w-full h-full object-cover rounded-md"
+                              />
+                            )}
                           </CardContent>
                         </Card>
                       </div>
@@ -131,35 +177,35 @@ const DetailProperty: React.FC = () => {
         <div className="flex flex-col p-5 gap-5">
           <div>
             <h1 className="text-card-foreground font-sans text-base font-semibold leading-6 capitalize">
-              99 Boulevard de l&apos;Innovation, Ghent, Belgium
+              {Reference}
             </h1>
             <p className="text-muted-foreground font-sans text-sm font-normal leading-5 mt-1.5">
-              Boulevard de l&apos;Innovation, 99, Ghent
+              {`${Address} ${HouseNumber}, ${CityName}`}
             </p>
           </div>
           <div className="flex items-center justify-start space-x-4">
             <div className="flex items-center space-x-1">
               <BedDouble className="h-5 w-5 text-muted-foreground" />
               <label className="text-primary text-center font-sans text-sm font-normal leading-5">
-                1
+                {NumberOfBedRoom}
               </label>
             </div>
             <div className="flex items-center space-x-1">
               <Bath className="h-5 w-5 text-muted-foreground" />
               <label className="text-primary text-center font-sans text-sm font-normal leading-5">
-                1
+                {NumberOfBathRoom}
               </label>
             </div>
             <div className="flex items-center space-x-1">
               <CarFront className="h-5 w-5 text-muted-foreground" />
               <label className="text-primary text-center font-sans text-sm font-normal leading-5">
-                1
+                {NumberOfGarage}
               </label>
             </div>
             <div className="flex items-center space-x-1">
               <Map className="h-5 w-5 text-muted-foreground" />
               <label className="text-primary text-center font-sans text-sm font-normal leading-5">
-                100 m²
+                {GroundArea} m²
               </label>
             </div>
           </div>
@@ -195,7 +241,7 @@ const DetailProperty: React.FC = () => {
                   Lead Source
                 </h2>
                 <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                  Other agent
+                  {Prospection?.PropertyId}
                 </h3>
               </div>
               <div className="flex items-center justify-between gap-2 w-full">
@@ -211,17 +257,19 @@ const DetailProperty: React.FC = () => {
                   Site
                 </h2>
                 <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                  Greenfield Realty - Oakwood
+                  {SiteId}
                 </h3>
               </div>
-              <div className="flex items-center justify-between gap-2 w-full">
-                <h2 className="text-muted-foreground font-sans text-sm font-normal leading-5 flex-1">
-                  Days on Market
-                </h2>
-                <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                  1 day
-                </h3>
-              </div>
+              {StartCommercialisation && (
+                <div className="flex items-center justify-between gap-2 w-full">
+                  <h2 className="text-muted-foreground font-sans text-sm font-normal leading-5 flex-1">
+                    Days on Market
+                  </h2>
+                  <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
+                    {StartCommercialisation}
+                  </h3>
+                </div>
+              )}
               <div className="flex items-center justify-between gap-2 w-full">
                 <h2 className="text-muted-foreground font-sans text-sm font-normal leading-5 flex-1">
                   Pipeline
@@ -239,7 +287,7 @@ const DetailProperty: React.FC = () => {
                   Record
                 </h2>
                 <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                  P-BCB-00051
+                  {Record}
                 </h3>
               </div>
               <div className="flex items-center justify-between gap-2 w-full">
@@ -247,7 +295,7 @@ const DetailProperty: React.FC = () => {
                   Manager
                 </h2>
                 <h3 className="text-primary text-right font-sans text-sm font-normal leading-5 flex-1">
-                  John Doe
+                  {ManagerId}
                 </h3>
               </div>
             </div>

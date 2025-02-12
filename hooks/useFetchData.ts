@@ -132,7 +132,6 @@ export const useFetchSites = () => {
     queryFn: fetchSites,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 60,
-    initialData: [],
   });
 };
 
@@ -142,7 +141,6 @@ export const useFetchManagers = () => {
     queryFn: fetchManagers,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 60,
-    initialData: [],
   });
 };
 
@@ -152,6 +150,5 @@ export const useFetchLeadDetails = (leadId: number) => {
     queryFn: () => fetchLeadDetails(leadId),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 60,
-    initialData: [],
   });
 };

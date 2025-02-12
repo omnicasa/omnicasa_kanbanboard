@@ -13,13 +13,44 @@ const LeadDetails = () => {
 
   const { data, isLoading, error } = useFetchLeadDetails(Number(id));
 
-  console.log(data, isLoading, error);
+  console.log("detail=>", data, isLoading, error);
+  const {
+    Reference,
+    Address,
+    HouseNumber,
+    CityName,
+    NumberOfBedRoom,
+    NumberOfBathRoom,
+    NumberOfGarage,
+    GroundArea,
+    Prospection,
+    SiteId,
+    StartCommercialisation,
+    Record,
+    ManagerId,
+  } = data || {};
+
+  const detailPropertyData = {
+    Reference,
+    Address,
+    HouseNumber,
+    CityName,
+    NumberOfBedRoom,
+    NumberOfBathRoom,
+    NumberOfGarage,
+    GroundArea,
+    Prospection,
+    SiteId,
+    StartCommercialisation,
+    Record,
+    ManagerId,
+  };
 
   return (
     <main>
       <DetailHeader />
       <div className="flex p-5 gap-5 align-start bg-secondary justify-between">
-        <DetailProperty />
+        <DetailProperty data={detailPropertyData} />
         <DetailBody />
         <DetailInformation />
       </div>
