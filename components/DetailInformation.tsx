@@ -24,6 +24,14 @@ import {
 import { useFetchPersonInfo } from "@/hooks/useFetchData";
 import { useMailStore } from "@/store/useStore";
 import { Textarea } from "./ui/textarea";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface Relation {
   Id: number;
@@ -291,7 +299,6 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
     console.log("Mute", relation);
   };
   const handleCall = (relation: Relation) => {
-    console.log("Call", relation);
     setIsCallModalOpen(false);
     setSelectedRelation(relation);
     setIsUnansweredDialogOpen(true);
@@ -299,11 +306,13 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   const handleVideo = (relation: Relation) => {
     console.log("Video", relation);
   };
-  const handleView = (relation: Relation) => {
+  const handleViewDetails = (relation: Relation) => {
     console.log("View", relation);
   };
   const handleEdit = (relation: Relation) => {
     console.log("Edit", relation);
+    const message = { TYPE: "edit-person", ID: relation.PersonId };
+    window.postMessage(message, "*");
   };
   const handleSendMail = () => {
     setIsUnansweredDialogOpen(false);
@@ -315,6 +324,42 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
       message
     );
   };
+  const handleNewRelation = () => {
+    console.log("New relation");
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("message", (event) => {
+        // Ensure the message is coming from a trusted source
+        if (event.origin !== "https://qaf3web.omnicasa.com") {
+          return;
+        }
+
+        const message = event.data;
+        if (message.TYPE === "edit-person") {
+          console.log("Person ID:", message.ID);
+          // Handle the message
+        }
+      });
+
+      // Cleanup event listener on component unmount
+      return () => {
+        window.removeEventListener("message", (event) => {
+          // Ensure the message is coming from a trusted source
+          if (event.origin !== "https://qaf3web.omnicasa.com") {
+            return;
+          }
+
+          const message = event.data;
+          if (message.TYPE === "edit-person") {
+            console.log("Person ID:", message.ID);
+            // Handle the message
+          }
+        });
+      };
+    }
+  }, []);
 
   return (
     <div className="flex flex-col itesm-start w-[324px] p-5 gap-5 bg-white border rounded-lg shadow-md h-full">
@@ -486,20 +531,52 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                       </Dialog>
                     </div>
                     <div className="px-3 py-2 border rounded-md shadow-md">
-                      <Eye
-                        width={33}
-                        height={20}
-                        className="cursor-pointer"
-                        onClick={() => handleView(relation)}
-                      />
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Eye
+                            width={33}
+                            height={20}
+                            className="cursor-pointer"
+                            onClick={() => handleViewDetails(relation)}
+                          />
+                        </SheetTrigger>
+                        <SheetContent className="sm:max-w-[80%] p-0">
+                          <SheetHeader>
+                            <SheetTitle></SheetTitle>
+                            <SheetDescription></SheetDescription>
+                          </SheetHeader>
+                          <div
+                            id="view-details"
+                            className="w-full h-full"
+                          ></div>
+                        </SheetContent>
+                      </Sheet>
                     </div>
                     <div className="px-3 py-2 border rounded-md shadow-md">
-                      <Pencil
-                        width={33}
-                        height={20}
-                        className="cursor-pointer"
-                        onClick={() => handleEdit(relation)}
-                      />
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Pencil
+                            width={33}
+                            height={20}
+                            className="cursor-pointer"
+                            onClick={() => handleEdit(relation)}
+                          />
+                        </SheetTrigger>
+                        <SheetContent className="sm:max-w-[80%] p-0">
+                          <SheetHeader>
+                            <SheetTitle></SheetTitle>
+                            <SheetDescription></SheetDescription>
+                          </SheetHeader>
+                          <div id="view-details" className="w-full h-full">
+                            <iframe
+                              src={`https://qaf3web.omnicasa.com/client/edit/${relation.PersonId}`}
+                              width="100%"
+                              height="100%"
+                              className="border-none;"
+                            ></iframe>
+                          </div>
+                        </SheetContent>
+                      </Sheet>
                     </div>
                   </div>
                   <Separator className="border" />
@@ -558,13 +635,24 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
           ))}
         </Accordion>
       )}
-      <Button
-        variant="outline"
-        className="flex h-9 px-4 py-2 justify-center items-center gap-2 self-stretch rounded-md border bg-white shadow-sm"
-      >
-        <CirclePlus width={20} height={20} />
-        <label>New relation</label>
-      </Button>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button
+            variant="outline"
+            className="flex h-9 px-4 py-2 justify-center items-center gap-2 self-stretch rounded-md border bg-white shadow-sm"
+            onClick={() => handleNewRelation()}
+          >
+            <CirclePlus width={20} height={20} />
+            <label>New relation</label>
+          </Button>
+        </SheetTrigger>
+        <SheetContent className="sm:max-w-[80%] p-0">
+          <SheetHeader>
+            <SheetTitle></SheetTitle>
+            <SheetDescription></SheetDescription>
+          </SheetHeader>
+        </SheetContent>
+      </Sheet>
       <Dialog
         open={isUnansweredDialogOpen}
         onOpenChange={setIsUnansweredDialogOpen}
