@@ -3,14 +3,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
-import {
-  ChevronsUpDown,
-  CirclePlus,
-  Eye,
-  Mail,
-  Pencil,
-  Phone,
-} from "lucide-react";
+import { CirclePlus, Eye, Mail, Pencil, Phone } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import {
@@ -19,6 +12,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { useFetchPersonInfo } from "@/hooks/useFetchData";
 import { useMailStore } from "@/store/useStore";
 
@@ -366,12 +361,29 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                       />
                     </div>
                     <div className="px-3 py-2 border rounded-md shadow-md">
-                      <Phone
+                      {/* <Phone
                         width={33}
                         height={20}
                         className="cursor-pointer"
                         onClick={() => handlePhone(relation)}
-                      />
+                      /> */}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Phone
+                            width={33}
+                            height={20}
+                            className="cursor-pointer"
+                          />
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[324px] h-[300px] py-6 flex flex-col">
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="name" className="text-right">
+                              Talan Curtis
+                            </Label>
+                            <p className="">Calling ...</p>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                     <div className="px-3 py-2 border rounded-md shadow-md">
                       <Eye
