@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "./ui/badge";
 import { CirclePlus, Eye, Mail, Pencil, Phone } from "lucide-react";
 import { Separator } from "./ui/separator";
@@ -15,12 +15,15 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useFetchPersonInfo } from "@/hooks/useFetchData";
 import { useMailStore } from "@/store/useStore";
+import { Textarea } from "./ui/textarea";
 
 interface Relation {
   Id: number;
@@ -233,6 +236,12 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   const [selectedId, setSelectedId] = useState<number>(
     Relations?.[0]?.PersonId || 0
   );
+  const [isCallModalOpen, setIsCallModalOpen] = useState(false);
+  const [isUnansweredDialogOpen, setIsUnansweredDialogOpen] = useState(false);
+  const [selectedRelation, setSelectedRelation] = useState<Relation | null>(
+    null
+  );
+  const unMessageRef = useRef<HTMLTextAreaElement>(null);
 
   const { data: personInfomation, refetch } = useFetchPersonInfo(selectedId);
 
@@ -283,6 +292,9 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   };
   const handleCall = (relation: Relation) => {
     console.log("Call", relation);
+    setIsCallModalOpen(false);
+    setSelectedRelation(relation);
+    setIsUnansweredDialogOpen(true);
   };
   const handleVideo = (relation: Relation) => {
     console.log("Video", relation);
@@ -293,6 +305,17 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   const handleEdit = (relation: Relation) => {
     console.log("Edit", relation);
   };
+  const handleSendMail = () => {
+    setIsUnansweredDialogOpen(false);
+    const message = unMessageRef.current?.value;
+    console.log(
+      "send mail:",
+      selectedRelation?.PersonEmail,
+      "message:",
+      message
+    );
+  };
+
   return (
     <div className="flex flex-col itesm-start w-[324px] p-5 gap-5 bg-white border rounded-lg shadow-md h-full">
       <h2 className="text-card-foreground text-base font-semibold leading-normal font-sans">
@@ -376,7 +399,10 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                       />
                     </div>
                     <div className="px-3 py-2 border rounded-md shadow-md">
-                      <Dialog>
+                      <Dialog
+                        open={isCallModalOpen}
+                        onOpenChange={setIsCallModalOpen}
+                      >
                         <DialogTrigger asChild>
                           <Phone
                             width={33}
@@ -539,6 +565,46 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
         <CirclePlus width={20} height={20} />
         <label>New relation</label>
       </Button>
+      <Dialog
+        open={isUnansweredDialogOpen}
+        onOpenChange={setIsUnansweredDialogOpen}
+      >
+        <DialogContent className="sm:max-w-[470px] p-6 gap-6">
+          <DialogHeader className="flex flex-col gap-1.5">
+            <DialogTitle className="text-[#09090B] font-sans text-base font-semibold leading-md">
+              Unanswered Call Action
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground font-sans text-small font-normal leading-5">
+              Looks like {selectedRelation?.PersonName} isn&apos;t available
+              right now. Would you like to leave a message?
+            </DialogDescription>
+          </DialogHeader>
+          <div className="min-h-[60px] h-[100px] w-full flex justify-start items-start">
+            <Textarea
+              id="unMessage"
+              ref={unMessageRef}
+              defaultValue="I have some important news regarding your property that you need to hear. Please get back to me as soon as you can. Thanks!"
+              className="w-full h-full p-3 text-primary rounded-md border shadow-sm text-wrap"
+            />
+          </div>
+          <DialogFooter className="flex items-center !justify-between gap-4">
+            <Button
+              variant={"outline"}
+              className="border rounded-md px-4 py-2 shadow-sm"
+              onClick={() => setIsUnansweredDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="bg-[#0786FD] text-white px-4 py-2 rounded-md"
+              onClick={() => handleSendMail()}
+            >
+              Send
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
