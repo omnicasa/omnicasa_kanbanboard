@@ -128,6 +128,26 @@ const fetchSourceContact = async () => {
   return response.json();
 };
 
+const fetchPersonInfo = async (personId: number) => {
+  const response = await fetch(
+    `${BASE_URL}/persons/${personId}/preview?tabs=*`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OAUTH_TOKEN}`,
+        "Accept-Language": "English",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 export const useFetchProperties = (
   statusesID: number,
   siteIds: number[],
@@ -165,5 +185,12 @@ export const useFetchSourceContact = () => {
   return useQuery({
     queryKey: ["sourceContact"],
     queryFn: fetchSourceContact,
+  });
+};
+
+export const useFetchPersonInfo = (personId: number) => {
+  return useQuery({
+    queryKey: ["personInfo", personId],
+    queryFn: () => fetchPersonInfo(personId),
   });
 };
