@@ -21,7 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useFetchPersonInfo } from "@/hooks/useFetchData";
+import { useFetchPersonInfo, useSendSMS } from "@/hooks/useFetchData";
 import { useMailStore } from "@/store/useStore";
 import { Textarea } from "./ui/textarea";
 import {
@@ -214,8 +214,6 @@ interface PersonInfo {
   IsDeleted: boolean;
 }
 
-export type { PersonInfo };
-
 interface DetailInformationProps {
   data: {
     Relations: Relation[];
@@ -316,12 +314,14 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   };
   const handleSendMail = () => {
     setIsUnansweredDialogOpen(false);
-    const message = unMessageRef.current?.value;
+    const message = unMessageRef.current?.value || "";
     console.log(
       "send mail:",
-      selectedRelation?.PersonEmail,
+      selectedRelation?.PhoneNumber1,
       "message:",
-      message
+      message,
+      "userId:",
+      selectedRelation?.PersonId
     );
   };
   const handleNewRelation = () => {

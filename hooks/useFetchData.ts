@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const OAUTH_TOKEN = process.env.NEXT_PUBLIC_OAUTH_TOKEN;
@@ -148,6 +148,32 @@ const fetchPersonInfo = async (personId: number) => {
   return response.json();
 };
 
+const sendSMS = async (
+  personId: number,
+  phoneNumber: string,
+  message: string
+) => {
+  const response = await fetch(`${BASE_URL}/persons/sms`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
+      "Accept-Language": "English",
+    },
+    body: JSON.stringify({
+      PersonId: personId,
+      phoneNumber: phoneNumber,
+      Message: message,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 export const useFetchProperties = (
   statusesID: number,
   siteIds: number[],
@@ -192,5 +218,16 @@ export const useFetchPersonInfo = (personId: number) => {
   return useQuery({
     queryKey: ["personInfo", personId],
     queryFn: () => fetchPersonInfo(personId),
+  });
+};
+
+export const useSendSMS = (
+  personId: number,
+  phoneNumber: string,
+  message: string
+) => {
+  return useQuery({
+    queryKey: ["sendSMS", personId, phoneNumber, message],
+    queryFn: () => sendSMS(personId, phoneNumber, message),
   });
 };
