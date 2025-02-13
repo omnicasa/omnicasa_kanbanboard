@@ -12,8 +12,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useFetchPersonInfo } from "@/hooks/useFetchData";
 import { useMailStore } from "@/store/useStore";
 
@@ -269,8 +274,14 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
     };
     mailStore.setSelectedMailItem(item);
   };
-  const handlePhone = (relation: Relation) => {
-    console.log("Phone", relation);
+  const handleMute = (relation: Relation) => {
+    console.log("Mute", relation);
+  };
+  const handleCall = (relation: Relation) => {
+    console.log("Call", relation);
+  };
+  const handleVideo = (relation: Relation) => {
+    console.log("Video", relation);
   };
   const handleView = (relation: Relation) => {
     console.log("View", relation);
@@ -361,12 +372,6 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                       />
                     </div>
                     <div className="px-3 py-2 border rounded-md shadow-md">
-                      {/* <Phone
-                        width={33}
-                        height={20}
-                        className="cursor-pointer"
-                        onClick={() => handlePhone(relation)}
-                      /> */}
                       <Dialog>
                         <DialogTrigger asChild>
                           <Phone
@@ -375,12 +380,61 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                             className="cursor-pointer"
                           />
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[324px] h-[300px] py-6 flex flex-col">
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="name" className="text-right">
-                              Talan Curtis
-                            </Label>
-                            <p className="">Calling ...</p>
+                        <DialogContent className="sm:max-w-[324px] h-[300px] py-6 flex flex-col gap-5 bg-black">
+                          <DialogHeader>
+                            <DialogTitle></DialogTitle>
+                          </DialogHeader>
+                          <div className="flex flex-col gap-2 items-center">
+                            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                              {relation.ShortName}
+                            </div>
+                            <h2 className="text-white text-md font-semibold leading-normal font-sans">
+                              {relation.PersonName}
+                            </h2>
+                          </div>
+                          <p className="text-[#E4E4E7] text-center font-normal text-base leading-md">
+                            Calling ...
+                          </p>
+                          <div className="flex items-end gap-4 justify-around">
+                            <div className="flex flex-col items-center">
+                              <Image
+                                src="/images/mute.svg"
+                                width={48}
+                                height={48}
+                                alt="mute"
+                                className="cursor-pointer p-[11px] rounded-full bg-[#909399]"
+                                onClick={() => handleMute(relation)}
+                              />
+                              <p className="text-white text-sm font-sans font-normal leading-5">
+                                Mute
+                              </p>
+                            </div>
+                            <div className="flex flex-col items-center">
+                              <Image
+                                src="/images/call.svg"
+                                width={64}
+                                height={64}
+                                alt="end"
+                                className="cursor-pointer p-[11px] rounded-full bg-[#B32C2C]"
+                                onClick={() => handleCall(relation)}
+                              />
+                              <p className="text-white text-sm font-sans font-normal leading-5">
+                                End
+                              </p>
+                            </div>
+                            <div className="flex flex-col items-center">
+                              <Image
+                                src="/images/video.svg"
+                                width={48}
+                                height={48}
+                                alt="video"
+                                className="cursor-pointer p-[11px] rounded-full bg-[#909399]"
+                                onClick={() => handleVideo(relation)}
+                              />
+                              <p className="text-white text-sm font-sans font-normal leading-5">
+                                Video
+                              </p>
+                            </div>
                           </div>
                         </DialogContent>
                       </Dialog>
