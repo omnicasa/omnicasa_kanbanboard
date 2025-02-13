@@ -20,6 +20,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useFetchPersonInfo } from "@/hooks/useFetchData";
+import { useMailStore } from "@/store/useStore";
 
 interface Relation {
   Id: number;
@@ -218,10 +219,7 @@ const languageEnum = {
 };
 
 const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
-  const [proprietor, setProprietor] = useState(false);
-  const [seller, setSeller] = useState(false);
-  const [corporate, setCorporate] = useState(false);
-
+  const mailStore = useMailStore();
   const { Relations } = data;
   const initialTriggerVisible = Relations
     ? Object.fromEntries(
@@ -268,19 +266,27 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
     setSelectedId(id);
   };
 
-  const handleProprietor = () => {
-    setProprietor(!proprietor);
+  const handleMail = (relation: Relation) => {
+    console.log("Mail", relation);
+    const item = {
+      id: relation.PersonId,
+      clicked: true,
+    };
+    mailStore.setSelectedMailItem(item);
   };
-  const handleSeller = () => {
-    setSeller(!seller);
+  const handlePhone = (relation: Relation) => {
+    console.log("Phone", relation);
   };
-  const handleCorporate = () => {
-    setCorporate(!corporate);
+  const handleView = (relation: Relation) => {
+    console.log("View", relation);
+  };
+  const handleEdit = (relation: Relation) => {
+    console.log("Edit", relation);
   };
   return (
     <div className="flex flex-col itesm-start w-[324px] p-5 gap-5 bg-white border rounded-lg shadow-md h-full">
       <h2 className="text-card-foreground text-base font-semibold leading-normal font-sans">
-        Relations{Relations?.length}
+        Relations
       </h2>
       {Relations && (
         <Accordion
@@ -351,17 +357,37 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 justify-between">
-                    <div className="px-4 py-2 border rounded-md shadow-md">
-                      <Mail width={33} height={20} />
+                    <div className="px-3 py-2 border rounded-md shadow-md">
+                      <Mail
+                        width={33}
+                        height={20}
+                        className="cursor-pointer"
+                        onClick={() => handleMail(relation)}
+                      />
                     </div>
-                    <div className="px-4 py-2 border rounded-md shadow-md">
-                      <Phone width={33} height={20} />
+                    <div className="px-3 py-2 border rounded-md shadow-md">
+                      <Phone
+                        width={33}
+                        height={20}
+                        className="cursor-pointer"
+                        onClick={() => handlePhone(relation)}
+                      />
                     </div>
-                    <div className="px-4 py-2 border rounded-md shadow-md">
-                      <Eye width={33} height={20} />
+                    <div className="px-3 py-2 border rounded-md shadow-md">
+                      <Eye
+                        width={33}
+                        height={20}
+                        className="cursor-pointer"
+                        onClick={() => handleView(relation)}
+                      />
                     </div>
-                    <div className="px-4 py-2 border rounded-md shadow-md">
-                      <Pencil width={33} height={20} />
+                    <div className="px-3 py-2 border rounded-md shadow-md">
+                      <Pencil
+                        width={33}
+                        height={20}
+                        className="cursor-pointer"
+                        onClick={() => handleEdit(relation)}
+                      />
                     </div>
                   </div>
                   <Separator className="border" />

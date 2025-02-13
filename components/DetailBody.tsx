@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,6 +10,7 @@ import { Paperclip } from "lucide-react";
 import { Separator } from "./ui/separator";
 import CustomCombobox from "./CustomCombobox";
 import DetailHistory from "./DetailHistory";
+import { useMailStore } from "@/store/useStore";
 
 const receiveUsers = [
   {
@@ -38,10 +39,17 @@ interface User {
 const DetailBody: React.FC = () => {
   const [activeTab, setActiveTab] = useState("note");
   const [activeBottomTab, setActiveBottomTab] = useState("all");
+  const selectedMailItem = useMailStore((state) => state.selectedMailItem);
 
   const handleReceiveUserSelect = (user: User) => {
     console.log(user);
   };
+
+  useEffect(() => {
+    if (selectedMailItem.clicked) {
+      setActiveTab("message");
+    }
+  }, [selectedMailItem]);
 
   return (
     <div className="flex flex-col itesm-start flex-1 gap-5">
