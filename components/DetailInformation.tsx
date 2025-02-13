@@ -28,6 +28,7 @@ interface Relation {
   PersonEmail: string;
   PhoneNumber1: string;
   PersonId: number;
+  ShortName: string;
 }
 
 interface Mult {
@@ -236,7 +237,6 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   );
 
   const { data: personInfomation, refetch } = useFetchPersonInfo(selectedId);
-  console.log("personInfo=>", personInfomation);
 
   useEffect(() => {
     // Update triggerVisible if Relations changes
@@ -317,19 +317,16 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
               <AccordionContent>
                 <div className="flex flex-col gap-5 py-5">
                   <div className="flex gap-2 items-center">
-                    <Image
-                      src="/images/avatar.png"
-                      alt="avatar"
-                      width={48}
-                      height={48}
-                    />
+                    <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                      {relation.ShortName}
+                    </div>
                     <div className="flex flex-col gap-1 align-start">
                       <h2 className="text-card-foreground text-base font-semibold leading-normal font-sans">
                         {relation.PersonName}
                       </h2>
                       <Badge
                         variant="secondary"
-                        className="w-[54px] text-center px-2.5 py-0.5 border rounded-md border-transparent bg-secondary"
+                        className="w-min text-center px-2.5 py-0.5 border rounded-md border-transparent bg-secondary"
                       >
                         {relation.RelationTypeNameEN}
                       </Badge>
@@ -413,7 +410,7 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                         Lead Source
                       </h3>
                       <h3 className="text-primary font-sans text-base font-normal leading-normal flex-1-6">
-                        {personInfomation?.OriginContactInfo.NameEN}
+                        {personInfomation?.OriginContactInfo?.NameEN}
                       </h3>
                     </div>
                   </div>
