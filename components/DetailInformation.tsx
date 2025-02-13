@@ -274,6 +274,10 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
     };
     mailStore.setSelectedMailItem(item);
   };
+  const handlePhone = (relation: Relation) => {
+    const phoneNumber = relation.PhoneNumber1;
+    window.location.href = `tel:${phoneNumber}`;
+  };
   const handleMute = (relation: Relation) => {
     console.log("Mute", relation);
   };
@@ -378,23 +382,39 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                             width={33}
                             height={20}
                             className="cursor-pointer"
+                            onClick={() => handlePhone(relation)}
                           />
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[324px] h-[300px] py-6 flex flex-col gap-5 bg-black">
+                        <DialogContent className="sm:max-w-[324px] py-6 flex flex-col gap-5 bg-black">
                           <DialogHeader>
                             <DialogTitle></DialogTitle>
                           </DialogHeader>
                           <div className="flex flex-col gap-2 items-center">
-                            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center relative">
                               {relation.ShortName}
                             </div>
-                            <h2 className="text-white text-md font-semibold leading-normal font-sans">
+                            <Image
+                              src="/images/call.gif"
+                              width={145}
+                              height={145}
+                              alt="calling"
+                              className="absolute top-1"
+                            />
+                            <h2 className="text-white text-md font-semibold leading-normal font-sans mt-2">
                               {relation.PersonName}
                             </h2>
                           </div>
-                          <p className="text-[#E4E4E7] text-center font-normal text-base leading-md">
-                            Calling ...
-                          </p>
+                          <div className="flex items-center justify-center">
+                            <p className="text-[#E4E4E7] font-normal text-base leading-md pr-1">
+                              Calling
+                            </p>
+                            <Image
+                              src="/images/dot.gif"
+                              width={14}
+                              height={10}
+                              alt="dot calling"
+                            />
+                          </div>
                           <div className="flex items-end gap-4 justify-around">
                             <div className="flex flex-col items-center">
                               <Image
