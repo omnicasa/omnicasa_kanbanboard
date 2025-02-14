@@ -11,7 +11,11 @@ import { Separator } from "./ui/separator";
 import CustomCombobox from "./CustomCombobox";
 import DetailHistory from "./DetailHistory";
 import { useMailStore, useSendMessageStore } from "@/store/useStore";
-import { addHistory, useFetchAuthConfig } from "@/hooks/useFetchData";
+import {
+  addHistory,
+  isInternational,
+  useFetchAuthConfig,
+} from "@/hooks/useFetchData";
 
 const receiveUsers = [
   {
@@ -37,17 +41,35 @@ interface User {
   label: string;
 }
 
+interface Relation {
+  Id: number;
+  PersonName: string;
+  RelationTypeNameEN: string;
+  PersonEmail: string;
+  PhoneNumber1: string;
+  PersonId: number;
+  ShortName: string;
+}
+
 interface DetailBodyProps {
   data: {
     Id: number;
     Reference: string;
     Address: string;
     CityName: string;
+    Relations: Relation[];
   };
 }
 
 const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
-  const { Id: propertyId, Reference, Address, CityName } = data || {};
+  const {
+    Id: propertyId,
+    Reference,
+    Address,
+    CityName,
+    Relations,
+  } = data || {};
+  console.log("body props data=>", data);
   const [activeTab, setActiveTab] = useState("note");
   const [activeBottomTab, setActiveBottomTab] = useState("all");
   const selectedMailItem = useMailStore((state) => state.selectedMailItem);
@@ -58,6 +80,28 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
 
   const { data: userInfo } = useFetchAuthConfig();
   const { Id: userId, Email, Name, PhoneNumber } = userInfo?.UserInfo || {};
+
+  const [internationalStatus, setInternationalStatus] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  useEffect(() => {
+    const fetchInternationalStatus = async () => {
+      if (!Relations) return;
+      const status = await Promise.all(
+        Relations.map(async (relation) => {
+          const response = await isInternational(relation.PhoneNumber1);
+          return { [relation.PhoneNumber1]: response };
+        })
+      );
+      const statusObject = status.reduce((acc, item) => {
+        return { ...acc, ...item };
+      }, {});
+      console.log("status object=>", statusObject);
+      setInternationalStatus(statusObject);
+    };
+    fetchInternationalStatus();
+  }, [Relations]);
 
   const handleReceiveUserSelect = (user: User) => {
     console.log(user);
