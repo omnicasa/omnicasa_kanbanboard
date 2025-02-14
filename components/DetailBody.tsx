@@ -11,7 +11,11 @@ import { Separator } from "./ui/separator";
 import CustomCombobox from "./CustomCombobox";
 import DetailHistory from "./DetailHistory";
 import { useMailStore } from "@/store/useStore";
-import { addHistory, useFetchAuthConfig } from "@/hooks/useFetchData";
+import {
+  addHistory,
+  useFetchAuthConfig,
+  useFetchHistory,
+} from "@/hooks/useFetchData";
 
 const receiveUsers = [
   {
@@ -56,6 +60,9 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
   const { data: userInfo } = useFetchAuthConfig();
   const { Id: userId, Email, Name, PhoneNumber } = userInfo?.UserInfo || {};
 
+  const { data: historys } = useFetchHistory(propertyId);
+  console.log("historys=>", historys);
+
   const handleReceiveUserSelect = (user: User) => {
     console.log(user);
   };
@@ -75,6 +82,10 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
         Email, // email
         PhoneNumber // phoneNumber
       );
+    } else if (activeTab === "message") {
+      console.log("message");
+    } else {
+      console.log("text message");
     }
   };
 

@@ -146,6 +146,11 @@ const fetchSourceContact = async () => {
 };
 
 const fetchPersonInfo = async (personId: number) => {
+  if (personId === 0 || personId === undefined) {
+    console.error("Invalid personId");
+    return;
+  }
+
   const response = await fetch(
     `${BASE_URL}/persons/${personId}/preview?tabs=*`,
     {
@@ -265,6 +270,40 @@ export const addHistory = async (
   return response.json();
 };
 
+const getHistory = async (propertyId: number) => {
+  const response = await fetch(
+    `${BASE_URL}/histories/${propertyId}/histories`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OAUTH_TOKEN}`,
+        "Accept-Language": "English",
+      },
+      body: JSON.stringify({
+        IncludeUnits: false,
+        Id: propertyId,
+        PageIndex: 1,
+        PageSize: 20,
+        Fields: "*", //all fields, or limit this
+        Mode: "General",
+        Module: "Object",
+        Condition: {
+          HisTypeId: null,
+          CandidateId: null,
+          IsMatching: false,
+        },
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 export const useFetchAuthConfig = () => {
   return useQuery({
     queryKey: ["authConfig"],
@@ -316,5 +355,12 @@ export const useFetchPersonInfo = (personId: number) => {
   return useQuery({
     queryKey: ["personInfo", personId],
     queryFn: () => fetchPersonInfo(personId),
+  });
+};
+
+export const useFetchHistory = (propertyId: number) => {
+  return useQuery({
+    queryKey: ["getHistory", propertyId],
+    queryFn: () => getHistory(propertyId),
   });
 };
