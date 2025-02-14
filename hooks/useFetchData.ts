@@ -170,6 +170,26 @@ const fetchPersonInfo = async (personId: number) => {
   return response.json();
 };
 
+const fetchINITMessage = async () => {
+  const response = await fetch(
+    `${BASE_URL}/reports/send-message/change-infos/INIT`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OAUTH_TOKEN}`,
+        "Accept-Language": "English",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 export const sendSMS = async (
   personId: number,
   phoneNumber: string,
@@ -362,5 +382,12 @@ export const useFetchHistory = (propertyId: number) => {
   return useQuery({
     queryKey: ["getHistory", propertyId],
     queryFn: () => getHistory(propertyId),
+  });
+};
+
+export const useFetchINITMessage = () => {
+  return useQuery({
+    queryKey: ["INITMessage"],
+    queryFn: fetchINITMessage,
   });
 };

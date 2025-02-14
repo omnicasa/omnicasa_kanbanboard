@@ -54,6 +54,7 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
   const [newNote, setNewNote] = useState("");
   const mailStore = useMailStore();
   const sendMessageStore = useSendMessageStore();
+  const [textMessage, setTextMessage] = useState("");
 
   const { data: userInfo } = useFetchAuthConfig();
   const { Id: userId, Email, Name, PhoneNumber } = userInfo?.UserInfo || {};
@@ -182,6 +183,8 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
               <Separator />
               <Textarea
                 placeholder="Enter a text message"
+                value={textMessage}
+                onChange={(e) => setTextMessage(e.target.value)}
                 className="h-[110px] min-h-[60px] px-3 py-2 overflow-hidden text-muted-foreground text-ellipse whitespace-nowrap text-sm leading-normal font-sans font-normal bg-white border-none shadow-none"
               />
             </TabsContent>
