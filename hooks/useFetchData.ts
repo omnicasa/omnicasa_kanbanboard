@@ -148,11 +148,16 @@ const fetchPersonInfo = async (personId: number) => {
   return response.json();
 };
 
-const sendSMS = async (
+export const sendSMS = async (
   personId: number,
   phoneNumber: string,
   message: string
 ) => {
+  if (personId === 0 || phoneNumber === "") {
+    console.error("Invalid personId or phoneNumber");
+    return;
+  }
+
   const response = await fetch(`${BASE_URL}/persons/sms`, {
     method: "POST",
     headers: {
@@ -218,16 +223,5 @@ export const useFetchPersonInfo = (personId: number) => {
   return useQuery({
     queryKey: ["personInfo", personId],
     queryFn: () => fetchPersonInfo(personId),
-  });
-};
-
-export const useSendSMS = (
-  personId: number,
-  phoneNumber: string,
-  message: string
-) => {
-  return useQuery({
-    queryKey: ["sendSMS", personId, phoneNumber, message],
-    queryFn: () => sendSMS(personId, phoneNumber, message),
   });
 };

@@ -21,7 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useFetchPersonInfo, useSendSMS } from "@/hooks/useFetchData";
+import { sendSMS, useFetchPersonInfo } from "@/hooks/useFetchData";
 import { useMailStore } from "@/store/useStore";
 import { Textarea } from "./ui/textarea";
 import {
@@ -312,17 +312,16 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
     const message = { TYPE: "edit-person", ID: relation.PersonId };
     window.postMessage(message, "*");
   };
-  const handleSendMail = () => {
+  const handleSendMail = async () => {
     setIsUnansweredDialogOpen(false);
     const message = unMessageRef.current?.value || "";
-    console.log(
-      "send mail:",
-      selectedRelation?.PhoneNumber1,
-      "message:",
-      message,
-      "userId:",
-      selectedRelation?.PersonId
-    );
+    if (selectedRelation?.PersonId && selectedRelation?.PhoneNumber1) {
+      await sendSMS(
+        selectedRelation.PersonId,
+        selectedRelation.PhoneNumber1,
+        message
+      );
+    }
   };
   const handleNewRelation = () => {
     console.log("New relation");
