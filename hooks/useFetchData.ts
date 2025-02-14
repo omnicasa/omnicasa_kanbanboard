@@ -147,7 +147,7 @@ const fetchSourceContact = async () => {
 
 const fetchPersonInfo = async (personId: number) => {
   if (personId === 0 || personId === undefined) {
-    console.error("Invalid personId");
+    console.log("Invalid personId");
     return;
   }
 
@@ -176,7 +176,7 @@ export const sendSMS = async (
   message: string
 ) => {
   if (personId === 0 || phoneNumber === "") {
-    console.error("Invalid personId or phoneNumber");
+    console.log("Invalid personId or phoneNumber");
     return;
   }
 

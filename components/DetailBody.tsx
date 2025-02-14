@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,12 +10,8 @@ import { Paperclip } from "lucide-react";
 import { Separator } from "./ui/separator";
 import CustomCombobox from "./CustomCombobox";
 import DetailHistory from "./DetailHistory";
-import { useMailStore } from "@/store/useStore";
-import {
-  addHistory,
-  useFetchAuthConfig,
-  useFetchHistory,
-} from "@/hooks/useFetchData";
+import { useMailStore, useSendMessageStore } from "@/store/useStore";
+import { addHistory, useFetchAuthConfig } from "@/hooks/useFetchData";
 
 const receiveUsers = [
   {
@@ -56,6 +52,7 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
   const [activeBottomTab, setActiveBottomTab] = useState("all");
   const selectedMailItem = useMailStore((state) => state.selectedMailItem);
   const [newNote, setNewNote] = useState("");
+  const sendMessageStore = useSendMessageStore();
 
   const { data: userInfo } = useFetchAuthConfig();
   const { Id: userId, Email, Name, PhoneNumber } = userInfo?.UserInfo || {};
@@ -66,7 +63,7 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
 
   const handleMessageSave = async () => {
     if (activeTab === "note") {
-      await addHistory(
+      const response = await addHistory(
         0, // hisTypeId
         newNote, // message
         userId, // useId
@@ -79,6 +76,14 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
         Email, // email
         PhoneNumber // phoneNumber
       );
+      if (response.Id) {
+        setNewNote("");
+        sendMessageStore.setSendMessageItem({
+          message: newNote,
+          type: "note",
+          state: true,
+        });
+      }
     } else if (activeTab === "message") {
       console.log("message");
     } else {

@@ -10,8 +10,9 @@ import {
   PhoneOutgoing,
   Play,
 } from "lucide-react";
-import React from "react";
+import React, { use, useEffect } from "react";
 import { format, isToday, parseISO } from "date-fns";
+import { useSendMessageStore } from "@/store/useStore";
 
 interface DetailHistoryProps {
   id: number;
@@ -19,11 +20,33 @@ interface DetailHistoryProps {
 }
 
 const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
-  console.log(id, type);
-  const { data: historys } = useFetchHistory(id);
+  const { data: historys, refetch } = useFetchHistory(id);
+  const messageItem = useSendMessageStore((state) => state.sendMessageItem);
+
+  useEffect(() => {
+    if (messageItem.state) refetch();
+  }, [messageItem]);
+
+  const filteredHistory = historys?.Records?.filter((record: any) => {
+    switch (type) {
+      case "outgoing":
+        return record.TypeNameNL === "Tel uit";
+      case "sms":
+        return record.TypeNameNL === "SMS verzonden";
+      case "call":
+        return record.TypeNameNL === "Tel in";
+      case "emailout":
+        return record.TypeNameNL === "Email uit";
+      case "notes":
+        return record.TypeNameNL === "Contact";
+      case "all":
+      default:
+        return true;
+    }
+  });
 
   // Extract relevant fields and group by Date
-  const groupedHistory = historys?.Records?.reduce((acc: any, record: any) => {
+  const groupedHistory = filteredHistory?.reduce((acc: any, record: any) => {
     const date = format(new Date(record.Date), "yyyy-MM-dd");
     if (!acc[date]) {
       acc[date] = [];
@@ -89,17 +112,13 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
                           <p className="text-base text-muted-foreground font-sans font-normal leading-small">
                             {format(
                               new Date(record.Date),
-                              "dd/MM/yyyy, HH:mm:ss"
+                              "MM/dd/yyyy, HH:mm:ss"
                             )}{" "}
                             - By{" "}
                             <span className="text-[#0786FD]">
                               {record.CreateUserInfo.Name}
                             </span>{" "}
-                            - Contact:{" "}
-                            <span className="text-[#0786FD]">
-                              {record.ReferencePerson}
-                            </span>{" "}
-                            - Email/SMS Status:{" "}
+                            - Call Status:{" "}
                             <span className="text-primary">
                               {record.Done ? "Closed" : "Open"}
                             </span>
@@ -146,7 +165,7 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
                             <p className="text-base text-muted-foreground font-sans font-normal leading-small">
                               {format(
                                 new Date(record.Date),
-                                "dd/MM/yyyy, HH:mm:ss"
+                                "MM/dd/yyyy, HH:mm:ss"
                               )}{" "}
                               - By{" "}
                               <span className="text-[#0786FD]">
@@ -193,13 +212,13 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
                             <p className="text-base text-muted-foreground font-sans font-normal leading-small">
                               {format(
                                 new Date(record.Date),
-                                "dd/MM/yyyy, HH:mm:ss"
+                                "MM/dd/yyyy, HH:mm:ss"
                               )}{" "}
                               - By{" "}
                               <span className="text-[#0786FD]">
                                 {record.CreateUserInfo.Name}
                               </span>{" "}
-                              - Email/SMS Status:{" "}
+                              - Notes Status:{" "}
                               <span className="text-primary">
                                 {record.Done ? "Closed" : "Open"}
                               </span>
