@@ -9,7 +9,14 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { Bath, BedDouble, CarFront, FileText, Map } from "lucide-react";
+import {
+  ArrowDownToLine,
+  Bath,
+  BedDouble,
+  CarFront,
+  Eye,
+  Map,
+} from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "./ui/button";
 import DetailStatus from "./DetailStatus";
@@ -81,6 +88,45 @@ const pipeline = [
   },
 ];
 
+interface DocumentTypeInfo {
+  Id: number;
+  NameNL: string;
+  NameFR: string;
+  NameEN: string;
+  NameDE: string;
+}
+
+interface PublishOnInternetInfo {
+  Id: number;
+  NameNL: string;
+  NameFR: string;
+  NameEN: string;
+  NameDE: string;
+}
+
+interface Document {
+  Comments: string;
+  CreatedDate: string;
+  DocumentTypeId: number;
+  DocumentTypeInfo: DocumentTypeInfo;
+  FilePath: string;
+  Filename: string;
+  GroupId: number;
+  IconURL: string;
+  Id: number;
+  IsConvertToPDF: boolean;
+  IsExternalDocument: boolean;
+  IsFolder: boolean;
+  IsIncludeInMail: boolean;
+  IsMissingOnCloud: boolean;
+  ItemState: number;
+  ModifiedDate: string;
+  PropertyId: number;
+  PublishOnInternetId: number;
+  PublishOnInternetInfo: PublishOnInternetInfo;
+  URL: string;
+}
+
 interface Picture {
   DescriptionOfCA: string;
   DescriptionOfDE: string;
@@ -131,6 +177,7 @@ interface DetailPropertyProps {
     Record: string;
     ManagerId: number;
     Comment: string;
+    Documents: Document[];
   };
 }
 
@@ -172,10 +219,13 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
     Record,
     ManagerId,
     Comment,
+    Documents,
   } = data || {};
 
   const [isClient, setIsClient] = useState(false);
   const [isShowMore, setIsShowMore] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+  const itemsToShow = showAll ? Documents.length : 3;
 
   const images = Pictures
     ? Pictures.map((picture) => picture.OriginalPublishUrl)
@@ -329,6 +379,21 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
 
   const handleShowMore = () => {
     setIsShowMore(!isShowMore);
+  };
+
+  const handleDownload = (item: Document) => {
+    console.log("==>", item);
+    const link = document.createElement("a");
+    link.href = item.FilePath;
+    link.download = item.Filename;
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleView = (item: Document) => {
+    console.log("===>", item);
   };
 
   return (
@@ -527,56 +592,59 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
         <h1 className="text-card-foreground font-sans text-base font-semibold leading-6 capitalize">
           PDF Attachments
         </h1>
-        <div className="flex flex-col items-start mt-4 gap-3 w-full">
-          <div className="flex items-start justify-between p-2 gap-2.5 w-full">
-            <FileText className="h-[40px] w-[40px] text-[#B30B00] p-[6.67px]" />
-            <div className="flex flex-col items-start gap-1 flex-1">
-              <h2 className="overflow-hidden text-primary text-ellipsis font-sans text-sm font-normal leading-5 flex-1">
-                Zimmo_report_2025-01-24.pdf
-              </h2>
-              <h3 className="text-muted-foreground font-sans text-xs font-normal leading-none flex-1">
-                Portal: Immoweb
-              </h3>
-              <h3 className="text-muted-foreground font-sans text-xs font-normal leading-none flex-1">
-                Date: 2025-01-23
-              </h3>
+        {Documents && Documents.length > 0 && (
+          <>
+            <div className="flex flex-col items-start mt-4 gap-3 w-full">
+              {Documents.slice(0, itemsToShow).map(
+                (document: Document, index) => (
+                  <div
+                    key={index}
+                    className="relative flex items-start justify-between p-2 gap-2.5 w-full group"
+                  >
+                    <Image
+                      src={document.IconURL}
+                      alt={`pdf-${index}`}
+                      width={40}
+                      height={40}
+                      className="text-[#B30B00]"
+                    />
+                    <div className="flex flex-col items-start gap-1 flex-1">
+                      <h2 className="overflow-hidden text-primary text-ellipsis font-sans text-sm font-normal leading-5 flex-1">
+                        {document.Comments}
+                      </h2>
+                      <h3 className="text-muted-foreground font-sans text-xs font-normal leading-none flex-1">
+                        Portal: Immoweb
+                      </h3>
+                      <h3 className="text-muted-foreground font-sans text-xs font-normal leading-none flex-1">
+                        Date:{" "}
+                        {new Date(document.CreatedDate).toLocaleDateString(
+                          "en-CA"
+                        )}
+                      </h3>
+                    </div>
+                    <div className="absolute right-2 top-6 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowDownToLine
+                        onClick={() => handleDownload(document)}
+                        className="h-5 w-5 text-muted-foreground cursor-pointer"
+                      />
+                      <Eye
+                        onClick={() => handleView(document)}
+                        className="h-5 w-5 text-muted-foreground cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                )
+              )}
             </div>
-          </div>
-          <div className="flex items-start justify-between p-2 gap-2.5 w-full">
-            <FileText className="h-[40px] w-[40px] text-[#B30B00] p-[6.67px]" />
-            <div className="flex flex-col items-start gap-1 flex-1">
-              <h2 className="overflow-hidden text-primary text-ellipsis font-sans text-sm font-normal leading-5 flex-1">
-                Zimmo_report_2025-01-24.pdf
-              </h2>
-              <h3 className="text-muted-foreground font-sans text-xs font-normal leading-none flex-1">
-                Portal: Immoweb
-              </h3>
-              <h3 className="text-muted-foreground font-sans text-xs font-normal leading-none flex-1">
-                Date: 2025-01-23
-              </h3>
-            </div>
-          </div>
-          <div className="flex items-start justify-between p-2 gap-2.5 w-full">
-            <FileText className="h-[40px] w-[40px] text-[#B30B00] p-[6.67px]" />
-            <div className="flex flex-col items-start gap-1 flex-1">
-              <h2 className="overflow-hidden text-primary text-ellipsis font-sans text-sm font-normal leading-5 flex-1">
-                Zimmo_report_2025-01-24.pdf
-              </h2>
-              <h3 className="text-muted-foreground font-sans text-xs font-normal leading-none flex-1">
-                Portal: Immoweb
-              </h3>
-              <h3 className="text-muted-foreground font-sans text-xs font-normal leading-none flex-1">
-                Date: 2025-01-23
-              </h3>
-            </div>
-          </div>
-        </div>
-        <Button
-          variant="outline"
-          className="flex h-9 px-4 py-2 justify-center items-center gap-2 self-stretch rounded-md border bg-white shadow-sm"
-        >
-          Shore more
-        </Button>
+            <Button
+              variant="outline"
+              className="flex h-9 px-4 py-2 justify-center items-center gap-2 self-stretch rounded-md border bg-white shadow-sm"
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? "Show less" : "Show more"}
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );

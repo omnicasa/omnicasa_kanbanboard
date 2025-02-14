@@ -12,7 +12,6 @@ const LeadDetails = () => {
   const id = searchParams.get("id");
 
   const { data } = useFetchLeadDetails(Number(id));
-
   const {
     Pictures,
     PurposeId,
@@ -32,6 +31,8 @@ const LeadDetails = () => {
     Record,
     ManagerId,
     Comment,
+    Documents,
+    Relations,
   } = data || {};
 
   const detailPropertyData = {
@@ -53,6 +54,11 @@ const LeadDetails = () => {
     Record,
     ManagerId,
     Comment,
+    Documents,
+  };
+
+  const detailInformationData = {
+    Relations,
   };
 
   return (
@@ -61,7 +67,7 @@ const LeadDetails = () => {
       <div className="flex p-5 gap-5 align-start bg-secondary justify-between">
         <DetailProperty data={detailPropertyData} />
         <DetailBody />
-        <DetailInformation />
+        <DetailInformation data={detailInformationData} />
       </div>
     </main>
   );
