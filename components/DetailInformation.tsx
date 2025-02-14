@@ -134,6 +134,8 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   };
   const handleViewDetails = (relation: Relation) => {
     console.log("View", relation);
+    const message = { TYPE: "view-person", ID: relation.PersonId };
+    window.postMessage(message, "*");
   };
   const handleEdit = (relation: Relation) => {
     console.log("Edit", relation);
@@ -153,6 +155,8 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   };
   const handleNewRelation = () => {
     console.log("New relation");
+    const message = { TYPE: "new-relation" };
+    window.postMessage(message, "*");
   };
 
   useEffect(() => {
@@ -165,7 +169,13 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
 
         const message = event.data;
         if (message.TYPE === "edit-person") {
-          console.log("Person ID:", message.ID);
+          console.log("Post message:", message);
+          // Handle the message
+        } else if (message.TYPE === "view-person") {
+          console.log("Post message:", message);
+          // Handle the message
+        } else if (message.TYPE === "new-relation") {
+          console.log("Post message:", message);
           // Handle the message
         }
       });
@@ -180,7 +190,13 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
 
           const message = event.data;
           if (message.TYPE === "edit-person") {
-            console.log("Person ID:", message.ID);
+            console.log("Post message:", message);
+            // Handle the message
+          } else if (message.TYPE === "view-person") {
+            console.log("Post message:", message);
+            // Handle the message
+          } else if (message.TYPE === "new-relation") {
+            console.log("Post message:", message);
             // Handle the message
           }
         });

@@ -3,6 +3,23 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const OAUTH_TOKEN = process.env.NEXT_PUBLIC_OAUTH_TOKEN;
 
+const fetchAuthConfig = async () => {
+  const response = await fetch(`${BASE_URL}/users/auth-config`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
+      "Accept-Language": "English",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 const fetchProperties = async (
   statusesID: number,
   siteIds: number[],
@@ -177,6 +194,82 @@ export const sendSMS = async (
   }
 
   return response.json();
+};
+
+export const addHistory = async (
+  hisTypeId: number,
+  message: string,
+  useId: number,
+  currentDate: string,
+  propertyId: number,
+  reference: string,
+  address: string,
+  cityName: string,
+  ownerName: string,
+  email: string,
+  phoneNumber: string
+) => {
+  const response = await fetch(`${BASE_URL}/histories`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
+      "Accept-Language": "English",
+    },
+    body: JSON.stringify({
+      Module: null,
+      History: {
+        Id: 0,
+        HisTypeId: hisTypeId, //history type id
+        Subject: "",
+        Content: message, //the comment
+        UserId: useId, // current user (manager)
+        CreateUserId: useId, // same as above
+        ModifyUserId: useId, // same as above
+        Date: currentDate, // timestamp
+        MediaId: null,
+        ExcludeFromReport: null,
+        EventLog: null,
+        Source: null,
+        InternalComment: null,
+      },
+      Properties: [
+        //get all of this from the property api (that you're already calling)
+        {
+          HisDetailId: 0,
+          ItemState: 1,
+          Id: propertyId, //property id
+          ProjectId: 0,
+          Reference: reference,
+          Address: address,
+          CityName: cityName,
+          VisitDuration: null,
+          KeyDesc: null,
+          OwnerName: ownerName,
+          Email: email,
+          PhoneNumber: phoneNumber,
+          ConstructionType: 0,
+        },
+      ],
+      Persons: [],
+      Demands: [],
+      FileNames: [],
+      Receivers: [],
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
+export const useFetchAuthConfig = () => {
+  return useQuery({
+    queryKey: ["authConfig"],
+    queryFn: fetchAuthConfig,
+  });
 };
 
 export const useFetchProperties = (

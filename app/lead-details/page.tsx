@@ -13,6 +13,7 @@ const LeadDetails = () => {
 
   const { data } = useFetchLeadDetails(Number(id));
   const {
+    Id,
     Pictures,
     PurposeId,
     Reference,
@@ -36,6 +37,7 @@ const LeadDetails = () => {
   } = data || {};
 
   const detailPropertyData = {
+    Id,
     Pictures,
     PurposeId,
     Reference,
@@ -66,7 +68,7 @@ const LeadDetails = () => {
       <DetailHeader />
       <div className="flex p-5 gap-5 align-start bg-secondary justify-between">
         <DetailProperty data={detailPropertyData} />
-        <DetailBody />
+        <DetailBody data={detailPropertyData} />
         <DetailInformation data={detailInformationData} />
       </div>
     </main>
