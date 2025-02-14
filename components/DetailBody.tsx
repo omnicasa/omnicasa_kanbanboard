@@ -60,9 +60,6 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
   const { data: userInfo } = useFetchAuthConfig();
   const { Id: userId, Email, Name, PhoneNumber } = userInfo?.UserInfo || {};
 
-  const { data: historys } = useFetchHistory(propertyId);
-  console.log("historys=>", historys);
-
   const handleReceiveUserSelect = (user: User) => {
     console.log(user);
   };
@@ -244,22 +241,22 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="all" />
             </TabsContent>
             <TabsContent value="outgoing" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="outgoing" />
             </TabsContent>
             <TabsContent value="sms" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="sms" />
             </TabsContent>
             <TabsContent value="call" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="call" />
             </TabsContent>
             <TabsContent value="emailout" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="emailout" />
             </TabsContent>
             <TabsContent value="notes" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="notes" />
             </TabsContent>
           </Tabs>
         </CardContent>
