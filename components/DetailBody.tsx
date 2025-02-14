@@ -10,7 +10,8 @@ import { Paperclip } from "lucide-react";
 import { Separator } from "./ui/separator";
 import CustomCombobox from "./CustomCombobox";
 import DetailHistory from "./DetailHistory";
-import { useMailStore } from "@/store/useStore";
+import { useMailStore, useSendMessageStore } from "@/store/useStore";
+import { addHistory, useFetchAuthConfig } from "@/hooks/useFetchData";
 
 const receiveUsers = [
   {
@@ -36,13 +37,72 @@ interface User {
   label: string;
 }
 
-const DetailBody: React.FC = () => {
+interface DetailBodyProps {
+  data: {
+    Id: number;
+    Reference: string;
+    Address: string;
+    CityName: string;
+  };
+}
+
+const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
+  const { Id: propertyId, Reference, Address, CityName } = data || {};
   const [activeTab, setActiveTab] = useState("note");
   const [activeBottomTab, setActiveBottomTab] = useState("all");
   const selectedMailItem = useMailStore((state) => state.selectedMailItem);
+  const [newNote, setNewNote] = useState("");
+  const mailStore = useMailStore();
+  const sendMessageStore = useSendMessageStore();
+  const [textMessage, setTextMessage] = useState("");
+
+  const { data: userInfo } = useFetchAuthConfig();
+  const { Id: userId, Email, Name, PhoneNumber } = userInfo?.UserInfo || {};
 
   const handleReceiveUserSelect = (user: User) => {
     console.log(user);
+  };
+
+  const handleMessageSave = async () => {
+    if (activeTab === "note") {
+      if (newNote) {
+        const response = await addHistory(
+          0, // hisTypeId
+          newNote, // message
+          userId, // useId
+          new Date().toISOString(), // currentDate
+          propertyId, // propertyId
+          Reference, // reference
+          Address, // address
+          CityName, // cityName
+          Name, // ownerName
+          Email, // email
+          PhoneNumber // phoneNumber
+        );
+        if (response.Id) {
+          setNewNote("");
+          sendMessageStore.setSendMessageItem({
+            message: newNote,
+            type: "note",
+            state: true,
+          });
+        }
+      }
+    } else if (activeTab === "message") {
+      console.log("message");
+    } else {
+      console.log("text message");
+    }
+  };
+
+  const handleMessageCancel = () => {
+    setNewNote("");
+    sendMessageStore.setSendMessageItem({
+      message: "",
+      type: "",
+      state: false,
+    });
+    mailStore.setSelectedMailItem({ id: 0, clicked: false });
   };
 
   useEffect(() => {
@@ -84,6 +144,8 @@ const DetailBody: React.FC = () => {
             <TabsContent value="note" className="rounded-md m-0">
               <Textarea
                 placeholder="Enter new note"
+                value={newNote}
+                onChange={(e) => setNewNote(e.target.value)}
                 className="h-[110px] min-h-[60px] px-3 py-2 overflow-hidden text-muted-foreground text-ellipse whitespace-nowrap text-sm leading-normal font-sans font-normal bg-white border-none shadow-none"
               />
             </TabsContent>
@@ -121,6 +183,8 @@ const DetailBody: React.FC = () => {
               <Separator />
               <Textarea
                 placeholder="Enter a text message"
+                value={textMessage}
+                onChange={(e) => setTextMessage(e.target.value)}
                 className="h-[110px] min-h-[60px] px-3 py-2 overflow-hidden text-muted-foreground text-ellipse whitespace-nowrap text-sm leading-normal font-sans font-normal bg-white border-none shadow-none"
               />
             </TabsContent>
@@ -136,10 +200,14 @@ const DetailBody: React.FC = () => {
             <Button
               variant="outline"
               className="px-4 py-2 border rounded-md shadow text-primary text-sm"
+              onClick={handleMessageCancel}
             >
               Cancel
             </Button>
-            <Button className="px-4 py-2 border rounded-md shadow text-primary-foreground text-sm bg-[#0786FD]">
+            <Button
+              className="px-4 py-2 border rounded-md shadow text-primary-foreground text-sm bg-[#0786FD]"
+              onClick={handleMessageSave}
+            >
               Save
             </Button>
           </div>
@@ -192,22 +260,22 @@ const DetailBody: React.FC = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="all" />
             </TabsContent>
             <TabsContent value="outgoing" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="outgoing" />
             </TabsContent>
             <TabsContent value="sms" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="sms" />
             </TabsContent>
             <TabsContent value="call" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="call" />
             </TabsContent>
             <TabsContent value="emailout" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="emailout" />
             </TabsContent>
             <TabsContent value="notes" className="rounded-md mt-5">
-              <DetailHistory />
+              <DetailHistory id={propertyId} type="notes" />
             </TabsContent>
           </Tabs>
         </CardContent>

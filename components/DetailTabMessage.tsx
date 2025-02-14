@@ -1,12 +1,13 @@
 "use client";
 
 import { Separator } from "./ui/separator";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomCombobox from "./CustomCombobox";
 import { Bold, Italic, Underline } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 const sendUsers = [
   {
@@ -96,37 +97,46 @@ const DetailTabMessage: React.FC = () => {
     setSelectedTemplate(template);
   };
 
-  let subject = "Subject";
-  let message = "";
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
 
-  switch (selectedTemplate?.value) {
-    case "Do not use template":
-      subject = "Subject";
-      break;
-    case "Property Inquiry Form":
-      subject = "Your Property Inquiry Form is Ready!";
-      message =
-        "Dear [Customer Name], We hope this message finds you in great spirits! We're thrilled to reach out and share an exciting property opportunity that we believe perfectly aligns with your preferences and needs. Our team has carefully selected this property based on your previous discussions with us, and we think you'll find it quite appealing.";
-      break;
-    case "Open House Registration":
-      subject = "Your Open House Registration is Confirmed!";
-      message =
-        "Dear [Customer Name], Thank you for registering for our open house event. We look forward to seeing you there!";
-      break;
-    case "Virtual Tour Request":
-      subject = "Your Virtual Tour Request is Scheduled!";
-      message =
-        "Dear [Customer Name], Your virtual tour request has been scheduled. We will send you the details shortly.";
-      break;
-    case "Mortgage Pre-Approval Application":
-      subject = "Your Mortgage Pre-Approval Application is Received!";
-      message =
-        "Dear [Customer Name], We have received your mortgage pre-approval application. Our team will review it and get back to you soon.";
-      break;
-    default:
-      subject = "Subject";
-      break;
-  }
+  useEffect(() => {
+    if (!selectedTemplate) return;
+    switch (selectedTemplate?.value) {
+      case "Do not use template":
+        setSubject("");
+        setMessage("");
+        break;
+      case "Property Inquiry Form":
+        setSubject("Your Property Inquiry Form is Ready!");
+        setMessage(
+          "Dear [Customer Name], We hope this message finds you in great spirits! We're thrilled to reach out and share an exciting property opportunity that we believe perfectly aligns with your preferences and needs. Our team has carefully selected this property based on your previous discussions with us, and we think you'll find it quite appealing."
+        );
+        break;
+      case "Open House Registration":
+        setSubject("Your Open House Registration is Confirmed!");
+        setMessage(
+          "Dear [Customer Name], Thank you for registering for our open house event. We look forward to seeing you there!"
+        );
+        break;
+      case "Virtual Tour Request":
+        setSubject("Your Virtual Tour Request is Scheduled!");
+        setMessage(
+          "Dear [Customer Name], Thank you for registering for our open house event. We look forward to seeing you there!"
+        );
+        break;
+      case "Mortgage Pre-Approval Application":
+        setSubject("Your Mortgage Pre-Approval Application is Received!");
+        setMessage(
+          "Dear [Customer Name], Thank you for registering for our open house event. We look forward to seeing you there!"
+        );
+        break;
+      default:
+        setSubject("");
+        setMessage("");
+        break;
+    }
+  }, [selectedTemplate]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -176,10 +186,14 @@ const DetailTabMessage: React.FC = () => {
           />
         </div>
         <Separator />
-        <div className="flex items-center px-3 py-2 h-[52px]">
-          <h2 className="text-base font-sans font-normal leading-normal text-muted-foreground py-2">
-            {subject}
-          </h2>
+        <div className="flex items-center h-[52px]">
+          <Input
+            id="subject"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            placeholder="Subject"
+            className="text-base font-sans font-normal leading-normal text-muted-foreground py-2 border-none shadow-none"
+          />
         </div>
         <Separator />
       </div>
@@ -201,6 +215,7 @@ const DetailTabMessage: React.FC = () => {
         <Textarea
           placeholder="Your message"
           value={message}
+          onChange={(e) => setMessage(e.target.value)}
           className="h-[278px] min-h-[60px] px-3 py-2 text-muted-foreground whitespace-normal text-sm leading-normal font-sans font-normal bg-white border-none shadow-none"
         />
       </div>

@@ -3,6 +3,23 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const OAUTH_TOKEN = process.env.NEXT_PUBLIC_OAUTH_TOKEN;
 
+const fetchAuthConfig = async () => {
+  const response = await fetch(`${BASE_URL}/users/auth-config`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
+      "Accept-Language": "English",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 const fetchProperties = async (
   statusesID: number,
   siteIds: number[],
@@ -129,10 +146,35 @@ const fetchSourceContact = async () => {
 };
 
 const fetchPersonInfo = async (personId: number) => {
+  if (personId === 0 || personId === undefined) {
+    console.log("Invalid personId");
+    return;
+  }
+
   const response = await fetch(
     `${BASE_URL}/persons/${personId}/preview?tabs=*`,
     {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OAUTH_TOKEN}`,
+        "Accept-Language": "English",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
+const fetchINITMessage = async () => {
+  const response = await fetch(
+    `${BASE_URL}/reports/send-message/change-infos/INIT`,
+    {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${OAUTH_TOKEN}`,
@@ -154,7 +196,7 @@ export const sendSMS = async (
   message: string
 ) => {
   if (personId === 0 || phoneNumber === "") {
-    console.error("Invalid personId or phoneNumber");
+    console.log("Invalid personId or phoneNumber");
     return;
   }
 
@@ -177,6 +219,116 @@ export const sendSMS = async (
   }
 
   return response.json();
+};
+
+export const addHistory = async (
+  hisTypeId: number,
+  message: string,
+  useId: number,
+  currentDate: string,
+  propertyId: number,
+  reference: string,
+  address: string,
+  cityName: string,
+  ownerName: string,
+  email: string,
+  phoneNumber: string
+) => {
+  const response = await fetch(`${BASE_URL}/histories`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
+      "Accept-Language": "English",
+    },
+    body: JSON.stringify({
+      Module: null,
+      History: {
+        Id: 0,
+        HisTypeId: hisTypeId, //history type id
+        Subject: "",
+        Content: message, //the comment
+        UserId: useId, // current user (manager)
+        CreateUserId: useId, // same as above
+        ModifyUserId: useId, // same as above
+        Date: currentDate, // timestamp
+        MediaId: null,
+        ExcludeFromReport: null,
+        EventLog: null,
+        Source: null,
+        InternalComment: null,
+      },
+      Properties: [
+        //get all of this from the property api (that you're already calling)
+        {
+          HisDetailId: 0,
+          ItemState: 1,
+          Id: propertyId, //property id
+          ProjectId: 0,
+          Reference: reference,
+          Address: address,
+          CityName: cityName,
+          VisitDuration: null,
+          KeyDesc: null,
+          OwnerName: ownerName,
+          Email: email,
+          PhoneNumber: phoneNumber,
+          ConstructionType: 0,
+        },
+      ],
+      Persons: [],
+      Demands: [],
+      FileNames: [],
+      Receivers: [],
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
+const getHistory = async (propertyId: number) => {
+  const response = await fetch(
+    `${BASE_URL}/histories/${propertyId}/histories`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OAUTH_TOKEN}`,
+        "Accept-Language": "English",
+      },
+      body: JSON.stringify({
+        IncludeUnits: false,
+        Id: propertyId,
+        PageIndex: 1,
+        PageSize: 20,
+        Fields: "*", //all fields, or limit this
+        Mode: "General",
+        Module: "Object",
+        Condition: {
+          HisTypeId: null,
+          CandidateId: null,
+          IsMatching: false,
+        },
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
+export const useFetchAuthConfig = () => {
+  return useQuery({
+    queryKey: ["authConfig"],
+    queryFn: fetchAuthConfig,
+  });
 };
 
 export const useFetchProperties = (
@@ -223,5 +375,19 @@ export const useFetchPersonInfo = (personId: number) => {
   return useQuery({
     queryKey: ["personInfo", personId],
     queryFn: () => fetchPersonInfo(personId),
+  });
+};
+
+export const useFetchHistory = (propertyId: number) => {
+  return useQuery({
+    queryKey: ["getHistory", propertyId],
+    queryFn: () => getHistory(propertyId),
+  });
+};
+
+export const useFetchINITMessage = () => {
+  return useQuery({
+    queryKey: ["INITMessage"],
+    queryFn: fetchINITMessage,
   });
 };
