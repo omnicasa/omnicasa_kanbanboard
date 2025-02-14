@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -52,6 +52,7 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
   const [activeBottomTab, setActiveBottomTab] = useState("all");
   const selectedMailItem = useMailStore((state) => state.selectedMailItem);
   const [newNote, setNewNote] = useState("");
+  const mailStore = useMailStore();
   const sendMessageStore = useSendMessageStore();
 
   const { data: userInfo } = useFetchAuthConfig();
@@ -63,26 +64,28 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
 
   const handleMessageSave = async () => {
     if (activeTab === "note") {
-      const response = await addHistory(
-        0, // hisTypeId
-        newNote, // message
-        userId, // useId
-        new Date().toISOString(), // currentDate
-        propertyId, // propertyId
-        Reference, // reference
-        Address, // address
-        CityName, // cityName
-        Name, // ownerName
-        Email, // email
-        PhoneNumber // phoneNumber
-      );
-      if (response.Id) {
-        setNewNote("");
-        sendMessageStore.setSendMessageItem({
-          message: newNote,
-          type: "note",
-          state: true,
-        });
+      if (newNote) {
+        const response = await addHistory(
+          0, // hisTypeId
+          newNote, // message
+          userId, // useId
+          new Date().toISOString(), // currentDate
+          propertyId, // propertyId
+          Reference, // reference
+          Address, // address
+          CityName, // cityName
+          Name, // ownerName
+          Email, // email
+          PhoneNumber // phoneNumber
+        );
+        if (response.Id) {
+          setNewNote("");
+          sendMessageStore.setSendMessageItem({
+            message: newNote,
+            type: "note",
+            state: true,
+          });
+        }
       }
     } else if (activeTab === "message") {
       console.log("message");
@@ -91,7 +94,15 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
     }
   };
 
-  const handleMessageCancel = () => {};
+  const handleMessageCancel = () => {
+    setNewNote("");
+    sendMessageStore.setSendMessageItem({
+      message: "",
+      type: "",
+      state: false,
+    });
+    mailStore.setSelectedMailItem({ id: 0, clicked: false });
+  };
 
   useEffect(() => {
     if (selectedMailItem.clicked) {
