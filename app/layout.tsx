@@ -6,6 +6,12 @@ import "./globals.css";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar";
 import Header from "@/components/Header";
+import { Inter } from 'next/font/google'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export default function RootLayout({
   children,
@@ -22,7 +28,7 @@ export default function RootLayout({
   });
 
   return (
-    <html lang="en">
+    <html lang="en" className={inter.className}>
       <body>
         <QueryClientProvider client={queryClient}>
           <SidebarProvider
