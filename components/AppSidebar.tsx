@@ -13,7 +13,7 @@ export default function AppSidebar({
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <a href="#" className="p-1.5 bg-[#0786FD] rounded-lg">
+        <a href="#" className="p-1.5 bg-button-primary rounded-lg">
           <Image src="/images/logo.svg" alt="Logo" width={20} height={20} />
         </a>
       </SidebarHeader>

@@ -102,8 +102,8 @@ export default function SelectSite() {
                       checked={selectedSites.includes(item.NameNL)}
                       className={`flex w-4 items-start gap-2 ${
                         selectedSites.includes(item.NameNL)
-                          ? "!bg-[#0786fd] border-transparent"
-                          : "border-[#E4E4E7]"
+                          ? "!bg-button-primary border-transparent"
+                          : "border-border"
                       }`}
                     />
                     <label

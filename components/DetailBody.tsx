@@ -210,19 +210,19 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
             <TabsList className="flex items-center justify-start bg-white border-b rounded-none h-12 p-0">
               <TabsTrigger
                 value="note"
-                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-button-primary data-[state=active]:text-button-primary"
               >
                 New Note
               </TabsTrigger>
               <TabsTrigger
                 value="message"
-                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-button-primary data-[state=active]:text-button-primary"
               >
                 Send Message
               </TabsTrigger>
               <TabsTrigger
                 value="text"
-                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-button-primary data-[state=active]:text-button-primary"
               >
                 Send a Text Message
               </TabsTrigger>
@@ -291,7 +291,7 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
               Cancel
             </Button>
             <Button
-              className="px-4 py-2 border rounded-md shadow text-primary-foreground text-sm bg-[#0786FD]"
+              className="px-4 py-2 border rounded-md shadow text-primary-foreground text-sm bg-button-primary"
               onClick={handleMessageSave}
             >
               Save
@@ -310,37 +310,37 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
             <TabsList className="flex items-center justify-start bg-white border-b rounded-none h-12 p-0">
               <TabsTrigger
                 value="all"
-                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-button-primary data-[state=active]:text-button-primary"
               >
                 All
               </TabsTrigger>
               <TabsTrigger
                 value="outgoing"
-                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-button-primary data-[state=active]:text-button-primary"
               >
                 Outgoing calls
               </TabsTrigger>
               <TabsTrigger
                 value="sms"
-                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-button-primary data-[state=active]:text-button-primary"
               >
                 SMS sent
               </TabsTrigger>
               <TabsTrigger
                 value="call"
-                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-button-primary data-[state=active]:text-button-primary"
               >
                 Call attempts
               </TabsTrigger>
               <TabsTrigger
                 value="emailout"
-                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-button-primary data-[state=active]:text-button-primary"
               >
                 Email out
               </TabsTrigger>
               <TabsTrigger
                 value="notes"
-                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-[#0786FD] data-[state=active]:text-[#0786FD]"
+                className="h-full py-2 px-3 border-none rounded-none !shadow-none text-sm leading-normal font-sans font-normal text-muted-foreground data-[state=active]:border-b-2 data-[state=active]:border-solid data-[state=active]:border-button-primary data-[state=active]:text-button-primary"
               >
                 Notes
               </TabsTrigger>

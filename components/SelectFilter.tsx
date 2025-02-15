@@ -117,8 +117,8 @@ export default function SelectFilter() {
                         checked={selectedLeadSources.includes(item.value)}
                         className={`flex w-4 items-start gap-2 ${
                           selectedLeadSources.includes(item.value)
-                            ? "!bg-[#0786fd] border-transparent"
-                            : "border-[#E4E4E7]"
+                            ? "!bg-button-primary border-transparent"
+                            : "border-border"
                         }`}
                       />
                       <label

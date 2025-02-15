@@ -438,7 +438,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
 
           <Badge
             variant="outline"
-            className="absolute w-auto min-h-[25px] min-w-[71px] px-2.5 py-1 left-3 top-3 rounded-md border border-transparent text-primary-foreground font-xs bg-[#0786FD] shadow-md"
+            className="absolute w-auto min-h-[25px] min-w-[71px] px-2.5 py-1 left-3 top-3 rounded-md border border-transparent text-primary-foreground font-xs bg-button-primary shadow-md"
           >
             {defineBadgeName(PurposeId)}
           </Badge>
@@ -602,11 +602,10 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                     className="relative flex items-start justify-between p-2 gap-2.5 w-full group"
                   >
                     <Image
-                      src={document.IconURL}
+                      src="/images/pdf.svg"
                       alt={`pdf-${index}`}
                       width={40}
                       height={40}
-                      className="text-[#B30B00]"
                     />
                     <div className="flex flex-col items-start gap-1 flex-1">
                       <h2 className="overflow-hidden text-primary text-ellipsis font-sans text-sm font-normal leading-5 flex-1">

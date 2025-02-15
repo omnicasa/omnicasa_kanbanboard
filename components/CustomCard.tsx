@@ -79,7 +79,7 @@ export default function CustomCard({
             <CardTitle className="text-primary font-sans text-base font-semibold leading-6 tracking-tight">
               {title}
             </CardTitle>
-            <span className="text-right text-[#606266] font-sans text-sm font-normal leading-5">
+            <span className="text-right text-third font-sans text-sm font-normal leading-5">
               {dateDifference}
             </span>
           </div>
