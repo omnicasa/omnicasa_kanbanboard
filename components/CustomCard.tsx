@@ -60,7 +60,7 @@ export default function CustomCard({
   const dateDifference = formatDateDifference(startDate, date);
   return (
     <Link href={`/lead-details?id=${id}`}>
-      <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm">
+      <Card className="w-[310px] p-4 flex flex-col items-start gap-4">
         <CardHeader className="p-0 w-full">
           <div className="flex items-start justify-between gap-4">
             <CardTitle className="text-primary font-sans text-base font-semibold leading-6 tracking-tight">

@@ -199,7 +199,7 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
 
   return (
     <div className="flex flex-col itesm-start flex-1 gap-5">
-      <Card className="flex flex-col w-full items-start gap-4 p-5 pt-2.5 rounded-xl border bg-card shadow">
+      <Card className="flex flex-col w-full items-start gap-4 p-5 pt-2.5 rounded-xl bg-card">
         <CardContent className="p-0 w-full">
           <Tabs
             defaultValue="note"
@@ -299,7 +299,7 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
           </div>
         </CardFooter>
       </Card>
-      <Card className="w-full p-5 pt-2.5 rounded-xl border bg-card shadow">
+      <Card className="w-full p-5 pt-2.5 rounded-xl bg-card">
         <CardContent className="flex flex-col w-full items-start p-0 gap-5 w-full">
           <Tabs
             defaultValue="all"
