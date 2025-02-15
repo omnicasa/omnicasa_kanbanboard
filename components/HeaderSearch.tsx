@@ -16,7 +16,7 @@ const HeaderSearch = () => {
             className="px-3 py-1 border rounded-md w-56 text-primary font-normal text-sm pl-10"
           />
         </div>
-        <Button className="bg-[#0786FD] text-primary-foreground px-4 py-2 rounded-md w-32 items-center justify-center">
+        <Button className="bg-button-primary text-primary-foreground px-4 py-2 rounded-md w-32 items-center justify-center">
           <Plus className="!h-5 !w-5" />
           <span>New Lead</span>
         </Button>

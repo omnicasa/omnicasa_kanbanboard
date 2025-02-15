@@ -147,8 +147,8 @@ export default function SelectPerson() {
                       checked={selectedPersons.includes(person.Name)}
                       className={`flex w-4 items-start gap-2 ${
                         selectedPersons.includes(person.Name)
-                          ? "!bg-[#0786fd] border-transparent"
-                          : "border-[#E4E4E7]"
+                          ? "!bg-button-primary border-transparent"
+                          : "border-border"
                       }`}
                     />
                     <label

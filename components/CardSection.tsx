@@ -34,7 +34,7 @@ export default function CardSection({
   customCardContents,
 }: CardSectionProps) {
   return (
-    <div className="flex flex-col w-[342px] min-h-[calc(100vh-235px)] h-full p-4 items-start gap-4 flex-shrink-0 self-stretch rounded-xl bg-[#F4F4F5]">
+    <div className="flex flex-col w-[342px] min-h-[calc(100vh-235px)] h-full p-4 items-start gap-4 flex-shrink-0 self-stretch rounded-xl bg-sidebar-accent">
       <SectionHeader
         title={headerTitle}
         badgeCount={customCardContents.length}

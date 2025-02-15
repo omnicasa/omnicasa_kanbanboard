@@ -319,7 +319,7 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                             </h2>
                           </div>
                           <div className="flex items-center justify-center">
-                            <p className="text-[#E4E4E7] font-normal text-base leading-md pr-1">
+                            <p className="text-border font-normal text-base leading-md pr-1">
                               Calling
                             </p>
                             <Image
@@ -336,7 +336,7 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                                 width={48}
                                 height={48}
                                 alt="mute"
-                                className="cursor-pointer p-[11px] rounded-full bg-[#909399]"
+                                className="cursor-pointer p-[11px] rounded-full bg-button-gray"
                                 onClick={() => handleMute(relation)}
                               />
                               <p className="text-white text-sm font-sans font-normal leading-5">
@@ -349,7 +349,7 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                                 width={64}
                                 height={64}
                                 alt="end"
-                                className="cursor-pointer p-[11px] rounded-full bg-[#B32C2C]"
+                                className="cursor-pointer p-[11px] rounded-full bg-button-red"
                                 onClick={() => handleCall(relation)}
                               />
                               <p className="text-white text-sm font-sans font-normal leading-5">
@@ -362,7 +362,7 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
                                 width={48}
                                 height={48}
                                 alt="video"
-                                className="cursor-pointer p-[11px] rounded-full bg-[#909399]"
+                                className="cursor-pointer p-[11px] rounded-full bg-button-gray"
                                 onClick={() => handleVideo(relation)}
                               />
                               <p className="text-white text-sm font-sans font-normal leading-5">
@@ -502,7 +502,7 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
       >
         <DialogContent className="sm:max-w-[470px] p-6 gap-6">
           <DialogHeader className="flex flex-col gap-1.5">
-            <DialogTitle className="text-[#09090B] font-sans text-base font-semibold leading-md">
+            <DialogTitle className="text-foreground font-sans text-base font-semibold leading-md">
               Unanswered Call Action
             </DialogTitle>
             <DialogDescription className="text-muted-foreground font-sans text-small font-normal leading-5">
@@ -528,7 +528,7 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
             </Button>
             <Button
               type="submit"
-              className="bg-[#0786FD] text-white px-4 py-2 rounded-md"
+              className="bg-button-primary text-white px-4 py-2 rounded-md"
               onClick={() => handleSendMail()}
             >
               Send

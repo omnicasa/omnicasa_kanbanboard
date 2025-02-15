@@ -114,7 +114,7 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
                         key={index}
                         className="flex items-start justify-between w-full gap-3"
                       >
-                        <div className="rounded-full border p-2 bg-[#F4F9FF] z-10">
+                        <div className="rounded-full border p-2 bg-button-secondary z-10">
                           {record.TypeNameNL === "Tel uit" ? (
                             <PhoneOutgoing className="w-4 h-4 text-muted-foreground" />
                           ) : (
@@ -134,7 +134,7 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
                                 "MM/dd/yyyy, HH:mm:ss"
                               )}{" "}
                               - By{" "}
-                              <span className="text-[#0786FD]">
+                              <span className="text-button-primary">
                                 {record.CreateUserInfo.Name}
                               </span>{" "}
                               - Call Status:{" "}
@@ -165,11 +165,11 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
                         className="flex items-start justify-between w-full gap-3"
                       >
                         {record.TypeNameNL === "SMS verzonden" ? (
-                          <div className="rounded-full border p-2 bg-[#F4F9FF] z-10">
+                          <div className="rounded-full border p-2 bg-button-secondary z-10">
                             <MessageCircleMore className="w-4 h-4 text-primary" />
                           </div>
                         ) : (
-                          <div className="rounded-full border p-2 bg-[#FEFCE8] z-10">
+                          <div className="rounded-full border p-2 bg-button-third z-10">
                             <Mail className="w-4 h-4 text-primary" />
                           </div>
                         )}
@@ -187,11 +187,11 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
                                   "MM/dd/yyyy, HH:mm:ss"
                                 )}{" "}
                                 - By{" "}
-                                <span className="text-[#0786FD]">
+                                <span className="text-button-primary">
                                   {record.CreateUserInfo.Name}
                                 </span>{" "}
                                 - Contact:{" "}
-                                <span className="text-[#0786FD]">
+                                <span className="text-button-primary">
                                   {record.ReferencePerson}
                                 </span>{" "}
                                 - Email/SMS Status:{" "}
@@ -219,7 +219,7 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
                         key={index}
                         className="flex items-start justify-between w-full gap-3"
                       >
-                        <div className="rounded-full border p-2 bg-[#F4F9FF] z-10">
+                        <div className="rounded-full border p-2 bg-button-secondary z-10">
                           <CircleAlert className="w-4 h-4 text-primary" />
                         </div>
                         <div className="flex flex-col w-full gap-3">
@@ -234,7 +234,7 @@ const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
                                   "MM/dd/yyyy, HH:mm:ss"
                                 )}{" "}
                                 - By{" "}
-                                <span className="text-[#0786FD]">
+                                <span className="text-button-primary">
                                   {record.CreateUserInfo.Name}
                                 </span>{" "}
                                 - Notes Status:{" "}
