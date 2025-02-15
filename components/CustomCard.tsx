@@ -19,6 +19,13 @@ import {
 import CallInfo from "./CallInfo";
 import Link from "next/link";
 
+interface CallInfoProps {
+  id: number;
+  src: string;
+  count: number;
+  content: string;
+}
+
 interface CustomCardProps {
   id: number;
   title: string;
@@ -26,7 +33,7 @@ interface CustomCardProps {
   date: string;
   images: string[];
   badge: boolean;
-  callInfo: { src: string; count: number; alt: string }[];
+  callInfo: CallInfoProps[];
   footerAgent: string;
 }
 
@@ -113,9 +120,10 @@ export default function CustomCard({
             {callInfo.map((info, index) => (
               <CallInfo
                 key={index}
+                id={info.id}
                 src={info.src}
                 count={info.count}
-                alt={info.alt}
+                content={info.content}
               />
             ))}
           </div>

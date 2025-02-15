@@ -19,6 +19,12 @@ import { useFetchProperties } from "@/hooks/useFetchData";
 import { useSiteStore, useManagerStore, useSortStore } from "@/store/useStore";
 import Loading from "./Loading";
 
+interface CallInfoProps {
+  id: number;
+  src: string;
+  count: number;
+  content: string;
+}
 interface RecordItem {
   Id: number;
   Reference: string;
@@ -26,7 +32,7 @@ interface RecordItem {
   date: string;
   images: string[];
   badge: boolean;
-  callInfo: { src: string; count: number; alt: string }[];
+  callInfo: CallInfoProps[];
   ManagerShortName: string;
 }
 interface BoardProps {
@@ -203,24 +209,28 @@ export default function Board({ statusesID }: BoardProps) {
           badge: false,
           callInfo: [
             {
+              id: 1,
               src: "/images/outgoing-call.svg",
               count: 0,
-              alt: "Outgoing call",
+              content: "Number of calls",
             },
             {
+              id: 2,
               src: "/images/missed-call.svg",
               count: 0,
-              alt: "Missed call",
+              content: "Call attempts",
             },
             {
+              id: 3,
               src: "/images/chat-message.svg",
               count: 0,
-              alt: "Chat message",
+              content: "Number of SMS sent",
             },
             {
+              id: 4,
               src: "/images/schedule.svg",
               count: 0,
-              alt: "Schedule",
+              content: "Next activities",
             },
           ],
           ManagerShortName: record.ManagerShortName,

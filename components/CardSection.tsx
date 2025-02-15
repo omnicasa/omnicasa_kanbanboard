@@ -8,6 +8,13 @@ import {
 import Draggable from "./Draggable";
 import Droppable from "./Droppable";
 
+interface CallInfoProps {
+  id: number;
+  src: string;
+  count: number;
+  content: string;
+}
+
 interface CardSectionProps {
   headerTitle: string;
   customCardContents: Array<{
@@ -17,7 +24,7 @@ interface CardSectionProps {
     date: string;
     images: string[];
     badge: boolean;
-    callInfo: { src: string; count: number; alt: string }[];
+    callInfo: CallInfoProps[];
     ManagerShortName: string;
   }>;
 }
