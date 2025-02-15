@@ -18,6 +18,12 @@ import {
 } from "@/components/ui/carousel";
 import CallInfo from "./CallInfo";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CallInfoProps {
   id: number;
@@ -137,13 +143,22 @@ export default function CustomCard({
               {footerAgent}
             </span>
           </div>
-          <Image
-            src="/images/avatar.png"
-            width={20}
-            height={20}
-            alt="property"
-            className="rounded-full"
-          />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Image
+                  src="/images/avatar.png"
+                  width={20}
+                  height={20}
+                  alt="property"
+                  className="rounded-full"
+                />
+              </TooltipTrigger>
+              <TooltipContent side="right" align="center">
+                <p>{footerAgent}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardFooter>
       </Card>
     </Link>
