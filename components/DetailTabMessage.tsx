@@ -11,18 +11,26 @@ import { Input } from "./ui/input";
 
 const sendUsers = [
   {
+    personId: 1,
+    phoneNumber: "1234567890",
     value: "Jhon Doe(john@greenfield.com)",
     label: "Jhon Doe(john@greenfield.com)",
   },
   {
+    personId: 2,
+    phoneNumber: "1234567890",
     value: "Jacob Jones(jacob@greenfield.com)",
     label: "Jacob Jones(jacob@greenfield.com)",
   },
   {
+    personId: 3,
+    phoneNumber: "1234567890",
     value: "Dianne Russell(dianne@greenfield.com)",
     label: "Dianne Russell(dianne@greenfield.com)",
   },
   {
+    personId: 4,
+    phoneNumber: "1234567890",
     value: "Darrell Steward(darell@greenfield.com)",
     label: "Darrell Steward(darell@greenfield.com)",
   },
@@ -30,18 +38,26 @@ const sendUsers = [
 
 const receiveUsers = [
   {
+    personId: 1,
+    phoneNumber: "1234567890",
     value: "Talan Curtis (talan@hotmail.com)",
     label: "Talan Curtis (talan@hotmail.com)",
   },
   {
+    personId: 2,
+    phoneNumber: "1234567890",
     value: "Jacob Jones(jacob@greenfield.com)",
     label: "Jacob Jones(jacob@greenfield.com)",
   },
   {
+    personId: 3,
+    phoneNumber: "1234567890",
     value: "Dianne Russell(dianne@greenfield.com)",
     label: "Dianne Russell(dianne@greenfield.com)",
   },
   {
+    personId: 4,
+    phoneNumber: "1234567890",
     value: "Darrell Steward(darell@greenfield.com)",
     label: "Darrell Steward(darell@greenfield.com)",
   },
@@ -49,28 +65,40 @@ const receiveUsers = [
 
 const templates = [
   {
+    personId: 0,
+    phoneNumber: "",
     value: "Do not use template",
     label: "Do not use template",
   },
   {
+    personId: 0,
+    phoneNumber: "",
     value: "Property Inquiry Form",
     label: "Property Inquiry Form",
   },
   {
+    personId: 0,
+    phoneNumber: "",
     value: "Open House Registration",
     label: "Open House Registration",
   },
   {
+    personId: 0,
+    phoneNumber: "",
     value: "Virtual Tour Request",
     label: "Virtual Tour Request",
   },
   {
+    personId: 0,
+    phoneNumber: "",
     value: "Mortgage Pre-Approval Application",
     label: "Mortgage Pre-Approval Application",
   },
 ];
 
 interface User {
+  personId: number;
+  phoneNumber: string;
   value: string;
   label: string;
 }

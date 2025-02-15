@@ -15,28 +15,12 @@ import {
   addHistory,
   isInternational,
   useFetchAuthConfig,
+  sendSMS,
 } from "@/hooks/useFetchData";
 
-const receiveUsers = [
-  {
-    value: "Talan Curtis (talan@hotmail.com)",
-    label: "Talan Curtis (talan@hotmail.com)",
-  },
-  {
-    value: "Jacob Jones(jacob@greenfield.com)",
-    label: "Jacob Jones(jacob@greenfield.com)",
-  },
-  {
-    value: "Dianne Russell(dianne@greenfield.com)",
-    label: "Dianne Russell(dianne@greenfield.com)",
-  },
-  {
-    value: "Darrell Steward(darell@greenfield.com)",
-    label: "Darrell Steward(darell@greenfield.com)",
-  },
-];
-
 interface User {
+  personId: number;
+  phoneNumber: string;
   value: string;
   label: string;
 }
@@ -49,6 +33,8 @@ interface Relation {
   PhoneNumber1: string;
   PersonId: number;
   ShortName: string;
+  isInternational: boolean;
+  formattedPhoneNumber: string;
 }
 
 interface DetailBodyProps {
@@ -69,7 +55,6 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
     CityName,
     Relations,
   } = data || {};
-  console.log("body props data=>", data);
   const [activeTab, setActiveTab] = useState("note");
   const [activeBottomTab, setActiveBottomTab] = useState("all");
   const selectedMailItem = useMailStore((state) => state.selectedMailItem);
@@ -81,30 +66,61 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
   const { data: userInfo } = useFetchAuthConfig();
   const { Id: userId, Email, Name, PhoneNumber } = userInfo?.UserInfo || {};
 
-  const [internationalStatus, setInternationalStatus] = useState<{
-    [key: string]: boolean;
-  }>({});
+  const [receiveUsers, setReceiveUsers] = useState<User[]>([]);
+  const [selectUser, setSelectUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchInternationalStatus = async () => {
       if (!Relations) return;
-      const status = await Promise.all(
-        Relations.map(async (relation) => {
-          const response = await isInternational(relation.PhoneNumber1);
-          return { [relation.PhoneNumber1]: response };
+
+      // Filter relations that have a phone number
+      const relationsWithPhone = Relations.filter(
+        (relation) => relation.PhoneNumber1
+      );
+
+      // Validate and format phone numbers
+      const formattedRelations = await Promise.all(
+        relationsWithPhone.map(async (relation) => {
+          try {
+            const result = await isInternational(relation.PhoneNumber1);
+            return {
+              ...relation,
+              isInternational: result.PhoneNumbers[0].IsInternational,
+              formattedPhoneNumber: result.PhoneNumbers[0].PhoneNumber,
+            };
+          } catch (error) {
+            console.error(
+              `Error validating phone number ${relation.PhoneNumber1}:`,
+              error
+            );
+            return relation;
+          }
         })
       );
-      const statusObject = status.reduce((acc, item) => {
-        return { ...acc, ...item };
-      }, {});
-      console.log("status object=>", statusObject);
-      setInternationalStatus(statusObject);
+
+      // Do something with formattedRelations
+      // Filter items where isInternational is true
+      const internationalRelations = formattedRelations.filter(
+        (relation) => relation.isInternational
+      );
+
+      // Create JSON array with the specified format
+      const jsonArray = internationalRelations.map((relation) => ({
+        personId: relation.PersonId,
+        phoneNumber: relation.formattedPhoneNumber,
+        value: `${relation.PersonName} (${relation.PersonEmail})`,
+        label: `${relation.PersonName} (${relation.PersonEmail})`,
+      }));
+
+      // Do something with jsonArray
+      setReceiveUsers(jsonArray);
     };
+
     fetchInternationalStatus();
-  }, [Relations]);
+  }, [Relations, data]);
 
   const handleReceiveUserSelect = (user: User) => {
-    console.log(user);
+    setSelectUser(user);
   };
 
   const handleMessageSave = async () => {
@@ -135,12 +151,38 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
     } else if (activeTab === "message") {
       console.log("message");
     } else {
-      console.log("text message");
+      if (textMessage && selectUser) {
+        const sendMessages = async () => {
+          try {
+            // Assuming selectUser contains the selected user details
+            const { phoneNumber } = selectUser;
+
+            // Call the sendSMS API
+            const response = await sendSMS(userId, phoneNumber, textMessage);
+
+            // Handle the response
+            console.log("SMS sent successfully:", response);
+            if (response) {
+              setTextMessage("");
+              sendMessageStore.setSendMessageItem({
+                message: textMessage,
+                type: "text",
+                state: true,
+              });
+            }
+          } catch (error) {
+            console.error("Error sending SMS:", error);
+          }
+        };
+
+        sendMessages();
+      }
     }
   };
 
   const handleMessageCancel = () => {
     setNewNote("");
+    setTextMessage("");
     sendMessageStore.setSendMessageItem({
       message: "",
       type: "",
