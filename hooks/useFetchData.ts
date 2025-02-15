@@ -324,6 +324,27 @@ const getHistory = async (propertyId: number) => {
   return response.json();
 };
 
+export const isInternational = async (phoneNumber: string) => {
+  const response = await fetch(`${BASE_URL}/phone/is-international`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OAUTH_TOKEN}`,
+      "Accept-Language": "English",
+    },
+    body: JSON.stringify({
+      PhoneNumbers: [phoneNumber],
+      LanguageId: 1,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 export const useFetchAuthConfig = () => {
   return useQuery({
     queryKey: ["authConfig"],

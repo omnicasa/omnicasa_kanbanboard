@@ -36,7 +36,7 @@ const LeadDetails = () => {
     Relations,
   } = data || {};
 
-  const detailPropertyData = {
+  const leadDetailData = {
     Id,
     Pictures,
     PurposeId,
@@ -57,9 +57,6 @@ const LeadDetails = () => {
     ManagerId,
     Comment,
     Documents,
-  };
-
-  const detailInformationData = {
     Relations,
   };
 
@@ -67,9 +64,9 @@ const LeadDetails = () => {
     <main>
       <DetailHeader />
       <div className="flex p-5 gap-5 align-start bg-secondary justify-between">
-        <DetailProperty data={detailPropertyData} />
-        <DetailBody data={detailPropertyData} />
-        <DetailInformation data={detailInformationData} />
+        <DetailProperty data={leadDetailData} />
+        <DetailBody data={leadDetailData} />
+        <DetailInformation data={leadDetailData} />
       </div>
     </main>
   );

@@ -19,11 +19,18 @@ import {
 } from "@/components/ui/popover";
 import React from "react";
 
+interface User {
+  personId: number;
+  phoneNumber: string;
+  value: string;
+  label: string;
+}
+
 interface CustomComboboxProps {
-  data: { value: string; label: string }[];
+  data: User[];
   title: string;
   avatar?: boolean;
-  onItemSelect: (item: { value: string; label: string }) => void;
+  onItemSelect: (item: User) => void;
 }
 
 const CustomCombobox: React.FC<CustomComboboxProps> = ({
@@ -47,7 +54,7 @@ const CustomCombobox: React.FC<CustomComboboxProps> = ({
   const handlePopoverToggle = () => {
     setIsPopoverOpen(!isPopoverOpen);
   };
-  const handleItemClick = (item: { value: string; label: string }) => {
+  const handleItemClick = (item: User) => {
     onItemSelect(item);
     setIsPopoverOpen(false);
     setValue(item.value);
