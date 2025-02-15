@@ -18,6 +18,19 @@ import {
 } from "@/components/ui/carousel";
 import CallInfo from "./CallInfo";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+interface CallInfoProps {
+  id: number;
+  src: string;
+  count: number;
+  content: string;
+}
 
 interface CustomCardProps {
   id: number;
@@ -26,7 +39,7 @@ interface CustomCardProps {
   date: string;
   images: string[];
   badge: boolean;
-  callInfo: { src: string; count: number; alt: string }[];
+  callInfo: CallInfoProps[];
   footerAgent: string;
 }
 
@@ -60,7 +73,7 @@ export default function CustomCard({
   const dateDifference = formatDateDifference(startDate, date);
   return (
     <Link href={`/lead-details?id=${id}`}>
-      <Card className="w-[310px] p-4 border flex flex-col items-start gap-4 rounded-lg bg-white shadow-sm">
+      <Card className="w-[310px] p-4 flex flex-col items-start gap-4">
         <CardHeader className="p-0 w-full">
           <div className="flex items-start justify-between gap-4">
             <CardTitle className="text-primary font-sans text-base font-semibold leading-6 tracking-tight">
@@ -113,9 +126,10 @@ export default function CustomCard({
             {callInfo.map((info, index) => (
               <CallInfo
                 key={index}
+                id={info.id}
                 src={info.src}
                 count={info.count}
-                alt={info.alt}
+                content={info.content}
               />
             ))}
           </div>
@@ -129,13 +143,22 @@ export default function CustomCard({
               {footerAgent}
             </span>
           </div>
-          <Image
-            src="/images/avatar.png"
-            width={20}
-            height={20}
-            alt="property"
-            className="rounded-full"
-          />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Image
+                  src="/images/avatar.png"
+                  width={20}
+                  height={20}
+                  alt="property"
+                  className="rounded-full"
+                />
+              </TooltipTrigger>
+              <TooltipContent side="right" align="center">
+                <p>{footerAgent}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardFooter>
       </Card>
     </Link>
