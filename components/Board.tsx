@@ -30,6 +30,7 @@ interface RecordItem {
 }
 interface BoardProps {
   statusesID: number;
+  initialData: { SubstatusId: number; Stage: string; items: RecordItem[] }[];
 }
 interface Record {
   ConstructionType: number;
@@ -71,27 +72,7 @@ interface Record {
   FirstPictureModifiedDate: string;
 }
 
-const initialData = [
-  { SubstatusId: 1, Stage: "New", items: [] as RecordItem[] },
-  {
-    SubstatusId: 37,
-    Stage: "Contacted but No Communication",
-    items: [] as RecordItem[],
-  },
-  { SubstatusId: 38, Stage: "Call 1", items: [] as RecordItem[] },
-  { SubstatusId: 39, Stage: "Call 2", items: [] as RecordItem[] },
-  { SubstatusId: 40, Stage: "Appointment 1 Set", items: [] as RecordItem[] },
-  { SubstatusId: 41, Stage: "Appointment 1 Done", items: [] as RecordItem[] },
-  { SubstatusId: 42, Stage: "Appointment 2 Set", items: [] as RecordItem[] },
-  { SubstatusId: 43, Stage: "Appointment 2 Done", items: [] as RecordItem[] },
-  { SubstatusId: 44, Stage: "Follow Up 1 Month", items: [] as RecordItem[] },
-  { SubstatusId: 45, Stage: "Follow Up 2 Months", items: [] as RecordItem[] },
-  { SubstatusId: 46, Stage: "Follow Up 3 Months", items: [] as RecordItem[] },
-  { SubstatusId: 47, Stage: "Follow Up 6 Months", items: [] as RecordItem[] },
-  { SubstatusId: 48, Stage: "Follow Up 1 Year", items: [] as RecordItem[] },
-];
-
-export default function Board({ statusesID }: BoardProps) {
+export default function Board({ statusesID, initialData }: BoardProps) {
   const [newData, setNewData] = useState(initialData);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isSwiping, setIsSwiping] = useState(false);
