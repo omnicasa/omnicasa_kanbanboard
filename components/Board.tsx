@@ -220,9 +220,7 @@ export default function Board({ statusesID }: BoardProps) {
       <div
         {...swipeHandlers}
         ref={containerRef}
-        className={`flex gap-4 overflow-hidden ${
-          isSwiping ? "select-none cursor-grab" : ""
-        }`}
+        className={`flex gap-4 ${isSwiping ? "select-none cursor-grab" : ""}`}
       >
         {newData.map((data) => (
           <Droppable key={data.SubstatusId} id={data.SubstatusId}>
