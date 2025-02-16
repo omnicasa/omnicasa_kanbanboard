@@ -36,6 +36,7 @@ interface HistoryRecord {
 
 const DetailHistory: React.FC<DetailHistoryProps> = ({ id, type }) => {
   const { data: historys, refetch } = useFetchHistory(id);
+  console.log("id=>", id, historys);
   const messageItem = useSendMessageStore((state) => state.sendMessageItem);
 
   useEffect(() => {

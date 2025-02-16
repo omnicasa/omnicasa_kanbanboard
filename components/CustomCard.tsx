@@ -24,13 +24,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-interface CallInfoProps {
-  id: number;
-  src: string;
-  count: number;
-  content: string;
-}
+import { useFetchHistory } from "@/hooks/useFetchData";
 
 interface CustomCardProps {
   id: number;
@@ -39,8 +33,22 @@ interface CustomCardProps {
   date: string;
   images: string[];
   badge: boolean;
-  callInfo: CallInfoProps[];
   footerAgent: string;
+}
+
+interface HistoryRecord {
+  ChildId: number;
+  CreateUserId: number;
+  CreateUserInfo: {
+    Name: string;
+  };
+  Date: string;
+  Description: string;
+  Done: boolean;
+  ReferencePerson: string;
+  Subject: string;
+  TypeId: number;
+  TypeNameNL: string;
 }
 
 export default function CustomCard({
@@ -50,9 +58,49 @@ export default function CustomCard({
   date,
   images,
   badge,
-  callInfo,
   footerAgent,
 }: CustomCardProps) {
+  const { data: historys } = useFetchHistory(id);
+  const countOutgoing = historys?.Records?.filter((item: HistoryRecord) =>
+    ["Tel uit"].includes(item.TypeNameNL)
+  ).length;
+  const countMissedCalls = historys?.Records?.filter((item: HistoryRecord) =>
+    ["Tel in"].includes(item.TypeNameNL)
+  ).length;
+  const countSentMessages = historys?.Records?.filter((item: HistoryRecord) =>
+    ["SMS verzonden"].includes(item.TypeNameNL)
+  ).length;
+  const countAppointment = historys?.Records?.filter((item: HistoryRecord) =>
+    ["Contact"].includes(item.TypeNameNL)
+  ).length;
+
+  const callInfoData = [
+    {
+      id: 1,
+      src: "/images/outgoing-call.svg",
+      count: countOutgoing,
+      content: "Number of calls",
+    },
+    {
+      id: 2,
+      src: "/images/missed-call.svg",
+      count: countMissedCalls,
+      content: "Call attempts",
+    },
+    {
+      id: 3,
+      src: "/images/chat-message.svg",
+      count: countSentMessages,
+      content: "Number of SMS sent",
+    },
+    {
+      id: 4,
+      src: "/images/schedule.svg",
+      count: countAppointment,
+      content: "Next activities",
+    },
+  ];
+
   const formatDateDifference = (start: Date, end: string) => {
     const diffInMs = Math.abs(
       new Date(end).getTime() - new Date(start).getTime()
@@ -123,7 +171,7 @@ export default function CustomCard({
           )}
           {badge && <Badge variant="destructive">Lower in price</Badge>}
           <div className="flex items-center gap-4">
-            {callInfo.map((info, index) => (
+            {callInfoData.map((info, index) => (
               <CallInfo
                 key={index}
                 id={info.id}
