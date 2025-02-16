@@ -25,6 +25,12 @@ import {
   useFetchSites,
   useFetchManagers,
 } from "@/hooks/useFetchData";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const pipe_status = [
   {
@@ -456,39 +462,84 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                   HouseNumber ? ", " + HouseNumber : ""
                 }, ${CityName}`}
               </p>
-              <Image
-                src="/images/navigation-filled.svg"
-                alt="navigation-filled"
-                width={20}
-                height={20}
-              />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image
+                      src="/images/navigation-filled.svg"
+                      alt="navigation-filled"
+                      width={20}
+                      height={20}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" align="end">
+                    <p>View on Map</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
           <div className="flex items-center justify-start space-x-4">
-            <div className="flex items-center space-x-1">
-              <BedDouble className="h-5 w-5 text-muted-foreground" />
-              <label className="text-primary text-center font-sans text-sm font-normal leading-5">
-                {NumberOfBedRoom}
-              </label>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Bath className="h-5 w-5 text-muted-foreground" />
-              <label className="text-primary text-center font-sans text-sm font-normal leading-5">
-                {NumberOfBathRoom}
-              </label>
-            </div>
-            <div className="flex items-center space-x-1">
-              <CarFront className="h-5 w-5 text-muted-foreground" />
-              <label className="text-primary text-center font-sans text-sm font-normal leading-5">
-                {NumberOfGarage}
-              </label>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Map className="h-5 w-5 text-muted-foreground" />
-              <label className="text-primary text-center font-sans text-sm font-normal leading-5">
-                {GroundArea} m²
-              </label>
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center space-x-1">
+                    <BedDouble className="h-5 w-5 text-muted-foreground" />
+                    <label className="text-primary text-center font-sans text-sm font-normal leading-5">
+                      {NumberOfBedRoom}
+                    </label>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="center">
+                  <p>Bedrooms</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center space-x-1">
+                    <Bath className="h-5 w-5 text-muted-foreground" />
+                    <label className="text-primary text-center font-sans text-sm font-normal leading-5">
+                      {NumberOfBathRoom}
+                    </label>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="center">
+                  <p>Parking Int</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center space-x-1">
+                    <CarFront className="h-5 w-5 text-muted-foreground" />
+                    <label className="text-primary text-center font-sans text-sm font-normal leading-5">
+                      {NumberOfGarage}
+                    </label>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="center">
+                  <p>Total area</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center space-x-1">
+                    <Map className="h-5 w-5 text-muted-foreground" />
+                    <label className="text-primary text-center font-sans text-sm font-normal leading-5">
+                      {GroundArea} m²
+                    </label>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="center">
+                  <p>Bathrooms</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
           <Separator className="border" />
           <div className="flex flex-col items-start">
