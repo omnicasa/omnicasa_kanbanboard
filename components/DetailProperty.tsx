@@ -8,6 +8,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselApi,
 } from "@/components/ui/carousel";
 import {
   ArrowDownToLine,
@@ -254,6 +255,9 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
   );
   const managerName = manager ? manager.Name : "";
 
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+
   const getRegionByPostCode = (postCode: number) => {
     if (postCode >= 1000 && postCode <= 1299) {
       return "Brussels";
@@ -402,6 +406,23 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
     console.log("===>", item);
   };
 
+  const handleDotClick = (index: number) => {
+    setCurrentSlide(index);
+    carouselApi?.scrollTo(index);
+  };
+
+  useEffect(() => {
+    if (carouselApi) {
+      const onSelect = () => {
+        setCurrentSlide(carouselApi.selectedScrollSnap());
+      };
+      carouselApi.on("select", onSelect);
+      return () => {
+        carouselApi.off("select", onSelect);
+      };
+    }
+  }, [carouselApi]);
+
   return (
     <div className="flex flex-col gap-5 col-span-3">
       <div className="flex flex-col items-start self-stretch w-min-[324px] w-full bg-white border rounded-lg shadow-md">
@@ -418,7 +439,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
             </div>
           ) : (
             images.length > 0 && (
-              <Carousel>
+              <Carousel setApi={setCarouselApi} opts={{ loop: true }}>
                 <CarouselContent>
                   {images.map((src, index) => (
                     <CarouselItem key={index}>
@@ -440,6 +461,17 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
+                <div className="flex justify-center absolute bottom-2 w-full">
+                  {images.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`w-1.5 h-1.5 rounded-full mx-1 bg-primary-foreground ${
+                        currentSlide === index ? "" : "opacity-60"
+                      }`}
+                      onClick={() => handleDotClick(index)}
+                    />
+                  ))}
+                </div>
               </Carousel>
             )
           )}
