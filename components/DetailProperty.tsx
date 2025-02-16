@@ -446,15 +446,23 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
           </Badge>
         </div>
         <div className="flex flex-col p-5 gap-5 w-full">
-          <div>
+          <div className="flex flex-col items-start gap-1.5">
             <h1 className="text-card-foreground font-sans text-base font-semibold leading-6 capitalize">
               {Reference}
             </h1>
-            <p className="text-muted-foreground font-sans text-sm font-normal leading-5 mt-1.5">
-              {`${Address}${
-                HouseNumber ? ", " + HouseNumber : ""
-              }, ${CityName}`}
-            </p>
+            <div className="flex items-end justify-start space-x-2">
+              <p className="text-muted-foreground font-sans text-sm font-normal leading-5 mt-1.5">
+                {`${Address}${
+                  HouseNumber ? ", " + HouseNumber : ""
+                }, ${CityName}`}
+              </p>
+              <Image
+                src="/images/navigation-filled.svg"
+                alt="navigation-filled"
+                width={20}
+                height={20}
+              />
+            </div>
           </div>
           <div className="flex items-center justify-start space-x-4">
             <div className="flex items-center space-x-1">
