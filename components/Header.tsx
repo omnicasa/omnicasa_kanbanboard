@@ -21,7 +21,14 @@ export default function Header() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="/" className="text-secondary-foreground">
+              <BreadcrumbLink
+                href="/"
+                className={
+                  pathname === "/"
+                    ? "text-secondary-foreground hover:text-muted-foreground"
+                    : "text-muted-foreground"
+                }
+              >
                 Kanban Board
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -29,7 +36,10 @@ export default function Header() {
               <>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/lead-details">
+                  <BreadcrumbLink
+                    href="/lead-details"
+                    className="text-secondary-foreground"
+                  >
                     Lead Details
                   </BreadcrumbLink>
                 </BreadcrumbItem>

@@ -63,7 +63,7 @@ const LeadDetails = () => {
   return (
     <main>
       <DetailHeader />
-      <div className="flex p-5 gap-5 align-start bg-secondary justify-between">
+      <div className="grid grid-cols-12 p-5 gap-5 align-start bg-secondary">
         <DetailProperty data={leadDetailData} />
         <DetailBody data={leadDetailData} />
         <DetailInformation data={leadDetailData} />

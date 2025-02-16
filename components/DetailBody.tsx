@@ -198,7 +198,7 @@ const DetailBody: React.FC<DetailBodyProps> = ({ data }) => {
   }, [selectedMailItem]);
 
   return (
-    <div className="flex flex-col itesm-start flex-1 gap-5">
+    <div className="flex flex-col itesm-start gap-5 col-span-6">
       <Card className="flex flex-col w-full items-start gap-4 p-5 pt-2.5 rounded-xl bg-card">
         <CardContent className="p-0 w-full">
           <Tabs
