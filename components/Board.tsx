@@ -220,7 +220,7 @@ export default function Board({ statusesID }: BoardProps) {
       <div
         {...swipeHandlers}
         ref={containerRef}
-        className={`flex gap-4 overflow-hidden ${
+        className={`flex gap-4 overflow-x-scroll pb-2 ${
           isSwiping ? "select-none cursor-grab" : ""
         }`}
       >
