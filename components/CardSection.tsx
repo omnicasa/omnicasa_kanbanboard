@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import CustomCard from "./CustomCard";
 import SectionHeader from "./SectionHeader";
@@ -8,13 +10,6 @@ import {
 import Draggable from "./Draggable";
 import Droppable from "./Droppable";
 
-interface CallInfoProps {
-  id: number;
-  src: string;
-  count: number;
-  content: string;
-}
-
 interface CardSectionProps {
   headerTitle: string;
   customCardContents: Array<{
@@ -24,7 +19,6 @@ interface CardSectionProps {
     date: string;
     images: string[];
     badge: boolean;
-    callInfo: CallInfoProps[];
     ManagerShortName: string;
   }>;
 }
@@ -61,7 +55,6 @@ export default function CardSection({
                   date={customCardContent.date}
                   images={customCardContent.images}
                   badge={customCardContent.badge}
-                  callInfo={customCardContent.callInfo}
                   footerAgent={customCardContent.ManagerShortName}
                 />
               </Draggable>
