@@ -205,7 +205,7 @@ const DetailInformation: React.FC<DetailInformationProps> = ({ data }) => {
   }, []);
 
   return (
-    <div className="flex flex-col itesm-start w-[324px] p-5 gap-5 bg-white border rounded-lg shadow-md h-full">
+    <div className="flex flex-col itesm-start w-min-[324px] w-full p-5 gap-5 bg-white border rounded-lg shadow-md h-full col-span-3">
       <h2 className="text-card-foreground text-base font-semibold leading-normal font-sans">
         Relations
       </h2>

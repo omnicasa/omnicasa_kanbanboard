@@ -397,24 +397,26 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-col items-start self-stretch w-[324px] bg-white border rounded-lg shadow-md">
-        <div className="relative">
+    <div className="flex flex-col gap-5 col-span-3">
+      <div className="flex flex-col items-start self-stretch w-min-[324px] w-full bg-white border rounded-lg shadow-md">
+        <div className="relative w-full">
           {images.length === 0 ? (
-            <Image
-              src="/images/empty.png"
-              alt="Image"
-              width={324}
-              height={200}
-              className="rounded-t-sm object-cover"
-            />
+            <div className="w-min-[324px] h-min-[200px] w-full h-full">
+              <Image
+                src="/images/empty.png"
+                alt="Image"
+                width={324}
+                height={200}
+                className="w-full h-full rounded-t-sm object-cover"
+              />
+            </div>
           ) : (
             images.length > 0 && (
-              <Carousel className={"w-full max-w-xs"}>
+              <Carousel>
                 <CarouselContent>
                   {images.map((src, index) => (
                     <CarouselItem key={index}>
-                      <div className="w-[324px] h-[200px]">
+                      <div className="w-min-[324px] h-min-[200px] w-full h-full">
                         <Card className="h-full rounded-md flex items-center justify-center">
                           <CardContent className="flex items-center justify-center p-0 flex-1">
                             {isClient && (
@@ -443,7 +445,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
             {defineBadgeName(PurposeId)}
           </Badge>
         </div>
-        <div className="flex flex-col p-5 gap-5">
+        <div className="flex flex-col p-5 gap-5 w-full">
           <div>
             <h1 className="text-card-foreground font-sans text-base font-semibold leading-6 capitalize">
               {Reference}
@@ -588,7 +590,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
           </Button>
         </div>
       </div>
-      <div className="flex flex-col items-start self-stretch w-[324px] bg-white border rounded-lg shadow-md p-5 gap-5">
+      <div className="flex flex-col items-start self-stretch w-min-[324px] w-full bg-white border rounded-lg shadow-md p-5 gap-5">
         <h1 className="text-card-foreground font-sans text-base font-semibold leading-6 capitalize">
           PDF Attachments
         </h1>
