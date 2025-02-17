@@ -434,7 +434,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                 alt="Image"
                 width={324}
                 height={200}
-                className="w-full h-full rounded-t-sm object-cover"
+                className="w-full h-full object-cover"
               />
             </div>
           ) : (
@@ -452,7 +452,7 @@ const DetailProperty: React.FC<DetailPropertyProps> = ({ data }) => {
                                 width={324}
                                 height={200}
                                 alt={`Image ${index}`}
-                                className="w-full h-full object-cover rounded-md"
+                                className="w-full h-full object-cover"
                               />
                             )}
                           </CardContent>
